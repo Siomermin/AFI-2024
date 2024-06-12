@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "ionic-auth-app-eaff8": {
+      "hosting": {
+        "app": [
+          "ionic-auth-app-eaff8"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "ionic-auth-app-eaff8"
+  }
+}

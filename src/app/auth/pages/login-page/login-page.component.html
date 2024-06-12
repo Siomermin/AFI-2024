@@ -1,0 +1,58 @@
+
+<ion-content class="ion-padding" >
+  <div class="container">
+
+    <ion-text class="ion-text-center">
+      <h1>Iniciar sesión</h1>
+
+    </ion-text>
+
+<!-- Loading Spinner -->
+<app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+
+<form [formGroup]="myForm" (ngSubmit)="onSubmit()">
+  <ion-item>
+    <ion-input labelPlacement="stacked" label="Correo electrónico" formControlName="email" type="text"></ion-input>
+    <ion-text color="danger" *ngIf="isValidField('email')">
+      {{ getErrorByField("email") }}</ion-text
+    >
+  </ion-item>
+  <br>
+  <ion-item>
+    <ion-input
+    labelPlacement="stacked"
+      label="Contraseña"
+      formControlName="password"
+      type="password"
+    ></ion-input>
+    <ion-text color="danger" *ngIf="isValidField('password')">
+      {{ getErrorByField("password") }}
+    </ion-text>
+  </ion-item>
+  <br>
+  <ion-button class="ion-padding" color="secondary" type="submit" expand="full" [disabled]="myForm.invalid">
+    <ion-icon name="log-in"></ion-icon>
+  </ion-button>
+</form>
+
+<!-- <ion-text color="primary">
+  <a routerLink="/auth/register"> No tenes cuenta? Registrate!</a>
+</ion-text> -->
+
+<!-- Acceso rapido -->
+<ion-list>
+  <h3 class="ion-margin">Acceso rápido</h3>
+  <ion-item *ngFor="let user of testUsers | slice : 0 : 3" (click)="selectCheckbox(user)" (click)="fastLogin(user.email, user.password)">
+    <ion-checkbox [checked]="checkboxSelected === user" justify="space-between">{{ user.profile }}</ion-checkbox>
+  </ion-item>
+</ion-list>
+  </div>
+</ion-content>
+<style scoped>
+  .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 90vh;
+  }
+  </style>
