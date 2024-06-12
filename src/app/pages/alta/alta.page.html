@@ -1,0 +1,63 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Formulario de Alta
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-fab slot="fixed" vertical="top" horizontal="end">
+    <ion-fab-button (click)="scan()">
+      <img style="height: 40px; padding: 5px;" src="../../../assets/images/qr.png" alt=""> 
+    </ion-fab-button>
+   
+</ion-fab>
+
+
+<ion-content class="ion-text-center">
+  <br><br>
+  <form>
+    <ion-item>
+      <ion-label position="stacked">Nombre</ion-label>
+      <ion-input [(ngModel)]="nombre" name="nombre"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Apellido</ion-label>
+      <ion-input [(ngModel)]="apellido" name="apellido"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">DNI</ion-label>
+      <ion-input [(ngModel)]="dni" name="dni"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">CUIL</ion-label>
+      <ion-input [(ngModel)]="cuil" name="cuil"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Perfil</ion-label>
+      <ion-select [(ngModel)]="perfil" name="perfil">
+        <ion-select-option value="dueño">Dueño</ion-select-option>
+        <ion-select-option value="supervisor">Supervisor</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Imágen</ion-label>
+      <ion-row>
+        <ion-col size="8">
+          <ion-input></ion-input>
+        </ion-col>
+        <ion-col size="4">
+          <ion-button shape="round" (click)="tomarFoto()" >
+            Tomar foto
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-item>
+  </form>
+  <br><br>
+
+  <ion-button color="success"  shape="round" (click)="enviarInformacion()">Aceptar  </ion-button>
+
+
+
+</ion-content>

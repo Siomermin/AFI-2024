@@ -11,6 +11,10 @@ const routes: Routes = [
     loadChildren: () =>  import('./auth/auth.module').then( m => m.AuthModule )
   },
   {
+    path: 'alta',
+    loadChildren: () => import('./pages/alta/alta.module').then( m => m.AltaPageModule)
+  },
+  {
     path: 'home',
     loadChildren: () =>  import('./home/home.module').then( m => m.HomePageModule )
   },
@@ -18,6 +22,8 @@ const routes: Routes = [
     path: '**',
     redirectTo: 'auth'
   },
+  
+
 ];
 
 @NgModule({
