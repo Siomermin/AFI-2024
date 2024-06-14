@@ -19,21 +19,21 @@ mejorar la utilización de su servicio por medio de una aplicación para celular
 ## Responsabilidades
 
 #### Fermín González
-- Módulos (objetivos) a desarrollar: 
-- Fecha de inicio de la tarea: 
-- Fecha de finalización de la tarea:
-- Branch: 
+- Módulos (objetivos) a desarrollar: D. Alta de Mesa
+- Fecha de inicio de la tarea: 14/06/2024
+- Fecha de finalización de la tarea: 
+- Branch: fermin-branch
 
 #### Agustina Bilotta
-- Módulos (objetivos) a desarrollar: 
-- Fecha de inicio de la tarea: 
+- Módulos (objetivos) a desarrollar: A. Alta de dueño / supervisor
+- Fecha de inicio de la tarea: 12/06/2024
 - Fecha de finalización de la tarea:
-- Branch: 
+- Branch: agustina-branch
 
 #### Ian Ezequiel Pereyra
-- Módulos (objetivos) a desarrollar: 
-- Fecha de inicio de la tarea: 
+- Módulos (objetivos) a desarrollar: E. Alta de productos
+- Fecha de inicio de la tarea: 14/06/2024
 - Fecha de finalización de la tarea:
-- Branch: 
+- Branch: ian-branch
 
 
