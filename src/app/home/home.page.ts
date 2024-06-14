@@ -2,6 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { AuthService } from '../auth/services/auth.service';
 import { Router } from '@angular/router';
 
+
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -15,6 +16,7 @@ export class HomePage implements OnInit  {
   constructor(private router:Router){}
   ngOnInit(): void {
     this.loggedUser = this.authService.loggedUser;
+
   }
 
   logout() {
@@ -24,4 +26,7 @@ export class HomePage implements OnInit  {
   redireccionar(path:string){
     this.router.navigateByUrl(path);
   }
+
+
+ 
 }

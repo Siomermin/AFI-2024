@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Barcode, BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
 import { AlertController } from '@ionic/angular';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
@@ -6,6 +6,10 @@ import { DatabaseService } from 'src/app/auth/services/database.service';
 import { DuenioSupervisor } from 'src/app/clases/duenio-supervisor';
 import { Router } from '@angular/router';
 import { StorageService } from 'src/app/auth/services/storage.service';
+import { Usuario } from 'src/app/clases/usuario';
+import { AuthService } from 'src/app/auth/services/auth.service';
+import { Empleado } from 'src/app/clases/empleado';
+
 @Component({
   selector: 'app-alta',
   templateUrl: './alta.page.html',
@@ -13,10 +17,14 @@ import { StorageService } from 'src/app/auth/services/storage.service';
 })
 export class AltaPage implements OnInit {
 
+  private authService = inject(AuthService);
+  public loggedUser: any;
+
 
   isSupported = false;
   barcodes: Barcode[] = [];
   informacionQr: string | null = null;  // Variable para guardar la información del QR escaneado
+  perfilSeleccionado :string="";
 
   // Variables para el formulario
   nombre: string="";
@@ -24,15 +32,50 @@ export class AltaPage implements OnInit {
   dni: string="";
   cuil: string="";
   perfil: string="";
+  tipo: string="";
 
-  nuevosDatos:any;
+  perfilUsuarioActual:string="";
+  tipoEmpleado:string="";
+
 
   constructor(private alertController: AlertController, private database:DatabaseService, private router: Router, private storage:StorageService ) {}
 
   ngOnInit() {
+    this.loggedUser = this.authService.loggedUser;
+
     BarcodeScanner.isSupported().then((result) => {
       this.isSupported = result.supported;
     });
+    this.verificarPerfilUsuarioActual();
+
+  }
+
+  async verificarPerfilUsuarioActual() {
+    try {
+      const usuariosObservable = await this.database.obtenerTodos("usuarios");
+      if (usuariosObservable) {
+        usuariosObservable.subscribe(usuarios => {
+          usuarios.forEach(action => {
+            const usuario = action.payload.doc.data() as Usuario & { tipo?: string };  // Añadimos el campo opcional "tipo"
+            if (usuario.email === this.loggedUser.email) {
+              this.perfilUsuarioActual = usuario.perfil;
+              if (this.perfilUsuarioActual === 'Empleado' && usuario.tipo) {
+                this.tipoEmpleado = usuario.tipo;
+              }
+              console.log(this.perfilUsuarioActual);
+              console.log(this.tipoEmpleado);
+            }
+          });
+        });
+      }
+    } catch (error) {
+      console.error("Error al obtener los usuarios: ", error);
+    }
+  }
+
+  seleccionarPerfilAlta(perfil:string){
+    this.perfilSeleccionado=perfil;
+    console.log(this.perfilSeleccionado);
   }
 
   async scan(): Promise<void> {
@@ -111,14 +154,31 @@ export class AltaPage implements OnInit {
 
 
   enviarInformacion(){
-    this.nuevosDatos = new DuenioSupervisor(this.nombre, this.apellido, this.dni, this.cuil, null, this.perfil);
-    this.database.crear("usuarios", this.nuevosDatos );
+    if(this.perfilSeleccionado == "Dueño/Supervisor"){
+      const nuevoUsuario = new DuenioSupervisor(this.nombre, this.apellido, this.dni, this.cuil, null, this.perfil);
+      const nuevoUsuarioJSON= nuevoUsuario.toJSON();
+      this.database.crear("usuarios", nuevoUsuarioJSON );
+    }else if(this.perfilSeleccionado== "Empleado"){
+      const nuevoUsuario = new Empleado(this.nombre, this.apellido, this.dni, this.cuil, null, this.tipo);
+      const nuevoUsuarioJSON= nuevoUsuario.toJSON();
+      this.database.crear("usuarios", nuevoUsuarioJSON );
+    }
+   
     this.router.navigateByUrl('home');
-    return true;
+
   }
 
 
- 
+  isFormComplete(): boolean {
+    if (this.perfilSeleccionado === 'Dueño/Supervisor') {
+      return this.nombre && this.apellido && this.dni && this.cuil && this.perfil ? true : false;
+    } else if (this.perfilSeleccionado === 'Empleado') {
+      return this.nombre && this.apellido && this.dni && this.cuil && this.tipo ? true : false;
+    } else {
+      return this.nombre && this.apellido && this.dni ? true : false;
+    }
+  }
+
 
  
 }

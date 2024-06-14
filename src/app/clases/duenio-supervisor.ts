@@ -15,4 +15,16 @@ export class DuenioSupervisor {
         this.fotoUrl = fotoUrl;
         this.perfil = perfil;  
     }
+
+    toJSON() {
+        return {
+          nombre: this.nombre,
+          apellido: this.apellido,
+          dni: this.dni,
+          cuil: this.cuil,
+          fotoUrl: this.fotoUrl,
+          perfil: this.perfil,
+
+        };
+    }
 }
