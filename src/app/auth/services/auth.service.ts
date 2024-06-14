@@ -20,38 +20,31 @@ export class AuthService {
   public testUsers: TestUser[] = [
     {
       id: 1,
-      email: 'admin@admin.com',
+      email: 'duenio@duenio.com',
       password: '111111',
-      profile: 'admin',
+      profile: 'dueño',
       gender: 'femenino',
     },
     {
       id: 2,
-      email: 'invitado@invitado.com',
+      email: 'supervisor@supervisor.com',
       password: '222222',
-      profile: 'invitado',
+      profile: 'supervisor',
       gender: 'femenino',
     },
     {
       id: 3,
-      email: 'usuario@usuario.com',
+      email: 'empleado@empleado.com',
       password: '333333',
-      profile: 'usuario',
+      profile: 'empleado',
       gender: 'masculino',
     },
     {
       id: 4,
-      email: 'anonimo@anonimo.com',
+      email: 'cliente@cliente.com',
       password: '444444',
-      profile: 'usuario',
+      profile: 'cliente',
       gender: 'masculino',
-    },
-    {
-      id: 5,
-      email: 'tester@tester.com',
-      password: '555555',
-      profile: 'tester',
-      gender: 'femenino',
     },
   ];
 
