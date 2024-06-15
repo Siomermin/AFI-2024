@@ -51,7 +51,8 @@ export class LoginPageComponent implements OnInit {
     this.isLoading = true;
     this.authService.login(email, password).then(() => {
       this.isLoading = false;
-      this.myForm.reset(); // Optionally reset after successful login
+      this.myForm.reset();
+      this.checkboxSelected = null;
     });
   }
 
