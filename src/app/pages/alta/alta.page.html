@@ -4,92 +4,77 @@
       Formulario de Alta
     </ion-title>
   </ion-toolbar>
+
+  <ion-fab slot="fixed" vertical="top" horizontal="end">
+    <ion-fab-button (click)="scan()">
+      <img style="height: 40px; padding: 5px;" src="../../../assets/images/qr.png" alt=""> 
+    </ion-fab-button>
+  </ion-fab>
+
+
 </ion-header>
 
 
 
 
 <ion-content class="ion-text-center">
-
-  <div *ngIf="perfilSeleccionado ==''">
-    <ion-card style="margin-top: 40%; background-color: #ddd">
-      <ion-card-header>
-        <ion-card-title>¿Qué perfil desea dar de alta?</ion-card-title>
-      </ion-card-header>
-    
-      <ion-card-content>
-
-        <div *ngIf="perfilUsuarioActual === 'Supervisor' || perfilUsuarioActual === 'Dueño'">
-          <ion-button size="large" (click)="seleccionarPerfilAlta('Dueño/Supervisor')">Dueño/Supervisor</ion-button><br><br>
-          <ion-button size="large" (click)="seleccionarPerfilAlta('Empleado')">Empleado</ion-button><br><br>
-          <ion-button size="large" (click)="seleccionarPerfilAlta('Mesa')">Mesa</ion-button><br><br>
-        </div>
-        
-        <div *ngIf="perfilUsuarioActual === 'Cliente' || perfilUsuarioActual === 'Empleado' && tipoEmpleado=='Metre'">
-          <ion-button size="large" (click)="seleccionarPerfilAlta('Cliente')">Cliente</ion-button>
-        </div>
-        
-        <div *ngIf="perfilUsuarioActual === 'Cocinero' || perfilUsuarioActual === 'Bartender'">
-          <ion-button size="large" (click)="seleccionarPerfilAlta('Producto')">Producto</ion-button>
-        </div>
-      </ion-card-content>
-    </ion-card>
-  </div>
-
-
-
-
-
-
-
-  <br><br>
-
-  <div *ngIf="perfilSeleccionado!= ''" class="form-container">
-    <ion-fab slot="fixed" vertical="top" horizontal="end">
-      <ion-fab-button (click)="scan()">
-        <img style="height: 40px; padding: 5px;" src="../../../assets/images/qr.png" alt=""> 
-      </ion-fab-button>
-    </ion-fab>
   
+  <br><br>
+  <div>
     <img class="ion-text-center" src="../../../assets/images/user-icon.png" style="height: 80px;" alt="">
+    <br><br>
     <ion-card>
-      <form >
+      <ion-card-content>
+        ¿Desea registrarse como Cliente Anónimo?<br>
+      </ion-card-content>
+      
+      <ion-toggle [ngModel]="clienteAnonimo" (ionChange)="toggleAnonimo($event)">Anónimo</ion-toggle><br /><br />
+    </ion-card>
+
+    <ion-card>
+      <form [formGroup]="form" (ngSubmit)="enviarInformacion()">
         <ion-item>
           <ion-label position="stacked">Nombre</ion-label>
-          <ion-input [(ngModel)]="nombre" name="nombre"></ion-input>
+          <ion-input formControlName="nombre"></ion-input>
         </ion-item>
-        <ion-item>
+        <div *ngIf="form.controls['nombre'].invalid && form.controls['nombre'].touched" class="error-message">
+          Nombre debe contener solo letras y espacios.
+        </div>
+
+        <ion-item  *ngIf="clienteAnonimo==false">
           <ion-label position="stacked">Apellido</ion-label>
-          <ion-input [(ngModel)]="apellido" name="apellido"></ion-input>
+          <ion-input formControlName="apellido"></ion-input>
         </ion-item>
-        <ion-item>
+        <div *ngIf="form.controls['apellido'].invalid && form.controls['apellido'].touched" class="error-message">
+          Apellido debe contener solo letras y espacios.
+        </div>
+
+        <ion-item *ngIf="clienteAnonimo==false">
           <ion-label position="stacked">DNI</ion-label>
-          <ion-input [(ngModel)]="dni" name="dni"></ion-input>
+          <ion-input formControlName="dni"></ion-input>
         </ion-item>
-        <ion-item *ngIf="perfilSeleccionado == 'Dueño/Supervisor' || perfilSeleccionado == 'Empleado'">
-          <ion-label position="stacked">CUIL</ion-label>
-          <ion-input [(ngModel)]="cuil" name="cuil"></ion-input>
+        <div *ngIf="form.controls['dni'].invalid && form.controls['dni'].touched" class="error-message">
+          DNI debe contener hasta 10 caracteres numéricos.
+        </div>
+
+        <ion-item >
+          <ion-label position="stacked">Email</ion-label>
+          <ion-input formControlName="email" type="email"></ion-input>
         </ion-item>
-        <ion-item *ngIf="perfilSeleccionado == 'Dueño/Supervisor'">
-          <ion-label position="stacked">Perfil</ion-label>
-          <ion-select [(ngModel)]="perfil" name="perfil">
-            <ion-select-option value="dueño">Dueño</ion-select-option>
-            <ion-select-option value="supervisor">Supervisor</ion-select-option>
-          </ion-select>
-        </ion-item>
-  
-        <ion-item *ngIf="perfilSeleccionado == 'Empleado'">
-          <ion-label position="stacked">Tipo</ion-label>
-          <ion-select [(ngModel)]="tipo" name="tipo">
-            <ion-select-option value="Metre">Metre</ion-select-option>
-            <ion-select-option value="Mozo">Mozo</ion-select-option>
-            <ion-select-option value="Cocinero">Cocinero</ion-select-option>
-            <ion-select-option value="Bartender">Bartender</ion-select-option>
-          </ion-select>
-        </ion-item>
-  
+        <div *ngIf="form.controls['email'].invalid && form.controls['email'].touched" class="error-message">
+          Email no es válido.
+        </div>
+
         <ion-item>
-          <ion-label position="stacked">Foto de Perfil <span>(opcional)</span></ion-label>
+          <ion-label position="stacked">Clave</ion-label>
+          <ion-input formControlName="clave" type="password"></ion-input>
+        </ion-item>
+        <div *ngIf="form.controls['clave'].invalid && form.controls['clave'].touched" class="error-message">
+          Clave debe tener al menos 6 caracteres.
+        </div>
+
+        <ion-item>
+          <ion-label position="stacked">Foto de Perfil</ion-label>
           <br>
           <ion-button shape="round" (click)="tomarFoto()">
             <img src="../../../assets/images/camera.png" style="height: 30px; padding:3px;" alt="">
@@ -97,15 +82,13 @@
           </ion-button>
           <br>
         </ion-item>
+
+        <ion-button color="success" shape="round" type="submit" [disabled]="form.invalid">Aceptar</ion-button>
+        <ion-button color="danger" shape="round" routerLink="/auth/login">Cancelar</ion-button>
       </form>
-      <br>
-  
-      <ion-button color="success" shape="round" (click)="enviarInformacion()" [disabled]="!isFormComplete()">Aceptar</ion-button>
-      <ion-button color="danger" shape="round" routerLink="/home">Cancelar</ion-button>
-  
       <br><br>
     </ion-card>
-  </div>
-  
 
+   
+  </div>
 </ion-content>

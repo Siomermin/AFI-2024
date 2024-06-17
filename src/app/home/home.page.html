@@ -2,6 +2,10 @@
     <ion-button (click)="logout()" expand="full"  color="danger">
       Cerrar sesión
     </ion-button>
+
+  
+
+
 </ion-header>
 <ion-content [fullscreen]="true">
   <div class="container">
@@ -10,7 +14,21 @@
     </ion-text>
   </div>
 
-  <ion-button (click)="redireccionar('alta')">
-    Dar de Alta
+  <div style="text-align: center; justify-content: center; margin-top: 15px;">
+    <ion-button >     
+      <img style="height: 115px;" src="../../../assets/images/qr.png" alt=""> 
+    </ion-button>
+  </div>
+
+
+<br><br>
+
+  <ion-button (click)="redireccionar('menu')">
+    Ver Menu
   </ion-button>
+
+  <ion-button (click)="redireccionar('gestion-clientes')">
+    Autorizar Cliente
+  </ion-button>
+
 </ion-content>

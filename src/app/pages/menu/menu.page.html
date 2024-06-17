@@ -1,0 +1,119 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title class="ion-text-center">Menu</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+
+<ion-content class="ion-text-center" *ngIf="menu.length>0">
+
+  <ion-fab size="large" slot="fixed" vertical="top" horizontal="start" edge="true">
+    <ion-fab-button (click)="verPedido()" color="success">
+      <img src="../../../assets/images/compra.png" style="padding: 8px;" alt="">
+    </ion-fab-button>
+    
+  </ion-fab>
+
+  <ion-fab slot="fixed" vertical="top" horizontal="end" edge="true" *ngIf="montoTotal>0">
+    <ion-fab-button color="primary">
+     Total <br> ${{montoTotal}}
+    </ion-fab-button>
+    
+  </ion-fab>
+
+ 
+
+  <h2>Platos Principales</h2>
+  <ion-card *ngFor="let item of principales" style="background-color: #ccc;">
+    <div *ngIf="item.tipo == 'principal'">
+      <ion-card-header>
+        <ion-card-title>{{item.nombre}}</ion-card-title>
+        <ion-card-title>${{item.precio}}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        {{item.descripcion}}
+      </ion-card-content>
+      <ion-fab vertical="top" horizontal="end" slot="fixed" (click)="agregarPlatoAlPedido(item.nombre, item.precio, item.tiempo)">
+        <ion-fab-button size="small" color="success">
+          <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
+    </div>
+  </ion-card>
+
+  <h2>Guarniciones</h2>
+
+  <ion-card *ngFor="let item of guarniciones" style="background-color: #ccc ;" >
+    <div *ngIf="item.tipo=='guarnicion'" >
+    <ion-card-header>
+      <ion-card-title>{{item.nombre}}</ion-card-title>
+      <ion-card-title>${{item.precio}}</ion-card-title>
+
+    </ion-card-header>
+  
+    <ion-card-content>
+      {{item.descripcion}}
+    </ion-card-content>
+
+    <ion-fab vertical="top" horizontal="end" slot="fixed" (click)="agregarPlatoAlPedido(item.nombre, item.precio, item.tiempo)">
+      <ion-fab-button size="small" color="success">
+        <ion-icon name="add"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+
+    </div>
+  </ion-card>
+
+  <h2>Postres</h2>
+
+  <ion-card *ngFor="let item of postres" style="background-color: #ccc ;" >
+    <div *ngIf="item.tipo=='postre'">
+    <ion-card-header>
+      <ion-card-title>{{item.nombre}}</ion-card-title>
+      <ion-card-title>${{item.precio}}</ion-card-title>
+
+    </ion-card-header>
+  
+    <ion-card-content>
+      {{item.descripcion}}
+    </ion-card-content>
+
+    <ion-fab vertical="top" horizontal="end" slot="fixed" (click)="agregarPlatoAlPedido(item.nombre, item.precio, item.tiempo)">
+      <ion-fab-button size="small" color="success">
+        <ion-icon name="add"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+
+  </div>
+  </ion-card>
+
+  <h2>Bebidas</h2>
+
+  <ion-card *ngFor="let item of bebidas" style="background-color: #ccc ;" >
+    <div  *ngIf="item.tipo=='bebida'">
+    <ion-card-header>
+      <ion-card-title>{{item.nombre}}</ion-card-title>
+      <ion-card-title>${{item.precio}}</ion-card-title>
+
+    </ion-card-header>
+  
+    <ion-card-content>
+      {{item.descripcion}}
+    </ion-card-content>
+
+    <ion-fab vertical="top" horizontal="end" slot="fixed" (click)="agregarPlatoAlPedido(item.nombre, item.precio, item.tiempo)">
+      <ion-fab-button size="small" color="success">
+        <ion-icon name="add"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+
+  </div>
+
+  </ion-card>
+
+  <ion-button *ngIf="pedidoParcial.length>0" color="success" (click)="finalizarPedido()">Finalizar Pedido</ion-button>
+  <ion-button color="danger" routerLink="/home">Cancelar</ion-button>
+  <br><br>
+
+</ion-content>

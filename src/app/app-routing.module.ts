@@ -19,9 +19,24 @@ const routes: Routes = [
     loadChildren: () =>  import('./home/home.module').then( m => m.HomePageModule )
   },
   {
+    path: 'menu',
+    loadChildren: () => import('./pages/menu/menu.module').then( m => m.MenuPageModule)
+  },
+  {
+    path: 'gestion-clientes',
+    loadChildren: () => import('./pages/gestion-clientes/gestion-clientes.module').then( m => m.GestionClientesPageModule)
+  },
+  /*{
     path: '**',
     redirectTo: 'auth'
+  },*/
+  {
+    path: '**',
+    redirectTo: 'menu'
   },
+
+
+
   
 
 ];

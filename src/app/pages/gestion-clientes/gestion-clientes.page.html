@@ -1,0 +1,19 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Gestión de Clientes</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  
+  <ion-content color="light">
+    <ion-list inset="true">
+      <ion-item *ngFor="let cliente of clientes">
+        <ion-label (click)="obtenerIdClienteSeleccionado(cliente.dni)">{{cliente.nombre}} {{cliente.apellido}}</ion-label>
+        <ion-button *ngIf="cliente.estado=='pendiente'" color="success" (click)="gestionarSolicitud(cliente)">Autorizar</ion-button>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+
+
+</ion-content>
