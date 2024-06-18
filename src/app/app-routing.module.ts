@@ -19,9 +19,30 @@ const routes: Routes = [
     loadChildren: () =>  import('./home/home.module').then( m => m.HomePageModule )
   },
   {
+    path: 'menu',
+    loadChildren: () => import('./pages/menu/menu.module').then( m => m.MenuPageModule)
+  },
+  {
+    path: 'gestion-clientes',
+    loadChildren: () => import('./pages/gestion-clientes/gestion-clientes.module').then( m => m.GestionClientesPageModule)
+  },
+  {
+    path: 'consulta-mozo',
+    loadChildren: () => import('./pages/consulta-mozo/consulta-mozo.module').then( m => m.ConsultaMozoPageModule)
+  },
+  /*{
     path: '**',
     redirectTo: 'auth'
+  },*/
+  {
+    path: '**',
+    redirectTo: 'menu'
   },
+ 
+
+
+
+
   
 
 ];

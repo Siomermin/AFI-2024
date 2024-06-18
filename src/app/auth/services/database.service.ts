@@ -8,7 +8,7 @@ export class DatabaseService {
 
   constructor(private firestore: AngularFirestore) {}
 
-  async obtenerTodos(collection: string) {
+  obtenerTodos(collection: string) {
     try {
       return this.firestore.collection(collection).snapshotChanges();
     } catch (error) {
@@ -17,13 +17,14 @@ export class DatabaseService {
     }
   }
 
+
   public actualizar(coleccion: string, data: any, id: string) {
     return this.firestore.collection(coleccion).doc(id).set(data);
   }
 
 
-public crear(collection: string, data: any) {
-  return this.firestore.collection(collection).add(data);
-}
+  public crear(collection: string, data: any): Promise<any> {
+    return this.firestore.collection(collection).add(data);
+  }
 
 }
