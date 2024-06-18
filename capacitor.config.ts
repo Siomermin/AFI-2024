@@ -1,7 +1,7 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: '2do-parcial',
+  appId: 'pps.afi.parcial',
   appName: '2do Parcial',
   webDir: 'www',
   server: {
