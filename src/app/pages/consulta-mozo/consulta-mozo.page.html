@@ -1,0 +1,32 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Consulta Mozo</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="chat-background">
+  <br>
+  <div class="message-list" #contenedorDeMensajes *ngIf="consultasDelUsuario!= 'undefined' || consultasDelUsuario.length>0" >
+    <div *ngFor="let mensaje of consultasDelUsuario" class="msj">
+      <div class="contenedor-mensaje" 
+           [ngClass]="{
+             'usuario-actual': esUsuarioLogeado(mensaje.emisorUid),
+             'usuario-ajeno': !esUsuarioLogeado(mensaje.emisorUid)
+           }">
+          
+           <span style="font-size: small;">{{ formatTimestamp(mensaje.timestamp) }}</span>
+           <p style="font-weight: 600;">{{ mensaje.texto }}</p>
+      </div>
+    </div>
+  </div>
+</ion-content>
+<ion-footer style="height: 10%; padding-bottom: 0; padding: 5px;">
+  <ion-toolbar>
+    <ion-item lines="none">
+      <ion-input style="margin-bottom: 0px;" fill="solid" [(ngModel)]="nuevoMensaje" placeholder="Escribe tu mensaje aquí"></ion-input>
+      <ion-button color="light" (click)="enviarMensaje()" slot="end">
+        <img src="../../../assets/images/send.png" height="35px" alt="">
+      </ion-button>
+    </ion-item>
+  </ion-toolbar>
+</ion-footer>

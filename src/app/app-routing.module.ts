@@ -26,6 +26,10 @@ const routes: Routes = [
     path: 'gestion-clientes',
     loadChildren: () => import('./pages/gestion-clientes/gestion-clientes.module').then( m => m.GestionClientesPageModule)
   },
+  {
+    path: 'consulta-mozo',
+    loadChildren: () => import('./pages/consulta-mozo/consulta-mozo.module').then( m => m.ConsultaMozoPageModule)
+  },
   /*{
     path: '**',
     redirectTo: 'auth'
@@ -34,6 +38,8 @@ const routes: Routes = [
     path: '**',
     redirectTo: 'menu'
   },
+ 
+
 
 
 
