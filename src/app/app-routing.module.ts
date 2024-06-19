@@ -15,6 +15,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/alta/alta.module').then( m => m.AltaPageModule)
   },
   {
+    path: 'alta-mesa',
+    loadChildren: () => import('./pages/alta-mesa/alta-mesa.module').then( m => m.AltaMesaPageModule)
+  },
+  {
     path: 'home',
     loadChildren: () =>  import('./home/home.module').then( m => m.HomePageModule )
   },
@@ -38,12 +42,14 @@ const routes: Routes = [
     path: '**',
     redirectTo: 'menu'
   },
- 
 
 
 
 
-  
+
+
+
+
 
 ];
 

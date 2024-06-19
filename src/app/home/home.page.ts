@@ -16,7 +16,7 @@ export class HomePage implements OnInit  {
 
   isSupported = false;
   barcodes: Barcode[] = [];
-  informacionQr: string | null = null;  
+  informacionQr: string | null = null;
 
 
   private authService = inject(AuthService);
@@ -31,7 +31,7 @@ export class HomePage implements OnInit  {
   ngOnInit(): void {
     this.loggedUser = this.authService.loggedUser;
 
-    this.verificarPerfilUsuarioActual
+    this.verificarPerfilUsuarioActual();
   }
 
   logout() {
@@ -88,5 +88,5 @@ export class HomePage implements OnInit  {
     }
     this.barcodes.push(...barcodes);
   }
- 
+
 }
