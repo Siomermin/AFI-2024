@@ -18,6 +18,14 @@
 
 
 <ion-content class="ion-text-center">
+
+  <ion-fab size="small" slot="fixed" vertical="top" horizontal="end" edge="true">
+    <ion-fab-button (click)="scan()" color="primary">
+      <img src="../../../assets/images/qr.png"  style="padding: 10px;" alt="">
+    </ion-fab-button>
+    
+  </ion-fab>
+
   
   <br><br>
   <div>
@@ -82,7 +90,7 @@
           </ion-button>
           <br>
         </ion-item>
-
+        <br>
         <ion-button color="success" shape="round" type="submit" [disabled]="form.invalid">Aceptar</ion-button>
         <ion-button color="danger" shape="round" routerLink="/auth/login">Cancelar</ion-button>
       </form>

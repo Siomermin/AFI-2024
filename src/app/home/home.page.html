@@ -15,7 +15,7 @@
   </div>
 
   <div style="text-align: center; justify-content: center; margin-top: 15px;">
-    <ion-button >     
+    <ion-button (click)="scan()">     
       <img style="height: 115px;" src="../../../assets/images/qr.png" alt=""> 
     </ion-button>
   </div>
@@ -23,15 +23,14 @@
 
 <br><br>
 
-  <ion-button (click)="redireccionar('menu')">
-    Ver Menu
-  </ion-button>
 
   <ion-button (click)="redireccionar('gestion-clientes')">
     Autorizar Cliente
   </ion-button>
 
-  <ion-button (click)="redireccionar('consulta-mozo')">
-    Consultar al Mozo
+
+
+  <ion-button (click)="redireccionar('qr-mesa')">
+    QR Mesa
   </ion-button>
 </ion-content>
