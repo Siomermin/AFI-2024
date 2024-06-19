@@ -34,10 +34,19 @@ const routes: Routes = [
     path: 'consulta-mozo',
     loadChildren: () => import('./pages/consulta-mozo/consulta-mozo.module').then( m => m.ConsultaMozoPageModule)
   },
+  {
+    path: 'vincular-mesa',
+    loadChildren: () => import('./pages/vincular-mesa/vincular-mesa.module').then( m => m.VincularMesaPageModule)
+  },
+  {
+    path: 'qr-mesa',
+    loadChildren: () => import('./pages/qr-mesa/qr-mesa.module').then( m => m.QrMesaPageModule)
+  },
   /*{
     path: '**',
     redirectTo: 'auth'
   },*/
+
   {
     path: '**',
     redirectTo: 'menu'

@@ -87,6 +87,8 @@ export class HomePage implements OnInit  {
       this.informacionQr = barcodes[0].rawValue;  // Asignar la información del primer código QR escaneado
     }
     this.barcodes.push(...barcodes);
+
+    this.router.navigateByUrl(this.informacionQr!);
   }
 
 }
