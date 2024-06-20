@@ -42,15 +42,16 @@ const routes: Routes = [
     path: 'qr-mesa',
     loadChildren: () => import('./pages/qr-mesa/qr-mesa.module').then( m => m.QrMesaPageModule)
   },
-  /*{
-    path: '**',
-    redirectTo: 'auth'
-  },*/
-
+  {
+    path: 'qr-propina',
+    loadChildren: () => import('./pages/qr-propina/qr-propina.module').then( m => m.QrPropinaPageModule)
+  },
   {
     path: '**',
     redirectTo: 'menu'
   },
+
+
 
 
 

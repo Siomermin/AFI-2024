@@ -34,7 +34,14 @@
   QR Mesa
 </ion-button>
 
+
+<ion-button (click)="redireccionar('qr-propina')">
+  QR Propina
+</ion-button>
+
+
 <ion-button (click)="redireccionar('alta-mesa')" *ngIf="this.perfilUsuarioActual === 'Supervisor' || this.perfilUsuarioActual === 'Dueño' ">
   Alta Mesa
 </ion-button>
+
 </ion-content>
