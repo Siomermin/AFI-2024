@@ -1,36 +1,40 @@
 <ion-header>
-    <ion-button (click)="logout()" expand="full"  color="danger">
-      Cerrar sesión
-    </ion-button>
+  <ion-button (click)="logout()" expand="full"  color="danger">
+    Cerrar sesión
+  </ion-button>
 
-  
+
 
 
 </ion-header>
 <ion-content [fullscreen]="true">
-  <div class="container">
-    <ion-text class="text-center">
-      <h1>{{ loggedUser.email }}</h1>
-    </ion-text>
-  </div>
+<div class="container">
+  <ion-text class="text-center">
+    <h1>{{ loggedUser.email }}</h1>
+  </ion-text>
+</div>
 
-  <div style="text-align: center; justify-content: center; margin-top: 15px;">
-    <ion-button (click)="scan()">     
-      <img style="height: 115px;" src="../../../assets/images/qr.png" alt=""> 
-    </ion-button>
-  </div>
+<div style="text-align: center; justify-content: center; margin-top: 15px;">
+  <ion-button (click)="scan()">
+    <img style="height: 115px;" src="../../../assets/images/qr.png" alt="">
+  </ion-button>
+</div>
 
 
 <br><br>
 
 
-  <ion-button (click)="redireccionar('gestion-clientes')">
-    Autorizar Cliente
-  </ion-button>
+<ion-button (click)="redireccionar('gestion-clientes')">
+  Autorizar Cliente
+</ion-button>
 
 
 
-  <ion-button (click)="redireccionar('qr-mesa')">
-    QR Mesa
-  </ion-button>
+<ion-button (click)="redireccionar('qr-mesa')">
+  QR Mesa
+</ion-button>
+
+<ion-button (click)="redireccionar('alta-mesa')" *ngIf="this.perfilUsuarioActual === 'Supervisor' || this.perfilUsuarioActual === 'Dueño' ">
+  Alta Mesa
+</ion-button>
 </ion-content>
