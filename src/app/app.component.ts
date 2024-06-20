@@ -13,6 +13,6 @@ export class AppComponent implements OnInit
   constructor() {}
 
  ngOnInit(): void {
-    this.router.navigateByUrl('alta-mesa');
+    this.router.navigateByUrl('splash');
  }
 }
