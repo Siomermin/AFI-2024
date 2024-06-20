@@ -72,6 +72,8 @@ export class MenuPage implements OnInit {
     this.montoTotal+= parseInt(precioPlato);
     this.tiemposPlatos.push(parseInt(tiempoPlato));
     console.log(this.pedidoParcial);
+    this.tiempoTotalPedido= Math.max(...this.tiemposPlatos);
+
     
   }
 
