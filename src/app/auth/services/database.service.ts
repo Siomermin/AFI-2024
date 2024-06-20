@@ -17,6 +17,14 @@ export class DatabaseService {
     }
   }
 
+  obtenerClientesPendientes() {
+    try {
+      return this.firestore.collection('clientes', ref => ref.where('estado', '==', 'pendiente')).snapshotChanges();
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  }
 
   public actualizar(coleccion: string, data: any, id: string) {
     return this.firestore.collection(coleccion).doc(id).set(data);

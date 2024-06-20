@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { TestUser } from '../interfaces/testUser.Interface';
 import { ToastService } from 'src/app/shared/services/toast.service';
 import { ValidatorsService } from 'src/app/shared/services/validators.service';
+import Swal from 'sweetalert2';
 
 @Injectable({
   providedIn: 'root',
@@ -76,16 +77,21 @@ export class AuthService {
       });
   }
 
-  register(email: string, password: string) {
-    return this.afAuth
-      .createUserWithEmailAndPassword(email, password)
-      .then((userCredential) => {
-        this.handleSuccessfulAuth(userCredential);
-      })
-      .catch((error) => {
-        this.handleErrorAuth(error);
-      });
+  register(email: string, password: string): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      this.afAuth
+        .createUserWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          this.handleSuccessfulAuth(userCredential, 'Usuario registrado exitosamente.');
+          resolve(); // Resolve the promise when registration is successful
+        })
+        .catch((error) => {
+          this.handleErrorAuth(error);
+          reject(error); // Reject the promise with the error when registration fails
+        });
+    });
   }
+
 
   observeUserState() {
     this.afAuth.authState.subscribe((userState) => {
@@ -93,15 +99,29 @@ export class AuthService {
     });
   }
 
-  handleSuccessfulAuth(userCredential: any): void {
+  handleSuccessfulAuth(userCredential: any, text: string = ''): void {
     this.loggedUser = userCredential.user;
-    this.toastService.presentToast('Bienvenido!', 'middle', 'success');
+    Swal.fire({
+      title: 'Bienvenido!',
+      text: text,
+      icon: 'success',
+      confirmButtonText: 'Aceptar',
+      confirmButtonColor: 'var(--ion-color-primary)',
+      heightAuto: false,
+    });
     this.observeUserState();
   }
 
   handleErrorAuth(error: any): void {
     const errorMessage = this.validatorsService.getFirebaseAuthErrorByCode(error.code);
-    this.toastService.presentToast(errorMessage, 'middle', 'danger');
+    Swal.fire({
+      title: 'Error',
+      text: errorMessage,
+      icon: 'error',
+      confirmButtonText: 'Aceptar',
+      confirmButtonColor: 'var(--ion-color-primary)',
+      heightAuto: false,
+    });
     console.log(error.code);
     console.error(error.message);
   }
