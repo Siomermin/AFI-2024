@@ -2,9 +2,9 @@ import { Injectable, NgZone, OnInit, inject } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
 import { TestUser } from '../interfaces/testUser.Interface';
-import { ToastService } from 'src/app/shared/services/toast.service';
 import { ValidatorsService } from 'src/app/shared/services/validators.service';
 import Swal from 'sweetalert2';
+import { DatabaseService } from './database.service';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +14,7 @@ export class AuthService {
   private router = inject(Router);
   private ngZone = inject(NgZone);
   private validatorsService = inject(ValidatorsService);
-  private toastService = inject(ToastService);
+  private database = inject(DatabaseService);
 
   public loggedUser?: any;
 
@@ -62,19 +62,59 @@ export class AuthService {
 
   getLoggedUser() {
     this.afAuth.authState.subscribe((user) => {
-     return user;
+      return user;
     });
   }
 
   login(email: string, password: string) {
     return this.afAuth
       .signInWithEmailAndPassword(email, password)
-      .then((userCredential) => {
-        this.handleSuccessfulAuth(userCredential);
+      .then(async (userCredential) => {
+        try {
+          const cliente = await this.database.obtenerClientePorEmail(email);
+          console.log(cliente);
+          if (cliente) {
+            this.handleClienteEstado(cliente.estado, userCredential);
+          } else {
+            this.handleSuccessfulAuth(userCredential);
+          }
+        } catch (error) {
+          console.error('Error retrieving cliente:', error);
+          this.handleErrorAuth(error);
+        }
       })
       .catch((error) => {
         this.handleErrorAuth(error);
       });
+  }
+
+  handleClienteEstado(estado: string, userCredential: any) {
+    switch (estado) {
+      case 'autorizado':
+        this.handleSuccessfulAuth(userCredential);
+        break;
+      case 'pendiente':
+        this.showEstadoAlert('Acceso denegado', 'Tu cuenta está pendiente de aprobación.', 'warning');
+        break;
+      case 'rechazado':
+        this.showEstadoAlert('Acceso denegado', 'Tu cuenta ha sido rechazada.', 'error');
+        break;
+      default:
+        this.showEstadoAlert('Acceso denegado', 'Estado de cuenta desconocido.', 'error');
+        break;
+    }
+  }
+
+  showEstadoAlert(title: string, text: string, icon: 'warning' | 'error') {
+    this.logout();
+    Swal.fire({
+      title,
+      text,
+      icon,
+      confirmButtonText: 'Aceptar',
+      confirmButtonColor: 'var(--ion-color-primary)',
+      heightAuto: false,
+    });
   }
 
   register(email: string, password: string): Promise<void> {
@@ -82,7 +122,8 @@ export class AuthService {
       this.afAuth
         .createUserWithEmailAndPassword(email, password)
         .then((userCredential) => {
-          this.handleSuccessfulAuth(userCredential, 'Usuario registrado exitosamente.');
+          this.handleSuccessfulAuth(userCredential, 'Usuario registrado exitosamente. Su solicitud sera evaluada a la brevedad...');
+          this.logout();
           resolve(); // Resolve the promise when registration is successful
         })
         .catch((error) => {
@@ -92,7 +133,6 @@ export class AuthService {
     });
   }
 
-
   observeUserState() {
     this.afAuth.authState.subscribe((userState) => {
       userState && this.ngZone.run(() => this.router.navigate(['/home']));
@@ -101,6 +141,7 @@ export class AuthService {
 
   handleSuccessfulAuth(userCredential: any, text: string = ''): void {
     this.loggedUser = userCredential.user;
+    this.observeUserState();
     Swal.fire({
       title: 'Bienvenido!',
       text: text,
@@ -109,7 +150,6 @@ export class AuthService {
       confirmButtonColor: 'var(--ion-color-primary)',
       heightAuto: false,
     });
-    this.observeUserState();
   }
 
   handleErrorAuth(error: any): void {

@@ -37,7 +37,6 @@ export class AltaPage implements OnInit {
   constructor(
     private alertController: AlertController,
     private database: DatabaseService,
-    private router: Router,
     private storage: StorageService,
     private fb: FormBuilder // Añadido FormBuilder
   ) {
@@ -179,79 +178,55 @@ export class AltaPage implements OnInit {
   async enviarInformacion() {
     console.log(this.dni);
     if (this.verificarUsuarioExistente(this.form.value.dni)) {
-      Swal.fire({
-        title: 'Error',
-        text: 'Ya hay un usuario registrado con ese DNI',
-        icon: 'error',
-        confirmButtonText: 'Entendido',
-        confirmButtonColor: 'red',
-        heightAuto: false,
-      }).then(() => {
-        this.router.navigateByUrl('auth/login');
-      });
+    Swal.fire({
+    title: "Error",
+    text: "Ya hay un usuario registrado con ese DNI",
+    icon: "error",
+    confirmButtonText: "Entendido",
+    confirmButtonColor: 'red',
+    heightAuto: false
+    })
+
     } else {
-      if (this.form.invalid) {
-        return;
-      }
-
-      const { nombre, apellido, dni, email, clave } = this.form.value;
-      const nuevoUsuario = new Cliente(
-        nombre,
-        apellido,
-        dni,
-        this.dni + this.nombre + this.apellido,
-        email,
-        clave,
-        'pendiente'
-      );
-
-      // Registro authentication firebase
-      this.authService
-        .register(email, clave)
-        .then(() => {
-          const imagenGuardada = this.guardarImagen(this.fotoUrl);
-          imagenGuardada
-            .then((imagenGuardada) => {
-              if (imagenGuardada) {
-                this.database
-                  .crear('clientes', nuevoUsuario.toJSON())
-                  .then((docRef) => {
-                    console.log('Documento escrito con ID: ', docRef.id);
-
-                    this.router.navigateByUrl('auth/login');
-                  })
-                  .catch((error) => {
-                    console.error('Error al crear el usuario:', error);
-                  });
-              } else {
-                console.error(
-                  'No se pudo guardar la imagen, abortando creación de usuario.'
-                );
-                Swal.fire({
-                  title: 'Error',
-                  text: 'No se pudo guardar la imagen, abortando creación de usuario.',
-                  icon: 'error',
-                  confirmButtonText: 'Aceptar',
-                  confirmButtonColor: 'var(--ion-color-primary)',
-                  heightAuto: false,
-                });
-              }
-            })
-            .catch((error) => {
-              console.error('Error al guardar la imagen:', error);
-              Swal.fire({
-                title: 'Error',
-                text: 'Hubo un problema al guardar la imagen. Por favor, inténtelo de nuevo.',
-                icon: 'error',
-                confirmButtonText: 'Aceptar',
-                confirmButtonColor: 'var(--ion-color-primary)',
-                heightAuto: false,
-              });
-            });
-        })
-        .catch((error) => {
-          console.error('Error al registrar el usuario:', error);
-        });
+    if (this.form.invalid) {
+    return;
     }
-  }
+    const { nombre, apellido, dni, email, clave } = this.form.value;
+    const nuevoUsuario = new Cliente(nombre, apellido, dni, this.dni + this.nombre + this.apellido, email, clave, "pendiente");
+
+      const imagenGuardada = await this.guardarImagen(this.fotoUrl);
+
+      if (imagenGuardada) {
+        this.database.crear("clientes", nuevoUsuario.toJSON())
+          .then((docRef) => {
+            console.log("Documento escrito con ID: ", docRef.id);
+
+           this.authService.register(email, clave);
+
+          })
+          .catch((error) => {
+            console.error("Error al crear el usuario:", error);
+            Swal.fire({
+              title: "Error",
+              text: "Hubo un problema al crear el usuario. Por favor, inténtelo de nuevo.",
+              icon: "error",
+              confirmButtonText: "Aceptar",
+              confirmButtonColor: 'var(--ion-color-primary)',
+              heightAuto: false
+            });
+          });
+      } else {
+        console.error("No se pudo guardar la imagen, abortando creación de usuario.");
+        Swal.fire({
+          title: "Error",
+          text: "No se pudo guardar la imagen, abortando creación de usuario.",
+          icon: "error",
+          confirmButtonText: "Aceptar",
+          confirmButtonColor: 'var(--ion-color-primary)',
+          heightAuto: false
+        });
+      }
+    }
+    }
+
 }
