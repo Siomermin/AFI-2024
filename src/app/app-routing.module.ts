@@ -47,9 +47,15 @@ const routes: Routes = [
     loadChildren: () => import('./pages/qr-propina/qr-propina.module').then( m => m.QrPropinaPageModule)
   },
   {
-    path: '**',
-    redirectTo: 'menu'
+    path: 'alta-producto',
+    loadChildren: () => import('./pages/alta-producto/alta-producto.module').then( m => m.AltaProductoPageModule)
   },
+  {
+    path: '**',
+    redirectTo: 'home'
+  },
+  
+
 
 
 
