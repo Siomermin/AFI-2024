@@ -48,31 +48,31 @@
         <div *ngIf="form.controls['nombre'].invalid && form.controls['nombre'].touched" class="error-message">
           Nombre debe contener solo letras y espacios.
         </div>
-
-        <ion-item  *ngIf="clienteAnonimo==false">
+    
+        <ion-item *ngIf="!clienteAnonimo">
           <ion-label position="stacked">Apellido</ion-label>
           <ion-input formControlName="apellido"></ion-input>
         </ion-item>
         <div *ngIf="form.controls['apellido'].invalid && form.controls['apellido'].touched" class="error-message">
           Apellido debe contener solo letras y espacios.
         </div>
-
-        <ion-item *ngIf="clienteAnonimo==false">
+    
+        <ion-item *ngIf="!clienteAnonimo">
           <ion-label position="stacked">DNI</ion-label>
           <ion-input formControlName="dni"></ion-input>
         </ion-item>
         <div *ngIf="form.controls['dni'].invalid && form.controls['dni'].touched" class="error-message">
           DNI debe contener hasta 10 caracteres numéricos.
         </div>
-
-        <ion-item >
+    
+        <ion-item>
           <ion-label position="stacked">Email</ion-label>
           <ion-input formControlName="email" type="email"></ion-input>
         </ion-item>
         <div *ngIf="form.controls['email'].invalid && form.controls['email'].touched" class="error-message">
           Email no es válido.
         </div>
-
+    
         <ion-item>
           <ion-label position="stacked">Clave</ion-label>
           <ion-input formControlName="clave" type="password"></ion-input>
@@ -80,12 +80,12 @@
         <div *ngIf="form.controls['clave'].invalid && form.controls['clave'].touched" class="error-message">
           Clave debe tener al menos 6 caracteres.
         </div>
-
+    
         <ion-item>
           <ion-label position="stacked">Foto de Perfil</ion-label>
           <br>
           <ion-button shape="round" (click)="tomarFoto()">
-            <img src="../../../assets/images/camera.png" style="height: 30px; padding:3px;" alt="">
+            <img src="../../../assets/images/camera.png" style="height: 30px; padding: 3px;" alt="">
             &nbsp;Tomar foto
           </ion-button>
           <br>

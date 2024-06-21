@@ -10,6 +10,8 @@ import { AuthService } from 'src/app/auth/services/auth.service';
 import { Cliente } from 'src/app/clases/cliente';
 import Swal from 'sweetalert2';
 import { Observable, map } from 'rxjs';
+import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
+
 @Component({
   selector: 'app-alta',
   templateUrl: './alta.page.html',
@@ -111,14 +113,16 @@ export class AltaPage implements OnInit {
     await alert.present();
   }
 
+  
   fillForm(informacionQr: string): void {
     try {
       const qrData = informacionQr.split('@');
-      if (qrData.length >= 4) {
-        this.apellido = qrData[1].trim();
-        this.nombre = qrData[2].trim();
-        this.dni = qrData[4].trim();
-        // Puedes seguir agregando campos aquí según la información del QR
+      if (qrData.length >= 5) { // Cambiado a 5 para asegurar que hay suficiente información
+        this.form.patchValue({
+          apellido: qrData[1].trim(),
+          nombre: qrData[2].trim(),
+          dni: qrData[4].trim(),
+        });
       } else {
         throw new Error('Formato de QR incorrecto');
       }
@@ -154,18 +158,46 @@ export class AltaPage implements OnInit {
       alert('Ocurrió un error al tomar la foto.');
     }
   }
-  async guardarImagen(imagen: string): Promise<boolean> {
+
+
+  async guardarImagen(foto: string)  {
+
     try {
-      await this.storage.subirImagen(
-        this.dni + this.nombre + this.apellido,
-        imagen
-      );
+      const nombreArchivo = `${this.dni+this.nombre+this.apellido}`;
+      const fotoBase64 = foto;
+      const dataURL = `data:image/jpeg;base64,${fotoBase64}`;
+  
+      await Filesystem.writeFile({
+        path: nombreArchivo,
+        data: dataURL,
+        directory: Directory.Documents,
+      });
+  
+      const urlDescarga = await this.storage.subirImagen(nombreArchivo,  dataURL);
+  
+      if (!urlDescarga) {
+        Swal.fire({
+          html: '<br><label style="font-size:80%">Error: No se pudo obtener la URL de descarga de la imágen</label>',
+          confirmButtonText: "Ok",
+          confirmButtonColor: 'var(--ion-color-primary)',
+          heightAuto: false
+        });
+        return false;
+      }
+        Swal.fire({
+        html: '<br><label style="font-size:80%">Imágen guardada exitosamente</label>',
+        confirmButtonText: "Ok",
+        confirmButtonColor: 'var(--ion-color-primary)',
+        heightAuto: false
+      });
+
       return true;
+
     } catch (error) {
-      console.error('Error al subir la imagen:', error);
-      alert('Ocurrió un error al subir la imagen.');
+      console.error('Error al guardar la imágen:', error);
       return false;
     }
+  
   }
 
   verificarUsuarioExistente(dni: any) {
