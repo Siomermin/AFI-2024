@@ -1,5 +1,5 @@
 
-type Profile = 'admin' | 'invitado' | 'usuario' | 'tester';
+type Profile = 'dueño' | 'supervisor' | 'empleado' | 'cliente';
 type Gender = 'masculino' | 'femenino';
 
 export interface TestUser {

@@ -1,0 +1,44 @@
+
+ion-content.chat-background {
+
+    --background-size: cover;
+    width: 100%;
+    height: 80%; /* Asegurar que ocupe toda la altura */
+  }
+  
+  
+  
+  .contenedor-mensaje {
+    border-radius: 3%;
+    margin: 3px;
+    padding: 5px;
+    display: table-row; /* Hacer que el div se comporte como una fila de la tabla */
+    width: 65%;
+  }
+  
+  span{
+    color:#252424
+  }
+  
+  *{
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  }
+  
+  .usuario-actual {
+    background-color: rgb(177, 192, 186);
+    margin-left: auto; /* Esto empujará el div hacia el margen derecho */
+    margin-right: 10px;
+    float: right; /* Hacer que el div flote hacia la derecha */
+    text-align: right;
+    margin-left: 20px;
+  }
+  
+  .usuario-ajeno {
+    background-color: rgb(225, 225, 225);
+    margin-right: auto; /* Esto empujará el div hacia el margen izquierdo */
+    margin-left: 10px;
+    float: left; /* Hacer que el div flote hacia la izquierda */
+    margin-right: 20px;
+  }
+  
+ 

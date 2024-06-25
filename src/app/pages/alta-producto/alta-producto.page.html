@@ -1,0 +1,87 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Alta de Producto
+    </ion-title>
+  </ion-toolbar>
+
+  <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+
+</ion-header>
+
+<ion-content class="ion-padding ion-text-center">
+  <div style="margin-top: 10%;">
+    <img class="ion-text-center" src="../../../assets/images/user-icon.png" style="height: 80px;" alt="">
+    <ion-card style="margin-top: 10%;">
+      <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
+
+        <ion-item>
+          <ion-label position="stacked">Nombre</ion-label>
+          <ion-input formControlName="nombre"></ion-input>
+        </ion-item>
+        <div *ngIf="myForm.controls['nombre'].invalid && myForm.controls['nombre'].touched" class="error-message">
+          {{ getErrorByField("nombre") }}
+        </div>
+
+        <ion-item>
+          <ion-label position="stacked">Descripción</ion-label>
+          <ion-input formControlName="descripcion"></ion-input>
+        </ion-item>
+        <div *ngIf="myForm.controls['descripcion'].invalid && myForm.controls['descripcion'].touched" class="error-message">
+          {{ getErrorByField("descripcion") }}
+        </div>
+
+        <ion-item>
+          <ion-label position="stacked">Precio</ion-label>
+          <ion-input formControlName="precio" type="number"></ion-input>
+        </ion-item>
+        <div *ngIf="isValidField('precio')" class="error-message">
+          {{ getErrorByField("precio") }}
+        </div>
+
+        <ion-item>
+          <ion-label position="stacked">Tiempo (en minutos)</ion-label>
+          <ion-input formControlName="tiempo" type="number"></ion-input>
+        </ion-item>
+        <div *ngIf="isValidField('tiempo')" class="error-message">
+          {{ getErrorByField("tiempo") }}
+        </div>
+
+        <ion-item>
+          <ion-label position="stacked">Categoría</ion-label>
+          <ion-select formControlName="tipo" value="principal">
+            <ion-select-option value="guarnicion">Guarnición</ion-select-option>
+            <ion-select-option value="principal">Plato Principal</ion-select-option>
+            <ion-select-option value="postre">Postre</ion-select-option>
+            <ion-select-option value="bebida">Bebida</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <div *ngIf="isValidField('tipo')" class="error-message">
+          {{ getErrorByField("tipo") }}
+        </div>
+
+        <ion-item>
+          <div class="photo-container"><!-- *ngIf="myForm.controls['nombre'].valid"-->
+            <ion-button shape="round" (click)="takePhoto()" class="photo-button">
+              <img src="../../../assets/images/camera.png" style="height: 30px; padding:3px;" alt="">
+              &nbsp;Tomar foto
+            </ion-button>
+          </div>
+        </ion-item>
+        <ion-item>
+          <div class="photo-container" *ngFor="let imagen of this.rutasImagen">
+            <img [src]="imagen" height="100px">
+          </div>
+        </ion-item>
+
+        <ion-button style="margin-top: 20px; margin-bottom: 20px;" class="ion-padding" shape="round" color="success" type="submit" [disabled]="myForm.invalid || !rutasImagen[0]">
+          Aceptar
+        </ion-button>
+        <ion-button style="margin-top: 20px; margin-bottom: 20px;" class="ion-padding" shape="round" color="danger" routerLink="/auth/home">
+          Cancelar
+        </ion-button>
+      </form>
+      
+    </ion-card>
+  </div>
+</ion-content>

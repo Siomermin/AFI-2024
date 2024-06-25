@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">2do Parcial</string>
-    <string name="title_activity_main">2do Parcial</string>
-    <string name="package_name">pps.afi.parcial</string>
-    <string name="custom_url_scheme">pps.afi.parcial</string>
+    <string name="app_name">AFI2024</string>
+    <string name="title_activity_main">AFI2024</string>
+    <string name="package_name">com.AFI2024.app</string>
+    <string name="custom_url_scheme">com.AFI2024.app</string>
 </resources>
