@@ -53,6 +53,7 @@ export class LoginPageComponent implements OnInit {
       this.isLoading = false;
       this.myForm.reset();
       this.checkboxSelected = null;
+
     });
   }
 

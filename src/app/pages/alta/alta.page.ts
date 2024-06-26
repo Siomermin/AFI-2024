@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Barcode, BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
 import { AlertController } from '@ionic/angular';
@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 import { StorageService } from 'src/app/auth/services/storage.service';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { Cliente } from 'src/app/clases/cliente';
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
 import { Observable, map } from 'rxjs';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 
@@ -18,66 +18,69 @@ import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
   styleUrls: ['./alta.page.scss'],
 })
 export class AltaPage implements OnInit {
-
   public loggedUser: any;
-
+  private authService = inject(AuthService);
 
   isSupported = false;
   barcodes: Barcode[] = [];
-  informacionQr: string | null = null;  // Variable para guardar la información del QR escaneado
+  informacionQr: string | null = null; // Variable para guardar la información del QR escaneado
 
   // Variables para el formulario
-  nombre: string="";
-  apellido: string="";
-  dni: string="";
-  email:string="";
-  clave:string="";
-  fotoUrl:any="";
+  nombre: string = '';
+  apellido: string = '';
+  dni: string = '';
+  email: string = '';
+  clave: string = '';
+  fotoUrl: any = '';
   form: FormGroup;
-  clientesExistentes:any[]=[];
-  clienteAnonimo:boolean=false;
-
+  clientesExistentes: any[] = [];
+  clienteAnonimo: boolean = false;
 
   constructor(
     private alertController: AlertController,
     private database: DatabaseService,
-    private router: Router,
     private storage: StorageService,
-    private fb: FormBuilder, // Añadido FormBuilder
+    private fb: FormBuilder // Añadido FormBuilder
   ) {
     this.form = this.fb.group({
       nombre: ['', [Validators.required, Validators.pattern(/^[a-zA-Z\s]*$/)]],
-      apellido: ['', [Validators.required, Validators.pattern(/^[a-zA-Z\s]*$/)]],
+      apellido: [
+        '',
+        [Validators.required, Validators.pattern(/^[a-zA-Z\s]*$/)],
+      ],
       dni: ['', [Validators.required, Validators.pattern(/^\d{1,10}$/)]],
       email: ['', [Validators.required, Validators.email]],
-      clave: ['', [Validators.required, Validators.minLength(6)]]
+      clave: ['', [Validators.required, Validators.minLength(6)]],
     });
   }
   ngOnInit() {
-
     BarcodeScanner.isSupported().then((result) => {
       this.isSupported = result.supported;
     });
 
-    const menuObservable: Observable<any[]> = this.database.obtenerTodos('clientes')!.pipe(
-      map(actions => actions.map(a => {
-        const data = a.payload.doc.data() as any;
-        const id = a.payload.doc.id;
-        return { id, ...data };
-      }))
+    const menuObservable: Observable<any[]> = this.database
+      .obtenerTodos('clientes')!
+      .pipe(
+        map((actions) =>
+          actions.map((a) => {
+            const data = a.payload.doc.data() as any;
+            const id = a.payload.doc.id;
+            return { id, ...data };
+          })
+        )
+      );
+
+    menuObservable.subscribe(
+      (data) => {
+        this.clientesExistentes = data;
+        console.log(this.clientesExistentes);
+      },
+      (error) => {
+        console.log(error);
+      }
     );
-
-    menuObservable.subscribe(data => {
-      this.clientesExistentes = data;
-      console.log(this.clientesExistentes);
-    }, error => {
-      console.log(error);
-    });
-
-
   }
 
- 
   toggleAnonimo(event: any) {
     this.clienteAnonimo = event.detail.checked;
   }
@@ -90,8 +93,8 @@ export class AltaPage implements OnInit {
     }
     const { barcodes } = await BarcodeScanner.scan();
     if (barcodes.length > 0) {
-      this.informacionQr = barcodes[0].rawValue;  // Asignar la información del primer código QR escaneado
-      this.fillForm(this.informacionQr);  // Rellenar el formulario con la información del QR
+      this.informacionQr = barcodes[0].rawValue; // Asignar la información del primer código QR escaneado
+      this.fillForm(this.informacionQr); // Rellenar el formulario con la información del QR
     }
     this.barcodes.push(...barcodes);
   }
@@ -138,22 +141,21 @@ export class AltaPage implements OnInit {
     await alert.present();
   }
 
-
   async tomarFoto() {
     try {
       const image = await Camera.getPhoto({
         quality: 90,
         allowEditing: false,
         resultType: CameraResultType.Base64,
-        source: CameraSource.Prompt
+        source: CameraSource.Prompt,
       });
-  
+
       if (image) {
         this.fotoUrl = image.base64String;
       }
     } catch (error) {
-      console.error("Error al tomar la foto:", error);
-      alert("Ocurrió un error al tomar la foto.");
+      console.error('Error al tomar la foto:', error);
+      alert('Ocurrió un error al tomar la foto.');
     }
   }
   
@@ -181,6 +183,7 @@ export class AltaPage implements OnInit {
         confirmButtonColor: 'var(--ion-color-primary)',
         heightAuto: false
       });
+
       return true;
   
     } catch (error) {
@@ -188,12 +191,14 @@ export class AltaPage implements OnInit {
       return false;
     }
   }
+
   
   verificarUsuarioExistente(dni: any) {
     const clienteEncontrado = this.clientesExistentes.find(cliente => cliente.dni === dni);
     return !!clienteEncontrado; // Devuelve true si se encontró el cliente, false de lo contrario
   }
   
+
   async enviarInformacion() {
     if (this.verificarUsuarioExistente(this.form.value.dni)) {
       Swal.fire({
@@ -205,31 +210,23 @@ export class AltaPage implements OnInit {
         heightAuto: false
       });
     } else {
-      if (this.form.invalid) {
-        return;
-      }
-  
-      const { nombre, apellido, dni, email, clave } = this.form.value;
-      const nuevoUsuario = new Cliente(nombre, apellido, dni, `${this.dni + this.nombre + this.apellido}`, email, clave, "pendiente");
-  
+      
+    if (this.form.invalid) {
+    return;
+    }
+    const { nombre, apellido, dni, email, clave } = this.form.value;
+    const nuevoUsuario = new Cliente(nombre, apellido, dni, this.dni + this.nombre + this.apellido, email, clave, "pendiente");
+
       const imagenGuardada = await this.guardarImagen(this.fotoUrl);
-  
+
+
       if (imagenGuardada) {
         this.database.crear("clientes", nuevoUsuario.toJSON())
           .then((docRef) => {
             console.log("Documento escrito con ID: ", docRef.id);
-  
-            Swal.fire({
-              title: "Éxito",
-              text: "El usuario ha sido creado exitosamente.",
-              icon: "success",
-              confirmButtonText: "Aceptar",
-              confirmButtonColor: 'var(--ion-color-primary)',
-              heightAuto: false
-            }).then(() => {
-              this.router.navigateByUrl('auth/login');
-            });
-  
+
+           this.authService.register(email, clave);
+          
           })
           .catch((error) => {
             console.error("Error al crear el usuario:", error);
@@ -254,13 +251,7 @@ export class AltaPage implements OnInit {
         });
       }
     }
+    }
   }
 
-/*
-  isFormComplete(): boolean {
-      return this.nombre && this.apellido && this.dni && this.email && this.clave ? true : false;
-  }*/
-
-
- 
 }
