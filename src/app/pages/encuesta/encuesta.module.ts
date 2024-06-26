@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
 import { EncuestaPageRoutingModule } from './encuesta-routing.module';
+import { NgForm } from '@angular/forms';
 
 import { EncuestaPage } from './encuesta.page';
 
