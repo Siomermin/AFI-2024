@@ -5,15 +5,14 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <div *ngIf="encuestasIncompletasDelUsuario!=undefined && !mostrarFormEncuesta">
+  <div *ngIf="encuestasIncompletasDelUsuario!=undefined && !mostrarFormEncuesta" class="ion-text-center">
+    <h2 >Encuestas Pendientes</h2>
+    <img src="../../../assets/images/encuesta.png" style="height: 100px;" alt="">
     <ion-card  *ngFor="let item of encuestasIncompletasDelUsuario" >
       <ion-card-header>
-        <ion-card-title>Encuestas Pendientes</ion-card-title>
+        <ion-card-title  (click)="habilitarEncuesta(item)"> Visita: <span style="font-size: small;">{{ formatTimestamp(item.fecha) }}</span>
+        </ion-card-title>
       </ion-card-header>
-    
-      <ion-card-content (click)="habilitarEncuesta(item)">
-        Visita: <span style="font-size: small;">{{ formatTimestamp(item.fecha) }}</span>
-      </ion-card-content>
     </ion-card>
   </div>
 
@@ -22,7 +21,7 @@
       <ion-list>
   
         <ion-item>
-          <ion-label position="stacked">Seleccione una valoración para los platos:</ion-label>
+          <p position="stacked">Seleccione una valoración para los platos:</p>
           <ion-range min="1" max="5" step="1" [(ngModel)]="encuesta.valoracionPlatos" name="valoracionPlatos" required>
             <ion-label slot="start">1</ion-label>
             <ion-label slot="end">5</ion-label>
@@ -30,7 +29,7 @@
         </ion-item>
   
         <ion-item>
-          <ion-label position="stacked">Seleccione una valoración para la atención:</ion-label>
+          <p position="stacked">Seleccione una valoración para la atención:</p>
           <ion-radio-group [(ngModel)]="encuesta.valoracionAtencion" name="valoracionAtencion" required>
             <ion-item>
               <ion-label>Muy mala</ion-label>
@@ -56,7 +55,7 @@
         </ion-item>
   
         <ion-item>
-          <ion-label position="stacked">¿Con cuál/es de estas características se encuentra más conforme?</ion-label>
+          <p position="stacked">¿Con cuál/es de estas características se encuentra más conforme?</p>
           <ion-checkbox-group [(ngModel)]="encuesta.caracteristicas" name="caracteristicas" required>
             <ion-item>
               <ion-label>Ambientación</ion-label>
@@ -82,14 +81,21 @@
         </ion-item>
   
         <ion-item>
-          <ion-label position="stacked">Déjanos una valoración personal:</ion-label>
+          <p position="stacked">Déjanos una valoración personal:</p>
           <ion-input [(ngModel)]="encuesta.valoracionPersonal" name="valoracionPersonal" required></ion-input>
         </ion-item>
   
       </ion-list>
-  
+      <br>
       <ion-button type="submit" expand="full" color="success" [disabled]="!encuestaForm.form.valid">Enviar</ion-button>
       <br><br>
     </form>
   </div>
+ 
+ 
+  <div *ngIf="encuestasIncompletasDelUsuario.length==0">
+    <p>Usted no tiene encuestas pendientes por completar</p>
+  </div>
+
+  <ion-button routerLink="/graficos" size="large">Ver Gráficos</ion-button>
 </ion-content>

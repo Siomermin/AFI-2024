@@ -51,9 +51,15 @@ const routes: Routes = [
     loadChildren: () => import('./pages/encuesta/encuesta.module').then( m => m.EncuestaPageModule)
   },
   {
+    path: 'graficos',
+    loadChildren: () => import('./pages/graficos/graficos.module').then( m => m.GraficosPageModule)
+  },
+  {
     path: '**',
     redirectTo: 'menu'
   },
+ 
+
   
 
 
