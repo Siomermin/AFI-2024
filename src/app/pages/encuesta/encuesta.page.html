@@ -1,0 +1,95 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title class="ion-text-center"><img routerLink="/qr-mesa" src="../../../assets/images/back.png" alt="" height="15px">  Encuesta</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div *ngIf="encuestasIncompletasDelUsuario!=undefined && !mostrarFormEncuesta">
+    <ion-card  *ngFor="let item of encuestasIncompletasDelUsuario" >
+      <ion-card-header>
+        <ion-card-title>Encuestas Pendientes</ion-card-title>
+      </ion-card-header>
+    
+      <ion-card-content (click)="habilitarEncuesta(item)">
+        Visita: <span style="font-size: small;">{{ formatTimestamp(item.fecha) }}</span>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <div *ngIf="mostrarFormEncuesta">
+    <form #encuestaForm="ngForm" (ngSubmit)="onSubmit()">
+      <ion-list>
+  
+        <ion-item>
+          <ion-label position="stacked">Seleccione una valoración para los platos:</ion-label>
+          <ion-range min="1" max="5" step="1" [(ngModel)]="encuesta.valoracionPlatos" name="valoracionPlatos" required>
+            <ion-label slot="start">1</ion-label>
+            <ion-label slot="end">5</ion-label>
+          </ion-range>
+        </ion-item>
+  
+        <ion-item>
+          <ion-label position="stacked">Seleccione una valoración para la atención:</ion-label>
+          <ion-radio-group [(ngModel)]="encuesta.valoracionAtencion" name="valoracionAtencion" required>
+            <ion-item>
+              <ion-label>Muy mala</ion-label>
+              <ion-radio slot="start" value="Muy mala"></ion-radio>
+            </ion-item>
+            <ion-item>
+              <ion-label>Mala</ion-label>
+              <ion-radio slot="start" value="Mala"></ion-radio>
+            </ion-item>
+            <ion-item>
+              <ion-label>Buena</ion-label>
+              <ion-radio slot="start" value="Buena"></ion-radio>
+            </ion-item>
+            <ion-item>
+              <ion-label>Muy buena</ion-label>
+              <ion-radio slot="start" value="Muy buena"></ion-radio>
+            </ion-item>
+            <ion-item>
+              <ion-label>Excelente</ion-label>
+              <ion-radio slot="start" value="Excelente"></ion-radio>
+            </ion-item>
+          </ion-radio-group>
+        </ion-item>
+  
+        <ion-item>
+          <ion-label position="stacked">¿Con cuál/es de estas características se encuentra más conforme?</ion-label>
+          <ion-checkbox-group [(ngModel)]="encuesta.caracteristicas" name="caracteristicas" required>
+            <ion-item>
+              <ion-label>Ambientación</ion-label>
+              <ion-checkbox slot="start"  (ionChange)="onCheckboxChange($event, 'Ambientacion')" value="Ambientacion"></ion-checkbox>
+            </ion-item>
+            <ion-item>
+              <ion-label>Servicio</ion-label>
+              <ion-checkbox slot="start"  (ionChange)="onCheckboxChange($event, 'Servicios')" value="Servicio"></ion-checkbox>
+            </ion-item>
+            <ion-item>
+              <ion-label>Precios</ion-label>
+              <ion-checkbox slot="start"  (ionChange)="onCheckboxChange($event, 'Precios')" value="Precios"></ion-checkbox>
+            </ion-item>
+            <ion-item>
+              <ion-label>Platos</ion-label>
+              <ion-checkbox slot="start"  (ionChange)="onCheckboxChange($event, 'Platos')" value="Platos"></ion-checkbox>
+            </ion-item>
+            <ion-item>
+              <ion-label>Accesibilidad</ion-label>
+              <ion-checkbox slot="start"  (ionChange)="onCheckboxChange($event, 'Accesibilidad')" value="Accesibilidad"></ion-checkbox>
+            </ion-item>
+          </ion-checkbox-group>
+        </ion-item>
+  
+        <ion-item>
+          <ion-label position="stacked">Déjanos una valoración personal:</ion-label>
+          <ion-input [(ngModel)]="encuesta.valoracionPersonal" name="valoracionPersonal" required></ion-input>
+        </ion-item>
+  
+      </ion-list>
+  
+      <ion-button type="submit" expand="full" color="success" [disabled]="!encuestaForm.form.valid">Enviar</ion-button>
+      <br><br>
+    </form>
+  </div>
+</ion-content>

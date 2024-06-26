@@ -158,68 +158,59 @@ export class AltaPage implements OnInit {
       alert('Ocurrió un error al tomar la foto.');
     }
   }
-
-
-  async guardarImagen(foto: string)  {
-
+  
+  async guardarImagen(foto: string) {
     try {
-      const nombreArchivo = `${this.dni+this.nombre+this.apellido}`;
+      const nombreArchivo = `${this.dni + this.nombre + this.apellido}`;
       const fotoBase64 = foto;
       const dataURL = `data:image/jpeg;base64,${fotoBase64}`;
   
-      await Filesystem.writeFile({
-        path: nombreArchivo,
-        data: dataURL,
-        directory: Directory.Documents,
-      });
-  
-      const urlDescarga = await this.storage.subirImagen(nombreArchivo,  dataURL);
+      const urlDescarga = await this.storage.subirImagen("fotosPerfil", nombreArchivo, dataURL);
   
       if (!urlDescarga) {
         Swal.fire({
-          html: '<br><label style="font-size:80%">Error: No se pudo obtener la URL de descarga de la imágen</label>',
+          html: '<br><label style="font-size:80%">Error: No se pudo obtener la URL de descarga de la imagen</label>',
           confirmButtonText: "Ok",
           confirmButtonColor: 'var(--ion-color-primary)',
           heightAuto: false
         });
         return false;
       }
-        Swal.fire({
-        html: '<br><label style="font-size:80%">Imágen guardada exitosamente</label>',
+  
+      Swal.fire({
+        html: '<br><label style="font-size:80%">Imagen guardada exitosamente</label>',
         confirmButtonText: "Ok",
         confirmButtonColor: 'var(--ion-color-primary)',
         heightAuto: false
       });
 
       return true;
-
+  
     } catch (error) {
-      console.error('Error al guardar la imágen:', error);
+      console.error('Error al guardar la imagen:', error);
       return false;
     }
-  
   }
 
+  
   verificarUsuarioExistente(dni: any) {
-    const clienteEncontrado = this.clientesExistentes.find(
-      (cliente) => cliente.dni === dni
-    );
+    const clienteEncontrado = this.clientesExistentes.find(cliente => cliente.dni === dni);
     return !!clienteEncontrado; // Devuelve true si se encontró el cliente, false de lo contrario
   }
+  
 
   async enviarInformacion() {
-    console.log(this.dni);
     if (this.verificarUsuarioExistente(this.form.value.dni)) {
-    Swal.fire({
-    title: "Error",
-    text: "Ya hay un usuario registrado con ese DNI",
-    icon: "error",
-    confirmButtonText: "Entendido",
-    confirmButtonColor: 'red',
-    heightAuto: false
-    })
-
+      Swal.fire({
+        title: "Error",
+        text: "Ya hay un usuario registrado con ese DNI",
+        icon: "error",
+        confirmButtonText: "Entendido",
+        confirmButtonColor: 'red',
+        heightAuto: false
+      });
     } else {
+      
     if (this.form.invalid) {
     return;
     }
@@ -228,13 +219,14 @@ export class AltaPage implements OnInit {
 
       const imagenGuardada = await this.guardarImagen(this.fotoUrl);
 
+
       if (imagenGuardada) {
         this.database.crear("clientes", nuevoUsuario.toJSON())
           .then((docRef) => {
             console.log("Documento escrito con ID: ", docRef.id);
 
            this.authService.register(email, clave);
-
+          
           })
           .catch((error) => {
             console.error("Error al crear el usuario:", error);
@@ -260,5 +252,6 @@ export class AltaPage implements OnInit {
       }
     }
     }
+  }
 
 }

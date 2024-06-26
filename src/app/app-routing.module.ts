@@ -47,9 +47,15 @@ const routes: Routes = [
     loadChildren: () => import('./pages/qr-propina/qr-propina.module').then( m => m.QrPropinaPageModule)
   },
   {
+    path: 'encuesta',
+    loadChildren: () => import('./pages/encuesta/encuesta.module').then( m => m.EncuestaPageModule)
+  },
+  {
     path: '**',
     redirectTo: 'menu'
   },
+  
+
 
 
 

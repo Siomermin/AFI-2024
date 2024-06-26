@@ -9,11 +9,11 @@ export class StorageService {
 
   storageRef = firebase.app().storage().ref();
   
-  async subirImagen(nombre: string, imgBase64: any) {
+  async subirImagen(carpeta: string, nombre: string, imgBase64: any) {
     try {
-      const respuesta = await this.storageRef.child(`fotosPerfil/${nombre}`).putString(imgBase64, 'data_url');
+      let respuesta = await this.storageRef.child(`${carpeta}/${nombre}`).putString(imgBase64, 'data_url');
       console.log(respuesta);
-      return await respuesta.ref.getDownloadURL();
+      return respuesta.ref.getDownloadURL();
     } catch (err) {
       console.log(err);
       return null;
