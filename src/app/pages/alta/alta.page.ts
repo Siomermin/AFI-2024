@@ -254,4 +254,4 @@ export class AltaPage implements OnInit {
     }
   }
 
-}
+
