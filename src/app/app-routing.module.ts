@@ -59,12 +59,19 @@ const routes: Routes = [
     loadChildren: () => import('./pages/pedir-cuenta/pedir-cuenta.module').then( m => m.PedirCuentaPageModule)
   },
   {
+    path: 'alta-producto',
+    loadChildren: () => import('./pages/alta-producto/alta-producto.module').then( m => m.AltaProductoPageModule)
+  },
+  {
     path: '**',
-    redirectTo: 'menu'
+    redirectTo: 'home'
   },
  
 
  
+ 
+
+  
 
   
 
