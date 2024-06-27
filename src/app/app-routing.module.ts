@@ -55,9 +55,15 @@ const routes: Routes = [
     loadChildren: () => import('./pages/graficos/graficos.module').then( m => m.GraficosPageModule)
   },
   {
+    path: 'pedir-cuenta',
+    loadChildren: () => import('./pages/pedir-cuenta/pedir-cuenta.module').then( m => m.PedirCuentaPageModule)
+  },
+  {
     path: '**',
     redirectTo: 'menu'
   },
+ 
+
  
 
   

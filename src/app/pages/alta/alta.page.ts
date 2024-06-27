@@ -83,6 +83,32 @@ export class AltaPage implements OnInit {
 
   toggleAnonimo(event: any) {
     this.clienteAnonimo = event.detail.checked;
+    this.updateFormValidators();
+  }
+
+  updateFormValidators() {
+    if (this.clienteAnonimo) {
+      this.form.get('apellido')?.clearValidators();
+      this.form.get('dni')?.clearValidators();
+
+    } else {
+      this.form
+        .get('apellido')
+        ?.setValidators([
+          Validators.required,
+          Validators.pattern(/^[a-zA-Z\s]*$/),
+        ]);
+      this.form
+        .get('dni')
+        ?.setValidators([
+          Validators.required,
+          Validators.pattern(/^\d{1,10}$/),
+        ]);
+
+    }
+    this.form.get('apellido')?.updateValueAndValidity();
+    this.form.get('dni')?.updateValueAndValidity();
+
   }
 
   async scan(): Promise<void> {
@@ -113,11 +139,11 @@ export class AltaPage implements OnInit {
     await alert.present();
   }
 
-  
   fillForm(informacionQr: string): void {
     try {
       const qrData = informacionQr.split('@');
-      if (qrData.length >= 5) { // Cambiado a 5 para asegurar que hay suficiente información
+      if (qrData.length >= 5) {
+        // Cambiado a 5 para asegurar que hay suficiente información
         this.form.patchValue({
           apellido: qrData[1].trim(),
           nombre: qrData[2].trim(),
@@ -158,100 +184,112 @@ export class AltaPage implements OnInit {
       alert('Ocurrió un error al tomar la foto.');
     }
   }
-  
+
   async guardarImagen(foto: string) {
     try {
       const nombreArchivo = `${this.dni + this.nombre + this.apellido}`;
       const fotoBase64 = foto;
       const dataURL = `data:image/jpeg;base64,${fotoBase64}`;
-  
-      const urlDescarga = await this.storage.subirImagen("fotosPerfil", nombreArchivo, dataURL);
-  
+
+      const urlDescarga = await this.storage.subirImagen(
+        'fotosPerfil',
+        nombreArchivo,
+        dataURL
+      );
+
       if (!urlDescarga) {
         Swal.fire({
           html: '<br><label style="font-size:80%">Error: No se pudo obtener la URL de descarga de la imagen</label>',
-          confirmButtonText: "Ok",
+          confirmButtonText: 'Ok',
           confirmButtonColor: 'var(--ion-color-primary)',
-          heightAuto: false
+          heightAuto: false,
         });
         return false;
       }
-  
+
       Swal.fire({
         html: '<br><label style="font-size:80%">Imagen guardada exitosamente</label>',
-        confirmButtonText: "Ok",
+        confirmButtonText: 'Ok',
         confirmButtonColor: 'var(--ion-color-primary)',
-        heightAuto: false
+        heightAuto: false,
       });
 
       return true;
-  
     } catch (error) {
       console.error('Error al guardar la imagen:', error);
       return false;
     }
   }
 
-  
   verificarUsuarioExistente(dni: any) {
-    const clienteEncontrado = this.clientesExistentes.find(cliente => cliente.dni === dni);
+    const clienteEncontrado = this.clientesExistentes.find(
+      (cliente) => cliente.dni === dni
+    );
     return !!clienteEncontrado; // Devuelve true si se encontró el cliente, false de lo contrario
   }
-  
 
   async enviarInformacion() {
-    if (this.verificarUsuarioExistente(this.form.value.dni)) {
+    if (this.form.invalid) {
+      return;
+    }
+
+    if (!this.clienteAnonimo && this.verificarUsuarioExistente(this.form.value.dni)) {
       Swal.fire({
-        title: "Error",
-        text: "Ya hay un usuario registrado con ese DNI",
-        icon: "error",
-        confirmButtonText: "Entendido",
+        title: 'Error',
+        text: 'Ya hay un usuario registrado con ese DNI',
+        icon: 'error',
+        confirmButtonText: 'Entendido',
         confirmButtonColor: 'red',
-        heightAuto: false
+        heightAuto: false,
       });
     } else {
-      
-    if (this.form.invalid) {
-    return;
-    }
-    const { nombre, apellido, dni, email, clave } = this.form.value;
-    const nuevoUsuario = new Cliente(nombre, apellido, dni, this.dni + this.nombre + this.apellido, email, clave, "pendiente");
+      const { nombre, apellido, dni, email, clave } = this.form.value;
+      const nuevoUsuario = new Cliente(
+        nombre,
+        this.clienteAnonimo ? '' : apellido,
+        this.clienteAnonimo ? '' : dni,
+        this.dni + this.nombre + this.apellido,
+        email,
+        clave,
+        this.clienteAnonimo ? 'autorizado' : 'pendiente',
+        this.clienteAnonimo
+      );
 
       const imagenGuardada = await this.guardarImagen(this.fotoUrl);
 
-
       if (imagenGuardada) {
-        this.database.crear("clientes", nuevoUsuario.toJSON())
+        this.database
+          .crear('clientes', nuevoUsuario.toJSON())
           .then((docRef) => {
-            console.log("Documento escrito con ID: ", docRef.id);
+            console.log('Documento escrito con ID: ', docRef.id);
 
-           this.authService.register(email, clave);
-          
+            this.authService.register(email, clave, docRef.id);
           })
           .catch((error) => {
-            console.error("Error al crear el usuario:", error);
+            console.error('Error al crear el usuario:', error);
             Swal.fire({
-              title: "Error",
-              text: "Hubo un problema al crear el usuario. Por favor, inténtelo de nuevo.",
-              icon: "error",
-              confirmButtonText: "Aceptar",
+              title: 'Error',
+              text: 'Hubo un problema al crear el usuario. Por favor, inténtelo de nuevo.',
+              icon: 'error',
+              confirmButtonText: 'Aceptar',
               confirmButtonColor: 'var(--ion-color-primary)',
-              heightAuto: false
+              heightAuto: false,
             });
           });
       } else {
-        console.error("No se pudo guardar la imagen, abortando creación de usuario.");
+        console.error(
+          'No se pudo guardar la imagen, abortando creación de usuario.'
+        );
         Swal.fire({
-          title: "Error",
-          text: "No se pudo guardar la imagen, abortando creación de usuario.",
-          icon: "error",
-          confirmButtonText: "Aceptar",
+          title: 'Error',
+          text: 'No se pudo guardar la imagen, abortando creación de usuario.',
+          icon: 'error',
+          confirmButtonText: 'Aceptar',
           confirmButtonColor: 'var(--ion-color-primary)',
-          heightAuto: false
+          heightAuto: false,
         });
       }
     }
-    }
   }
 
-
+}
