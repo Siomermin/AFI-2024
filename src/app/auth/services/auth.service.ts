@@ -87,16 +87,24 @@ export class AuthService {
             throw new Error('Cliente no autorizado');
           }
         } else {
-          // Si no se encuentra el cliente, manejar el error apropiadamente
-          const error = { code: 'auth/invalid-credential' };
-          this.handleErrorAuth(error);
-          throw error;
+          // Si no se encuentra el cliente, proceder con el login normal
+          return this.afAuth.signInWithEmailAndPassword(email, password)
+            .then(userCredential => {
+              this.handleSuccessfulAuth(userCredential);
+              return userCredential;
+            })
+            .catch(error => {
+              this.handleErrorAuth(error);
+              throw error;
+            });
         }
       })
       .catch(error => {
         console.error('Error retrieving cliente:', error);
+        this.handleErrorAuth(error);
       });
   }
+
 
   handleClienteEstado(estado: string) {
     switch (estado) {
