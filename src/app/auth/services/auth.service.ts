@@ -67,47 +67,51 @@ export class AuthService {
   }
 
   login(email: string, password: string) {
-    return this.afAuth
-      .signInWithEmailAndPassword(email, password)
-      .then(async (userCredential) => {
-        try {
-          const cliente = await this.database.obtenerClientePorEmail(email);
-          console.log(cliente);
-          if (cliente) {
-            this.handleClienteEstado(cliente.estado, userCredential);
+    return this.database.obtenerClientePorEmail(email)
+      .then(async cliente => {
+        if (cliente) {
+          if (cliente.estado === 'autorizado') {
+            // Si el cliente está autorizado, proceder con el login
+            return this.afAuth.signInWithEmailAndPassword(email, password)
+              .then(userCredential => {
+                this.handleSuccessfulAuth(userCredential);
+                return userCredential;
+              })
+              .catch(error => {
+                this.handleErrorAuth(error);
+                throw error;
+              });
           } else {
-            this.handleSuccessfulAuth(userCredential);
+            // Si el cliente no está autorizado, mostrar alerta y no proceder con el login
+            await this.handleClienteEstado(cliente.estado);
+            throw new Error('Cliente no autorizado');
           }
-        } catch (error) {
-          console.error('Error retrieving cliente:', error);
+        } else {
+          // Si no se encuentra el cliente, manejar el error apropiadamente
+          const error = { code: 'auth/invalid-credential' };
           this.handleErrorAuth(error);
+          throw error;
         }
       })
-      .catch((error) => {
-        this.handleErrorAuth(error);
+      .catch(error => {
+        console.error('Error retrieving cliente:', error);
       });
   }
 
-  handleClienteEstado(estado: string, userCredential: any) {
+  handleClienteEstado(estado: string) {
     switch (estado) {
-      case 'autorizado':
-        this.handleSuccessfulAuth(userCredential);
-        break;
       case 'pendiente':
-        this.showEstadoAlert('Acceso denegado', 'Tu cuenta está pendiente de aprobación.', 'warning');
-        break;
+        return this.showEstadoAlert('Acceso denegado', 'Tu cuenta está pendiente de aprobación.', 'warning');
       case 'rechazado':
-        this.showEstadoAlert('Acceso denegado', 'Tu cuenta ha sido rechazada.', 'error');
-        break;
+        return this.showEstadoAlert('Acceso denegado', 'Tu cuenta ha sido rechazada.', 'error');
       default:
-        this.showEstadoAlert('Acceso denegado', 'Estado de cuenta desconocido.', 'error');
-        break;
+        return this.showEstadoAlert('Acceso denegado', 'Estado de cuenta desconocido.', 'error');
     }
   }
 
   showEstadoAlert(title: string, text: string, icon: 'warning' | 'error') {
     this.logout();
-    Swal.fire({
+    return Swal.fire({
       title,
       text,
       icon,
@@ -117,18 +121,19 @@ export class AuthService {
     });
   }
 
-  register(email: string, password: string): Promise<void> {
+
+  register(email: string, password: string, docId?: any): Promise<void> {
     return new Promise<void>((resolve, reject) => {
       this.afAuth
         .createUserWithEmailAndPassword(email, password)
         .then((userCredential) => {
-          this.handleSuccessfulAuth(userCredential, 'Usuario registrado exitosamente. Su solicitud sera evaluada a la brevedad...');
+        this.handleSuccessfulAuth(userCredential, 'Usuario registrado exitosamente!');
           this.logout();
-          resolve(); // Resolve the promise when registration is successful
+          resolve();
         })
         .catch((error) => {
-          this.handleErrorAuth(error);
-          reject(error); // Reject the promise with the error when registration fails
+          this.handleErrorAuth(error, docId);
+          reject(error);
         });
     });
   }
@@ -152,7 +157,20 @@ export class AuthService {
     });
   }
 
-  handleErrorAuth(error: any): void {
+  handleErrorAuth(error: any, docId?: any): void {
+    if (docId) {
+      this.database.borrar('clientes', docId)
+        .then(() => {
+          console.log('Documento borrado con éxito');
+          // Puedes agregar aquí cualquier lógica adicional que desees ejecutar después del borrado exitoso
+        })
+        .catch((err) => {
+          console.error('Error al borrar el documento: ', err);
+          // Muestra un mensaje de error si el borrado falla
+
+        });
+    }
+
     const errorMessage = this.validatorsService.getFirebaseAuthErrorByCode(error.code);
     Swal.fire({
       title: 'Error',
@@ -165,6 +183,7 @@ export class AuthService {
     console.log(error.code);
     console.error(error.message);
   }
+
 
   get isLoggedIn(): boolean {
     const loggedUser = JSON.parse(localStorage.getItem('loggedUser')!);
