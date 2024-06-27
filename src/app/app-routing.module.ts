@@ -55,6 +55,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/graficos/graficos.module').then( m => m.GraficosPageModule)
   },
   {
+    path: 'pedir-cuenta',
+    loadChildren: () => import('./pages/pedir-cuenta/pedir-cuenta.module').then( m => m.PedirCuentaPageModule)
+  },
+  {
     path: 'alta-producto',
     loadChildren: () => import('./pages/alta-producto/alta-producto.module').then( m => m.AltaProductoPageModule)
   },
@@ -62,6 +66,9 @@ const routes: Routes = [
     path: '**',
     redirectTo: 'home'
   },
+ 
+
+ 
  
 
   

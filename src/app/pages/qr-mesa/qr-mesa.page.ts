@@ -1,3 +1,4 @@
+
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { map } from 'rxjs/operators';
@@ -259,4 +260,30 @@ export class QrMesaPage implements OnInit {
     });
   }
   
+  confirmarRecepcionPedido(){
+
+    if(this.pedidoDelUsuario.estado == "entregado"){
+      Swal.fire({
+        title: 'Tu pedido ya fue entregado',
+        icon: 'success',
+        confirmButtonText: 'Confirmo Recepción',
+        confirmButtonColor: "#52BE80",
+        cancelButtonText: 'No recibí nada',
+        cancelButtonColor: "#E73E30",
+        showCancelButton: true,
+        heightAuto: false
+      }).then((result) => {
+        const pedidoActualizado={
+          estado: "entregado-confirmado",
+          idCliente: this.pedidoDelUsuario.idCliente,
+          items: this.pedidoDelUsuario.items,
+          montoTotal:this.pedidoDelUsuario.montoTotal,
+          tiempo: this.pedidoDelUsuario.tiempo,
+        }
+        this.database.actualizar("pedidos", pedidoActualizado, this.pedidoDelUsuario.id)
+      });
+
+    }
+
+  }
 }
