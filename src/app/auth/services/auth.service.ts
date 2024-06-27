@@ -79,12 +79,12 @@ export class AuthService {
               })
               .catch(error => {
                 this.handleErrorAuth(error);
-                throw error;
+                return;
               });
           } else {
             // Si el cliente no está autorizado, mostrar alerta y no proceder con el login
             await this.handleClienteEstado(cliente.estado);
-            throw new Error('Cliente no autorizado');
+            return;
           }
         } else {
           // Si no se encuentra el cliente, proceder con el login normal
@@ -95,7 +95,6 @@ export class AuthService {
             })
             .catch(error => {
               this.handleErrorAuth(error);
-              throw error;
             });
         }
       })
