@@ -1,4 +1,3 @@
-
 import { Component, OnInit} from '@angular/core';
 import { DatabaseService } from 'src/app/auth/services/database.service';
 import { ActivatedRoute, Data, Route, Router, NavigationExtras } from '@angular/router';

@@ -27,6 +27,7 @@ export class MenuPage implements OnInit {
   bebidas:any[]=[];
   guarniciones:any[]=[];
   postres:any[]=[];
+  preciosUnitarios:any[]=[];
 
   ngOnInit() {
 
@@ -73,14 +74,14 @@ export class MenuPage implements OnInit {
     this.tiemposPlatos.push(parseInt(tiempoPlato));
     console.log(this.pedidoParcial);
     this.tiempoTotalPedido= Math.max(...this.tiemposPlatos);
-
+    this.preciosUnitarios.push(precioPlato);
     
   }
 
   finalizarPedido(){
     this.pedidoCompleto = this.pedidoParcial;
     this.verificarMayorTiempo();
-    const nuevoPedido= new Pedido(this.idClienteActual, this.pedidoCompleto, this.montoTotal, this.tiempoTotalPedido, "pendiente" );
+    const nuevoPedido= new Pedido(this.idClienteActual, this.pedidoCompleto, this.montoTotal, this.tiempoTotalPedido, "pendiente", this.preciosUnitarios );
     this.database.crear("pedidos", nuevoPedido.toJSON())
         .then((docRef) => {
           // Operación exitosa

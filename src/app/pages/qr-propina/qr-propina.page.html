@@ -3,6 +3,8 @@
   <ion-toolbar>
     <ion-title class="ion-text-center">
       <img routerLink="/pedir-cuenta" src="../../../assets/images/back.png" alt="" height="15px">
+    <ion-title class="ion-text-center">
+      <img routerLink="/pedir-cuenta" src="../../../assets/images/back.png" alt="" height="15px">
       Opciones
     </ion-title>
   </ion-toolbar>
@@ -47,6 +49,7 @@
 
   <ion-item class="item-grande">
     <ion-label class="etiqueta-grande">Total de la Cuenta: {{ totalCuenta | currency }}</ion-label>
+    <ion-label class="etiqueta-grande">Total de la Cuenta: {{ totalCuenta | currency }}</ion-label>
   </ion-item>
 
   <ion-item *ngIf="propinaCalculada !== null" class="item-grande">
@@ -54,6 +57,7 @@
   </ion-item>
 
   <ion-item *ngIf="totalConPropinaCalculada !== null" class="item-grande">
+    <ion-label class="etiqueta-grande">Total con Propina: ${{ totalConPropinaCalculada}}</ion-label>
     <ion-label class="etiqueta-grande">Total con Propina: ${{ totalConPropinaCalculada}}</ion-label>
   </ion-item>
 
