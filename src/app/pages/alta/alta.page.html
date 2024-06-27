@@ -1,3 +1,4 @@
+
 <ion-header>
   <ion-toolbar>
     <ion-title>
@@ -7,26 +8,18 @@
 
   <ion-fab slot="fixed" vertical="top" horizontal="end">
     <ion-fab-button (click)="scan()">
-      <img style="height: 40px; padding: 5px;" src="../../../assets/images/qr.png" alt=""> 
+      <img style="height: 40px; padding: 5px;" src="../../../assets/images/qr.png" alt="">
     </ion-fab-button>
   </ion-fab>
-
-
 </ion-header>
 
-
-
-
 <ion-content class="ion-text-center">
-
   <ion-fab size="small" slot="fixed" vertical="top" horizontal="end" edge="true">
     <ion-fab-button (click)="scan()" color="primary">
       <img src="../../../assets/images/qr.png"  style="padding: 10px;" alt="">
     </ion-fab-button>
-    
   </ion-fab>
 
-  
   <br><br>
   <div>
     <img class="ion-text-center" src="../../../assets/images/user-icon.png" style="height: 80px;" alt="">
@@ -35,7 +28,7 @@
       <ion-card-content>
         ¿Desea registrarse como Cliente Anónimo?<br>
       </ion-card-content>
-      
+
       <ion-toggle [ngModel]="clienteAnonimo" (ionChange)="toggleAnonimo($event)">Anónimo</ion-toggle><br /><br />
     </ion-card>
 
@@ -49,7 +42,7 @@
           Nombre debe contener solo letras y espacios.
         </div>
 
-        <ion-item  *ngIf="clienteAnonimo==false">
+        <ion-item *ngIf="!clienteAnonimo">
           <ion-label position="stacked">Apellido</ion-label>
           <ion-input formControlName="apellido"></ion-input>
         </ion-item>
@@ -57,7 +50,7 @@
           Apellido debe contener solo letras y espacios.
         </div>
 
-        <ion-item *ngIf="clienteAnonimo==false">
+        <ion-item *ngIf="!clienteAnonimo">
           <ion-label position="stacked">DNI</ion-label>
           <ion-input formControlName="dni"></ion-input>
         </ion-item>
@@ -65,7 +58,7 @@
           DNI debe contener hasta 10 caracteres numéricos.
         </div>
 
-        <ion-item >
+        <ion-item>
           <ion-label position="stacked">Email</ion-label>
           <ion-input formControlName="email" type="email"></ion-input>
         </ion-item>
@@ -96,7 +89,5 @@
       </form>
       <br><br>
     </ion-card>
-
-   
   </div>
 </ion-content>

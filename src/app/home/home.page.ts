@@ -6,6 +6,7 @@ import { Usuario } from '../clases/usuario';
 import { Barcode, BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
 import { AlertController } from '@ionic/angular';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import Swal from 'sweetalert2'
 
 @Component({
   selector: 'app-home',
@@ -88,7 +89,7 @@ export class HomePage implements OnInit  {
     }
     this.barcodes.push(...barcodes);
 
-    this.router.navigateByUrl(this.informacionQr!);
+    this.router.navigateByUrl('qr-'+this.informacionQr!);
   }
 
 }

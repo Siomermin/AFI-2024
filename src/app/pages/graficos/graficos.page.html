@@ -1,0 +1,50 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title class="ion-text-center"><img routerLink="/qr-mesa" src="../../../assets/images/back.png" alt="" height="15px">
+      Gráficos de Encuestas
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      Valoración de Caracteristicas
+    </ion-card-header>
+    <ion-card-content>
+      <canvas id="valoracionCaracteristicas"></canvas>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      Valoración de Platos
+    </ion-card-header>
+    <ion-card-content>
+      <canvas id="valoracionPlatos"></canvas>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      Valoración de Atencion
+    </ion-card-header>
+    <ion-card-content>
+      <canvas id="valoracionAtencion"></canvas>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngIf="listaEncuestas.length>0">
+    <ion-card-header>
+      Reseñas
+    </ion-card-header>
+    <ion-card-content  *ngFor="let item of listaEncuestas" >
+      <ion-list>
+        <ion-item>
+          {{item.valoracionPersonal}}
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>

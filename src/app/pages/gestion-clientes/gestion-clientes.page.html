@@ -5,15 +5,19 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  
-  <ion-content color="light">
-    <ion-list inset="true">
-      <ion-item *ngFor="let cliente of clientes">
-        <ion-label (click)="obtenerIdClienteSeleccionado(cliente.dni)">{{cliente.nombre}} {{cliente.apellido}}</ion-label>
-        <ion-button *ngIf="cliente.estado=='pendiente'" color="success" (click)="gestionarSolicitud(cliente)">Autorizar</ion-button>
-      </ion-item>
-    </ion-list>
+
+  <ion-content [fullscreen]="true">
+    <ion-content color="light">
+      <ion-list inset="true">
+        <ion-item *ngFor="let cliente of clientes">
+          <ion-label (click)="obtenerIdClienteSeleccionado(cliente.dni)">{{cliente.nombre}} {{cliente.apellido}}</ion-label>
+          <ion-button *ngIf="cliente.estado === 'pendiente'" color="success" (click)="gestionarSolicitud(cliente, true)">Autorizar</ion-button>
+          <ion-button *ngIf="cliente.estado === 'pendiente'" color="danger" (click)="gestionarSolicitud(cliente, false)">Rechazar</ion-button>
+        </ion-item>
+      </ion-list>
+    </ion-content>
   </ion-content>
+
 
 
 </ion-content>

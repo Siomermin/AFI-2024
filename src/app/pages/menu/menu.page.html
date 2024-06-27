@@ -22,6 +22,17 @@
     
   </ion-fab>
 
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end" *ngIf="tiempoTotalPedido > 0" size="large">
+    <ion-fab-button class="ion-text-center">
+      <div class="ion-align-items-center ion-justify-content-center">
+        <img src="../../../assets/images/clock.png" style="height: 20px; margin-top: 2px;" alt="">
+        <br>
+        <span>{{ tiempoTotalPedido }}</span>
+      </div>
+    </ion-fab-button>
+  </ion-fab>
+
+
  
 
   <h2>Platos Principales</h2>

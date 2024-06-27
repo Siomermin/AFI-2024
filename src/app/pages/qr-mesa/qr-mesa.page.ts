@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { DatabaseService } from 'src/app/auth/services/database.service';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import Swal from 'sweetalert2'
-
+import { first } from 'rxjs';
 @Component({
   selector: 'app-qr-mesa',
   templateUrl: './qr-mesa.page.html',
@@ -20,6 +20,9 @@ export class QrMesaPage implements OnInit {
   mesas:any[]=[];
   mesaLibre:any;
   uidMesaLibre:any;
+  listaEspera:any[]=[];
+  clienteEnEspera:boolean=false;
+  usuarioVinculado:boolean=true;
 
   ngOnInit() {
 
@@ -78,7 +81,8 @@ export class QrMesaPage implements OnInit {
           const data = a.payload.doc.data() as any;
           const id = a.payload.doc.id; // Este es el id del documento en la base de datos
           return { id, ...data }; // Combinamos el id con el resto de los datos
-        }))
+        })),
+        first() // Completa el observable después de la primera emisión
       );
   
       mesasObservable.subscribe(data => {
@@ -88,6 +92,7 @@ export class QrMesaPage implements OnInit {
           if (item.estado == 'libre') {
             this.mesaLibre = item;
             this.uidMesaLibre = item.id; // Asigna el id de la mesa libre a this.uidMesaLibre
+            console.log(this.mesaLibre.numeroMesa);
             break; 
           }
         }
@@ -104,43 +109,69 @@ export class QrMesaPage implements OnInit {
   async vincularMesa() {
     try {
       await this.verificarMesaLibre();
-      console.log(this.uidUsuarioActual, this.mesaLibre);
-  
-      if (this.uidUsuarioActual != "" && this.mesaLibre != undefined) {
-        const nuevaMesa = {
-          idCliente: this.uidUsuarioActual,
-          numeroMesa: this.mesaLibre.numeroMesa,
-        };
-  
-        await this.database.crear("mesa-cliente", nuevaMesa);
-        console.log(this.uidMesaLibre);
-        console.log(this.mesaLibre.nuevaMesa);
-        const mesaActualizada = {
-          estado: "ocupada",
-          numeroMesa: this.mesaLibre.numeroMesa,
-        };
-        await this.database.actualizar("mesas", mesaActualizada, this.uidMesaLibre);
+      const clienteEnEspera = await this.verificarClienteEnEspera();
+      await this.verificarUsuarioVinculado();
 
-        // Mostrar mensaje de éxito
-        Swal.fire({
-          title: 'Éxito',
-          text: 'Se le ha asginado la mesa: ' + this.mesaLibre.nuevaMesa,
-          icon: 'success',
-          confirmButtonText: 'Aceptar',
-          confirmButtonColor: 'var(--ion-color-primary)',
-          heightAuto: false
-        });
+      if(!this.usuarioVinculado){
+      if (clienteEnEspera) {
+        console.log(this.uidUsuarioActual, this.mesaLibre);
+  
+        if (this.uidUsuarioActual != "" && this.mesaLibre != undefined) {
+          const nuevaMesa = {
+            idCliente: this.uidUsuarioActual,
+            numeroMesa: this.mesaLibre.numeroMesa,
+            estado: 'vigente',
+          };
+  
+          await this.database.crear("mesa-cliente", nuevaMesa);
+          console.log(this.uidMesaLibre);
+          console.log(this.mesaLibre.nuevaMesa);
+          const mesaActualizada = {
+            estado: "ocupada",
+            numeroMesa: this.mesaLibre.numeroMesa,
+          };
+          await this.database.actualizar("mesas", mesaActualizada, this.uidMesaLibre);
+  
+          // Mostrar mensaje de éxito
+          Swal.fire({
+            title: 'Éxito',
+            text: 'Se le ha asignado la mesa: ' + this.mesaLibre.numeroMesa,
+            icon: 'success',
+            confirmButtonText: 'Aceptar',
+            confirmButtonColor: 'var(--ion-color-primary)',
+            heightAuto: false
+          });
+        } else {
+          // Mostrar mensaje de error si las condiciones iniciales no se cumplen
+          Swal.fire({
+            title: 'Error',
+            text: 'No se puede vincular la mesa porque falta información.',
+            icon: 'error',
+            confirmButtonText: 'Aceptar',
+            confirmButtonColor: 'var(--ion-color-primary)',
+            heightAuto: false
+          });
+        }
       } else {
-        // Mostrar mensaje de error si las condiciones iniciales no se cumplen
         Swal.fire({
           title: 'Error',
-          text: 'No se puede vincular la mesa porque falta información.',
+          text: 'Antes de tomar una mesa debe anotarse en la lista de espera.',
           icon: 'error',
           confirmButtonText: 'Aceptar',
           confirmButtonColor: 'var(--ion-color-primary)',
           heightAuto: false
         });
       }
+    }else{
+      Swal.fire({
+        title: 'Error',
+        text: 'Usted ya se encuentra vinculado a una mesa.',
+        icon: 'error',
+        confirmButtonText: 'Aceptar',
+        confirmButtonColor: 'var(--ion-color-primary)',
+        heightAuto: false
+      });
+    }
     } catch (error) {
       // Mostrar mensaje de error en caso de que verificarMesaLibre falle
       Swal.fire({
@@ -180,4 +211,52 @@ export class QrMesaPage implements OnInit {
     });
   }
 
+  async verificarClienteEnEspera() {
+    return new Promise((resolve, reject) => {
+      const listaEsperaObservable: Observable<any[]> = this.database.obtenerTodos('lista-espera')!.pipe(
+        map(actions => actions.map(a => {
+          const data = a.payload.doc.data() as any;
+          const id = a.payload.doc.id;
+          return { id, ...data };
+        }))
+      );
+  
+      listaEsperaObservable.subscribe(data => {
+        this.listaEspera = data;
+        this.clienteEnEspera = false; // Reiniciar el estado del cliente en espera
+        this.listaEspera.forEach(item => {
+          if (item.idCliente == this.uidUsuarioActual && item.estado == 'pendiente') {
+            this.clienteEnEspera = true;
+          }
+        });
+        resolve(this.clienteEnEspera);
+      }, error => {
+        console.log(error);
+        reject(error);
+      });
+    });
+  }
+
+  verificarUsuarioVinculado(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const usuarioVinculadoObservable: Observable<any[]> = this.database.obtenerTodos('mesa-cliente')!.pipe(
+        map(actions => actions.map(a => {
+          const data = a.payload.doc.data() as any;
+          const id = a.payload.doc.id; // Este es el id del documento en la base de datos
+          return { id, ...data }; // Combinamos el id con el resto de los datos
+        })),
+        first() // Completa el observable después de la primera emisión
+      );
+  
+      usuarioVinculadoObservable.subscribe(data => {
+        const usuariosEnMesas = data;
+        this.usuarioVinculado = usuariosEnMesas.some(usuario => usuario.estado == "vigente");
+        resolve(); // Resuelve la promesa después de verificar todos los usuarios
+      }, error => {
+        console.log(error);
+        reject(error); // Rechaza la promesa en caso de error
+      });
+    });
+  }
+  
 }

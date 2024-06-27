@@ -47,6 +47,14 @@ const routes: Routes = [
     loadChildren: () => import('./pages/qr-propina/qr-propina.module').then( m => m.QrPropinaPageModule)
   },
   {
+    path: 'encuesta',
+    loadChildren: () => import('./pages/encuesta/encuesta.module').then( m => m.EncuestaPageModule)
+  },
+  {
+    path: 'graficos',
+    loadChildren: () => import('./pages/graficos/graficos.module').then( m => m.GraficosPageModule)
+  },
+  {
     path: 'alta-producto',
     loadChildren: () => import('./pages/alta-producto/alta-producto.module').then( m => m.AltaProductoPageModule)
   },
@@ -54,6 +62,10 @@ const routes: Routes = [
     path: '**',
     redirectTo: 'home'
   },
+ 
+
+  
+
   
 
 
