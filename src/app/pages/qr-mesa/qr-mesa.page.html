@@ -16,6 +16,10 @@
     Vincularme con una mesa
   </ion-button><br>
 
+  <ion-button size="large" (click)="redireccionar('pedir-cuenta')" class="ion-text-center">
+    Pedir cuenta
+  </ion-button><br>
+
   <ion-button size="large" (click)="redireccionar('consulta-mozo')" class="ion-text-center">
     Consultar al mozo
   </ion-button><br>
@@ -34,5 +38,9 @@
 
   <ion-button size="large" (click)="redireccionar('encuesta')" class="ion-text-center">
     Acceder a encuestas
+  </ion-button><br>
+
+  <ion-button size="large" (click)="confirmarRecepcionPedido()" class="ion-text-center">
+    Confirmar Recepción 
   </ion-button><br>
 </ion-content>

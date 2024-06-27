@@ -1,40 +1,58 @@
-import { Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, inject, OnInit } from '@angular/core';
+import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 
 @Component({
   selector: 'app-qr-propina',
   templateUrl: './qr-propina.page.html',
   styleUrls: ['./qr-propina.page.scss'],
 })
-export class QrPropinaPage {
+export class QrPropinaPage implements OnInit {
 
   private router = inject(Router);
   nivelSatisfaccionSeleccionado?: number;
-  totalCuenta?: number = 100;
+  totalCuenta: number | null = null;
   propinaCalculada: number | null = null;
-  totalConPropinaCalculada: number | null = null;
+  totalConPropinaCalculada: number | null = 0;
 
-  constructor() {}
+  constructor(private activatedRouter: ActivatedRoute) {}
 
-  redireccionar(path: string) {
-    this.router.navigateByUrl(path);
+  ngOnInit(): void {
+    this.activatedRouter.queryParams.subscribe(params => {
+      if (params['dato']) {
+        this.totalCuenta = parseInt(params['dato']); // Convertir a número
+      }
+    });
+
+    console.log(this.totalCuenta);
   }
 
   calcularPropina() {
-    if (this.totalCuenta && this.nivelSatisfaccionSeleccionado !== undefined) {
+    if (this.totalCuenta !== null && this.nivelSatisfaccionSeleccionado !== undefined) {
       this.propinaCalculada = (this.totalCuenta * this.nivelSatisfaccionSeleccionado) / 100;
+      console.log(this.propinaCalculada);
+      console.log(this.totalCuenta);
+      console.log(this.nivelSatisfaccionSeleccionado);
+
       this.totalConPropinaCalculada = this.totalCuenta + this.propinaCalculada;
+      console.log(this.totalConPropinaCalculada);
     } else {
       this.propinaCalculada = null;
       this.totalConPropinaCalculada = null;
     }
   }
 
+  
+
   enviarPropina() {
     if (this.totalCuenta && this.nivelSatisfaccionSeleccionado !== undefined && this.propinaCalculada !== null && this.totalConPropinaCalculada !== null) {
       console.log('Propina enviada:', this.propinaCalculada);
       console.log('Total con propina:', this.totalConPropinaCalculada);
-      this.redireccionar('/home');
+
+      const navigationExtras: NavigationExtras = {
+        queryParams: { dato: this.totalConPropinaCalculada }
+      };
+
+      this.router.navigate(['pedir-cuenta'], navigationExtras);
     } else {
       console.error('Por favor, ingrese el total de la cuenta y seleccione un nivel de satisfacción.');
     }
