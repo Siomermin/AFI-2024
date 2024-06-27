@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Barcode, BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
+import { Barcode, BarcodeScanner, GoogleBarcodeScannerModuleInstallState } from '@capacitor-mlkit/barcode-scanning';
 import { AlertController } from '@ionic/angular';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { DatabaseService } from 'src/app/auth/services/database.service';
@@ -56,8 +56,18 @@ export class AltaPage implements OnInit {
   ngOnInit() {
     BarcodeScanner.isSupported().then((result) => {
       this.isSupported = result.supported;
-    });
+      BarcodeScanner.isGoogleBarcodeScannerModuleAvailable().then((res) => {
+        console.log("Available: " + res.available);
 
+        if (res.available == false) {
+          BarcodeScanner.installGoogleBarcodeScannerModule().then(() => {
+            BarcodeScanner.addListener("googleBarcodeScannerModuleInstallProgress", () => console.log("Instalación finalizada"));
+          })
+          .catch((ins) => console.log("Error install: " + ins));
+        }
+      }).catch((err) => console.log("Error available: " + err));
+    });
+  
     const menuObservable: Observable<any[]> = this.database
       .obtenerTodos('clientes')!
       .pipe(
