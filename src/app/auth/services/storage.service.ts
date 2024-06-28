@@ -11,6 +11,7 @@ export class StorageService {
   
   async subirImagen(carpeta: string, nombre: string, imgBase64: any) {
     try {
+      alert(`${carpeta}/${nombre}`);
       let respuesta = await this.storageRef.child(`${carpeta}/${nombre}`).putString(imgBase64, 'data_url');
       console.log(respuesta);
       return respuesta.ref.getDownloadURL();

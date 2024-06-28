@@ -2,3 +2,20 @@
   padding: 0;
   margin: 0;
 }
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.container ion-text {
+  margin-left: 5px;
+}
+
+.container ion-button {
+  border-radius: 20%;
+  margin-right: 5px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
