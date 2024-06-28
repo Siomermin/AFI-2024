@@ -1,4 +1,4 @@
-package com.AFI2024.app;
+package com.afi.segundoparcial;
 
 import com.getcapacitor.BridgeActivity;
 
