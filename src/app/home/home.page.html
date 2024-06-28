@@ -39,11 +39,16 @@
   QR Propina
 </ion-button>
 
+
+<ion-button (click)="redireccionar('qr-ingreso')">
+  QR Ingreso al local
+</ion-button>
+
 <ion-button (click)="redireccionar('alta-mesa')" *ngIf="this.perfilUsuarioActual === 'Supervisor' || this.perfilUsuarioActual === 'Dueño' ">
   Alta Mesa
 </ion-button>
-<!-- && (this.tipo === 'Cocinero' || this.tipo === 'Bartender') -->
-<ion-button (click)="redireccionar('alta-producto')" *ngIf="this.perfilUsuarioActual === 'Empleado' ">
+
+<ion-button (click)="redireccionar('alta-producto')" *ngIf="this.perfilUsuarioActual === 'Empleado' "><!-- && (this.tipo === 'Cocinero' || this.tipo === 'Bartender') -->
   Alta Producto
 </ion-button>
 
