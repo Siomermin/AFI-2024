@@ -53,4 +53,8 @@
   Alta Producto
 </ion-button><br><br>
 
+<ion-button (click)="redireccionar('consulta-mozo')" *ngIf="this.perfilUsuarioActual === 'Mozo' ">
+  Chats con Clientes
+</ion-button><br><br>
+
 </ion-content>

@@ -30,7 +30,7 @@
   </div>
 
   <div>
-    <ion-button size="large" (click)="redireccionar('consulta-mozo')" class="ion-text-center">
+    <ion-button size="large" *ngIf="usuarioVinculado" (click)="redireccionar('consulta-mozo')" class="ion-text-center">
       Consultar al mozo
     </ion-button>
   </div>
@@ -48,18 +48,12 @@
   </div>
 
   <div>
-    <ion-button size="large" class="ion-text-center">
-      Acceder a juegos
-    </ion-button>
-  </div>
-
-  <div>
     <ion-button size="large" (click)="redireccionar('encuesta')" class="ion-text-center">
       Acceder a encuestas
     </ion-button>
   </div>
 
-  <div *ngIf="pedidoDelUsuario">
+  <div *ngIf="pedidoDelUsuario && pedidoDelUsuario.estado == 'entregado'">
   <ion-button size="large"  (click)="confirmarRecepcionPedido()" class="ion-text-center">
     Confirmar Recepción 
   </ion-button>

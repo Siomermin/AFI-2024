@@ -265,7 +265,8 @@ export class AltaPage implements OnInit {
         clave,
         this.clienteAnonimo ? 'autorizado' : 'pendiente',
         this.clienteAnonimo,
-        imagenGuardada ? imagenGuardada.toString() : '' 
+        imagenGuardada ? imagenGuardada.toString() : '' ,
+        "Cliente"
       );
 
 

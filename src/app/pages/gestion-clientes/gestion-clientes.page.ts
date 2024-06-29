@@ -62,7 +62,8 @@ export class GestionClientesPage implements OnInit {
           clienteSeleccionado.clave,
           nuevoEstado,
           clienteSeleccionado.anonimo,
-          clienteSeleccionado.fotoUrl
+          clienteSeleccionado.fotoUrl,
+          clienteSeleccionado.perfil
         );
 
         await this.database.actualizar("clientes", clienteActualizado.toJSON(), idUsuarioSeleccionado);

@@ -288,6 +288,7 @@ export class QrMesaPage implements OnInit {
   
   confirmarRecepcionPedido(){
 
+    console.log(this.pedidoDelUsuario)
     if(this.pedidoDelUsuario && this.pedidoDelUsuario.estado == "entregado"){
       Swal.fire({
         title: 'Tu pedido ya fue entregado',
@@ -305,7 +306,11 @@ export class QrMesaPage implements OnInit {
           items: this.pedidoDelUsuario.items,
           montoTotal:this.pedidoDelUsuario.montoTotal,
           tiempo: this.pedidoDelUsuario.tiempo,
+          preciosUnitarios: this.pedidoDelUsuario.preciosUnitarios,
+
         }
+        console.log(pedidoActualizado);
+
         this.database.actualizar("pedidos", pedidoActualizado, this.pedidoDelUsuario.id)
       });
 

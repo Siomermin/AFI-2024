@@ -44,22 +44,27 @@
     <br>
   </ion-card>
 
-  <ion-card  *ngIf="totalConPropina" style="border: 2px solid rgb(53, 139, 53);">
-    <ion-row>
-      <ion-col size="2"></ion-col>
-      <ion-col size="10">
-        <a style="font-weight: 800; font-size: large; color:black"> Total con propina: ${{totalConPropina}}</a>
-      </ion-col>
-    </ion-row>
+  <ion-card  class="ion-text-center" *ngIf="propina" style="border: 2px solid rgb(53, 139, 53);">
+    <a style="font-weight: 800; font-size: large; color: black">
+      Total con propina: ${{totalConPropina}}
+    </a>
   </ion-card>
 
   <ion-card>
-    <ion-card-title>Acceder a Juegos</ion-card-title>
-    <ion-card-subtitle>Si ganas el juego obtendrás descuentos extras</ion-card-subtitle>
+    <ion-card-subtitle>Puedes participar de un juego por un 10% de descuento</ion-card-subtitle>
     <div style="text-align: center; justify-content: center; margin-top: 15px;">
-      <ion-button>Quiero jugar</ion-button>
+      <ion-button (click)="mostrarJuego = true">Quiero jugar</ion-button>
+
     </div>
     <br>
+  </ion-card>
+
+  <div>
+    <app-memo-test *ngIf="mostrarJuego" (datosEnviados)="recibirDatos($event)"></app-memo-test>
+  </div>
+
+  <ion-card class="ion-text-center" *ngIf="descuento!=null && totalConDescuento" style="border: 2px solid rgb(53, 139, 53);">
+      <a style="font-weight: 800; font-size: large; color:black"> Total con descuento: ${{totalConDescuento}}</a>
   </ion-card>
 
   <br>

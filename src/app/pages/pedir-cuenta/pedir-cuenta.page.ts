@@ -5,6 +5,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Barcode, BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
 import { AlertController } from '@ionic/angular';
 import Swal from 'sweetalert2';
+import { MemoTestComponent } from 'src/app/components/memo-test/memo-test.component';
 
 @Component({
   selector: 'app-pedir-cuenta',
@@ -20,7 +21,10 @@ export class PedirCuentaPage implements OnInit {
   barcodes: Barcode[] = [];
   informacionQr: string | null = null;
   totalConPropina:any | null = null;
-
+  descuento:number | null=null;
+  mostrarJuego: boolean = false;
+  totalConDescuento: number | null = null;
+  propina: number | null = null;
   constructor(
     private afAuth: AngularFireAuth,
     private database: DatabaseService,
@@ -38,8 +42,23 @@ export class PedirCuentaPage implements OnInit {
       }
     });
     this.activatedRouter.queryParams.subscribe(params => {
-      this.totalConPropina = params['dato'];
+      this.propina = parseInt(params['dato']);
+      this.totalConPropina= parseInt(this.pedidoActual.montoTotal) + this.propina;
     });
+  }
+
+  calcularTotalConDescuento(){
+    const descuento: number= this.pedidoActual.montoTotal * this.descuento! / 100;
+    this.totalConDescuento = parseInt(this.pedidoActual.montoTotal) - descuento + this.propina!;
+  }
+  
+
+  recibirDatos(datos: any) {
+    this.descuento = parseInt(datos);
+    if(this.descuento!= null){
+      this.mostrarJuego=false;
+    }
+    this.calcularTotalConDescuento();
   }
 
   cargarPedidos() {
@@ -111,7 +130,8 @@ export class PedirCuentaPage implements OnInit {
       items: this.pedidoActual.items,
       preciosUnitarios: this.pedidoActual.preciosUnitarios,
       montoTotal: this.pedidoActual.montoTotal,
-      tiempo: this.pedidoActual.tiempo
+      tiempo: this.pedidoActual.tiempo,
+
     }
     this.database.actualizar("pedidos", pedidoActualizado, this.pedidoActual.id)
     .then(() => {
