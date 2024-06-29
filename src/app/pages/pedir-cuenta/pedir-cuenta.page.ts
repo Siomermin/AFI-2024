@@ -5,7 +5,6 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Barcode, BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
 import { AlertController } from '@ionic/angular';
 import Swal from 'sweetalert2';
-import { MemoTestComponent } from 'src/app/components/memo-test/memo-test.component';
 
 @Component({
   selector: 'app-pedir-cuenta',
