@@ -1,0 +1,74 @@
+
+
+<ion-header [translucent]="true">
+  <ion-toolbar class="ion-text-center">
+    <ion-title>
+      <img routerLink="home" src="../../../assets/images/back.png" alt="" height="15px">
+      Solicitar Cuenta
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-text-center">
+  <br><br>
+  <ion-card *ngIf="pedidoActual && pedidoActual.items && pedidoActual.items.length > 0" class="ion-text-center">
+    <ion-card-title>Cuenta</ion-card-title>
+
+    <ion-list>
+      <ion-item *ngFor="let item of pedidoActual.items; let i = index">
+        <ion-label class="item-label">{{ item }}</ion-label>
+        <ion-label class="price-label">${{ pedidoActual.preciosUnitarios[i] }}</ion-label>
+      </ion-item>
+    </ion-list>
+
+  </ion-card>
+
+  <ion-card  *ngIf="pedidoActual" style="border: 2px solid rgb(103, 200, 103);">
+    <ion-row>
+      <ion-col size="4"></ion-col>
+      <ion-col size="8">
+        <a style="font-weight: 800; font-size: large; color:black"> Monto total: ${{pedidoActual.montoTotal}}</a>
+      </ion-col>
+    </ion-row>
+  </ion-card>
+  <ion-card>
+    <ion-card-title>Elige la propina</ion-card-title>
+
+    <div style="text-align: center; justify-content: center; margin-top: 15px;">
+      <ion-button (click)="scan()">
+        <img  style="height: 90px;" src="../../../assets/images/qr.png" alt="">
+      </ion-button>
+      <ion-button (click)="ir()">IR</ion-button>
+      <br>
+    </div>
+    <br>
+  </ion-card>
+
+  <ion-card  class="ion-text-center" *ngIf="propina" style="border: 2px solid rgb(53, 139, 53);">
+    <a style="font-weight: 800; font-size: large; color: black">
+      Total con propina: ${{totalConPropina}}
+    </a>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-subtitle>Puedes participar de un juego por un 10% de descuento</ion-card-subtitle>
+    <div style="text-align: center; justify-content: center; margin-top: 15px;">
+      <ion-button (click)="mostrarJuego = true">Quiero jugar</ion-button>
+
+    </div>
+    <br>
+  </ion-card>
+
+  <div>
+    <app-memo-test *ngIf="mostrarJuego" (datosEnviados)="recibirDatos($event)"></app-memo-test>
+  </div>
+
+  <ion-card class="ion-text-center" *ngIf="descuento!=null && totalConDescuento" style="border: 2px solid rgb(53, 139, 53);">
+      <a style="font-weight: 800; font-size: large; color:black"> Total con descuento: ${{totalConDescuento}}</a>
+  </ion-card>
+
+  <br>
+  <ion-button size="large" color="success" (click)="realizarPago()">Realizar Pago</ion-button>
+  <br><br>
+</ion-content>
+

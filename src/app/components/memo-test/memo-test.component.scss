@@ -1,0 +1,24 @@
+#container {
+    position: relative;
+    height: 100vh;
+    width: 100vw;
+    overlay: none;
+  }
+  
+  img {
+    padding: 5px;
+    background-color: antiquewhite;
+    border-radius: 10%;
+  }
+  
+  
+  :host {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: white; /* O el color que prefieras */
+    z-index: 1000; /* Asegúrate de que esté sobre otros elementos */
+  }

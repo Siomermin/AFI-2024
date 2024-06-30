@@ -1,38 +1,67 @@
+
+
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title class="ion-text-center">
-      <img (click)="redireccionar('home')" src="../../../assets/images/back.png" alt="" height="15px">
+      <img routerLink="/home" src="../../../assets/images/back.png" alt="" height="15px">
       Opciones
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true" class="ion-text-center" style="display: flex; justify-content: center; align-items: center;">
-  <ion-button size="large" (click)="mostrarMesasLibres()" class="ion-text-center">
-    Ver disponibilidad <br> de mesa
-  </ion-button><br>
+ 
+  <div>
+    <ion-button size="large" (click)="mostrarMesasLibres()" class="ion-text-center">
+      Ver disponibilidad <br> de mesa
+    </ion-button>
+  </div>
 
-  <ion-button size="large" (click)="vincularMesa()" class="ion-text-center">
-    Vincularme con una mesa
-  </ion-button><br>
+  <div *ngIf="!clienteEnEspera && !usuarioVinculado">
+    <ion-button size="large" (click)="vincularMesa()" class="ion-text-center">
+      Vincularme con una mesa
+    </ion-button>
+  </div>
 
-  <ion-button size="large" (click)="redireccionar('consulta-mozo')" class="ion-text-center">
-    Consultar al mozo
-  </ion-button><br>
+  <div *ngIf="pedidoDelUsuario && pedidoDelUsuario.estado == 'entregado-confirmado'">
+    <ion-button size="large"  (click)="redireccionar('pedir-cuenta')" class="ion-text-center">
+      Pedir cuenta
+    </ion-button>
+  </div>
 
-  <ion-button size="large" (click)="redireccionar('menu')" class="ion-text-center">
-    Ver menú
-  </ion-button><br>
+  <div>
+    <ion-button size="large" *ngIf="usuarioVinculado" (click)="redireccionar('consulta-mozo')" class="ion-text-center">
+      Consultar al mozo
+    </ion-button>
+  </div>
 
-  <ion-button size="large" (click)="mostrarPedido()" class="ion-text-center">
-    Ver estado del pedido
-  </ion-button><br>
+  <div>
+    <ion-button *ngIf="!pedidoDelUsuario" size="large" (click)="redireccionar('menu')" class="ion-text-center">
+      Ver menú
+    </ion-button>
+  </div>
 
-  <ion-button size="large" class="ion-text-center">
-    Acceder a juegos
-  </ion-button><br>
+  <div  *ngIf="pedidoDelUsuario">
+    <ion-button size="large" (click)="mostrarPedido()" class="ion-text-center">
+      Ver estado del pedido
+    </ion-button>
+  </div>
 
-  <ion-button size="large" (click)="redireccionar('encuesta')" class="ion-text-center">
-    Acceder a encuestas
-  </ion-button><br>
+  <div>
+    <ion-button size="large" (click)="redireccionar('encuesta')" class="ion-text-center">
+      Acceder a encuestas
+    </ion-button>
+  </div>
+
+  <div *ngIf="pedidoDelUsuario && pedidoDelUsuario.estado == 'entregado'">
+  <ion-button size="large"  (click)="confirmarRecepcionPedido()" class="ion-text-center">
+    Confirmar Recepción 
+  </ion-button>
+  </div>
 </ion-content>
+
+
+
+
+
+
