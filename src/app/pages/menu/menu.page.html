@@ -42,6 +42,14 @@
         <ion-card-title>{{item.nombre}}</ion-card-title>
         <ion-card-title>${{item.precio}}</ion-card-title>
       </ion-card-header>
+
+      <div>
+        <div *ngFor="let img of item.imagenes; let i = index" style="display: inline-block; margin-right: 10px;">
+          <img [src]="img" alt="" style="height: 70px; width: 90px;">
+        </div>
+      </div>
+
+
       <ion-card-content>
         {{item.descripcion}}
       </ion-card-content>
@@ -55,24 +63,28 @@
 
   <h2>Guarniciones</h2>
 
-  <ion-card *ngFor="let item of guarniciones" style="background-color: #ccc ;" >
-    <div *ngIf="item.tipo=='guarnicion'" >
-    <ion-card-header>
-      <ion-card-title>{{item.nombre}}</ion-card-title>
-      <ion-card-title>${{item.precio}}</ion-card-title>
+  <ion-card *ngFor="let item of guarniciones" style="background-color: #ccc;">
+    <div *ngIf="item.tipo == 'guarnicion'">
+      <ion-card-header>
+        <ion-card-title>{{item.nombre}}</ion-card-title>
+        <ion-card-title>${{item.precio}}</ion-card-title>
+      </ion-card-header>
 
-    </ion-card-header>
+      <div>
+        <div *ngFor="let img of item.imagenes; let i = index" style="display: inline-block; margin-right: 10px;">
+          <img [src]="img" alt="" style="height: 70px; width: 90px;">
+        </div>
+      </div>
   
-    <ion-card-content>
-      {{item.descripcion}}
-    </ion-card-content>
-
-    <ion-fab vertical="top" horizontal="end" slot="fixed" (click)="agregarPlatoAlPedido(item.nombre, item.precio, item.tiempo)">
-      <ion-fab-button size="small" color="success">
-        <ion-icon name="add"></ion-icon>
-      </ion-fab-button>
-    </ion-fab>
-
+      <ion-card-content>
+        {{item.descripcion}}
+      </ion-card-content>
+  
+      <ion-fab vertical="top" horizontal="end" slot="fixed" (click)="agregarPlatoAlPedido(item.nombre, item.precio, item.tiempo)">
+        <ion-fab-button size="small" color="success">
+          <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
     </div>
   </ion-card>
 
@@ -85,6 +97,13 @@
       <ion-card-title>${{item.precio}}</ion-card-title>
 
     </ion-card-header>
+
+    <div>
+      <div *ngFor="let img of item.imagenes; let i = index" style="display: inline-block; margin-right: 10px;">
+        <img [src]="img" alt="" style="height: 70px; width: 90px;">
+      </div>
+    </div>
+
   
     <ion-card-content>
       {{item.descripcion}}
@@ -109,6 +128,12 @@
 
     </ion-card-header>
   
+    <div>
+      <div *ngFor="let img of item.imagenes; let i = index" style="display: inline-block; margin-right: 10px;">
+        <img [src]="img" alt="" style="height: 70px; width: 90px;">
+      </div>
+    </div>
+
     <ion-card-content>
       {{item.descripcion}}
     </ion-card-content>

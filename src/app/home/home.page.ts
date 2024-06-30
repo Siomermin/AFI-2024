@@ -30,6 +30,19 @@ export class HomePage implements OnInit  {
               private alertController: AlertController,
   ){}
   ngOnInit(): void {
+    BarcodeScanner.isSupported().then((result) => {
+      this.isSupported = result.supported;
+      BarcodeScanner.isGoogleBarcodeScannerModuleAvailable().then((res) => {
+
+        if (res.available == false) {
+          BarcodeScanner.installGoogleBarcodeScannerModule().then(() => {
+            BarcodeScanner.addListener("googleBarcodeScannerModuleInstallProgress", () => console.log("Instalación finalizada"));
+          })
+          .catch((ins) => console.log("Error install: " + ins));
+        }
+      }).catch((err) => console.log("Error available: " + err));
+    });
+
     this.loggedUser = this.authService.loggedUser;
 
     this.verificarPerfilUsuarioActual();

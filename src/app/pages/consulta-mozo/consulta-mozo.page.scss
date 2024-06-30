@@ -1,12 +1,13 @@
 
 ion-content.chat-background {
-
-    --background-size: cover;
-    width: 100%;
-    height: 80%; /* Asegurar que ocupe toda la altura */
-  }
+  width: 100%;
+  height: 80%;
+  --background: rgba(255, 255, 255, 0.8) url(../../../assets/images/chat-back2.jpeg);
+  --background-size: cover;
+  --background-position: center;
   
-  
+}
+ 
   
   .contenedor-mensaje {
     border-radius: 3%;
@@ -20,9 +21,7 @@ ion-content.chat-background {
     color:#252424
   }
   
-  *{
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-  }
+ 
   
   .usuario-actual {
     background-color: rgb(177, 192, 186);

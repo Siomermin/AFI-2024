@@ -1,3 +1,4 @@
+
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { map } from 'rxjs/operators';
@@ -23,6 +24,7 @@ export class QrMesaPage implements OnInit {
   listaEspera:any[]=[];
   clienteEnEspera:boolean=false;
   usuarioVinculado:boolean=true;
+  uidListaEspera:string="";
 
   ngOnInit() {
 
@@ -45,32 +47,49 @@ export class QrMesaPage implements OnInit {
 
     pedidosObservable.subscribe(data => {
       this.pedidos = data;
-      this.pedidos.forEach(item => {
+      for (let item of this.pedidos) {
         if (item.idCliente == this.uidUsuarioActual && item.estado != 'finalizado') {
           this.pedidoDelUsuario = item;
           console.log(this.pedidoDelUsuario);
-        } 
-      });
+          break;  
+        }
+      }
     }, error => {
       console.log(error);
     });
 
+    this.verificarUsuarioVinculado();
+
   }
 
   redireccionar(path:string){
+    console.log(path);
     this.router.navigateByUrl(path);
+
   }
 
   mostrarPedido(){
 
-    Swal.fire({
-      title: "Su pedido se encuentra:",
-      html: `<div style="font-weight: bold; font-size: 1.2em;">${this.pedidoDelUsuario.estado}</div>`,
-      icon: "success",
-      confirmButtonText: "Aceptar",
-      confirmButtonColor: 'var(--ion-color-primary)',
-      heightAuto: false
-    });
+    if(this.pedidoDelUsuario){
+
+      Swal.fire({
+        title: "Su pedido se encuentra:",
+        html: `<div style="font-weight: bold; font-size: 1.2em;">${this.pedidoDelUsuario.estado}</div>`,
+        icon: "success",
+        confirmButtonText: "Aceptar",
+        confirmButtonColor: 'var(--ion-color-primary)',
+        heightAuto: false
+      });
+    }else{
+      Swal.fire({
+        title: 'Error',
+        text: 'Usted aún no realizo el pedido',
+        icon: 'error',
+        confirmButtonText: 'Aceptar',
+        confirmButtonColor: 'var(--ion-color-primary)',
+        heightAuto: false
+      });
+    }
 
   }
 
@@ -114,7 +133,6 @@ export class QrMesaPage implements OnInit {
 
       if(!this.usuarioVinculado){
       if (clienteEnEspera) {
-        console.log(this.uidUsuarioActual, this.mesaLibre);
   
         if (this.uidUsuarioActual != "" && this.mesaLibre != undefined) {
           const nuevaMesa = {
@@ -124,14 +142,20 @@ export class QrMesaPage implements OnInit {
           };
   
           await this.database.crear("mesa-cliente", nuevaMesa);
-          console.log(this.uidMesaLibre);
-          console.log(this.mesaLibre.nuevaMesa);
+
           const mesaActualizada = {
             estado: "ocupada",
             numeroMesa: this.mesaLibre.numeroMesa,
           };
+          const listaEsperaActualizada = {
+            estado: "asignado",
+            idCliente: this.uidUsuarioActual
+          };
+          await this.database.actualizar("lista-espera", listaEsperaActualizada, this.uidListaEspera);
+
           await this.database.actualizar("mesas", mesaActualizada, this.uidMesaLibre);
   
+          this.usuarioVinculado=true;
           // Mostrar mensaje de éxito
           Swal.fire({
             title: 'Éxito',
@@ -225,8 +249,11 @@ export class QrMesaPage implements OnInit {
         this.listaEspera = data;
         this.clienteEnEspera = false; // Reiniciar el estado del cliente en espera
         this.listaEspera.forEach(item => {
-          if (item.idCliente == this.uidUsuarioActual && item.estado == 'pendiente') {
+          console.log(item.idCliente, this.uidUsuarioActual, item.estado);
+          if (item.idCliente == this.uidUsuarioActual && item.estado == "pendiente") {
+            console.log("entre en coincidencia");
             this.clienteEnEspera = true;
+            this.uidListaEspera= item.id;
           }
         });
         resolve(this.clienteEnEspera);
@@ -250,7 +277,7 @@ export class QrMesaPage implements OnInit {
   
       usuarioVinculadoObservable.subscribe(data => {
         const usuariosEnMesas = data;
-        this.usuarioVinculado = usuariosEnMesas.some(usuario => usuario.estado == "vigente");
+        this.usuarioVinculado = usuariosEnMesas.some(item => item.idCliente == this.uidUsuarioActual && item.estado == "vigente");
         resolve(); // Resuelve la promesa después de verificar todos los usuarios
       }, error => {
         console.log(error);
@@ -259,4 +286,44 @@ export class QrMesaPage implements OnInit {
     });
   }
   
+  confirmarRecepcionPedido(){
+
+    console.log(this.pedidoDelUsuario)
+    if(this.pedidoDelUsuario && this.pedidoDelUsuario.estado == "entregado"){
+      Swal.fire({
+        title: 'Tu pedido ya fue entregado',
+        icon: 'success',
+        confirmButtonText: 'Confirmo Recepción',
+        confirmButtonColor: "#52BE80",
+        cancelButtonText: 'No recibí nada',
+        cancelButtonColor: "#E73E30",
+        showCancelButton: true,
+        heightAuto: false
+      }).then((result) => {
+        const pedidoActualizado={
+          estado: "entregado-confirmado",
+          idCliente: this.pedidoDelUsuario.idCliente,
+          items: this.pedidoDelUsuario.items,
+          montoTotal:this.pedidoDelUsuario.montoTotal,
+          tiempo: this.pedidoDelUsuario.tiempo,
+          preciosUnitarios: this.pedidoDelUsuario.preciosUnitarios,
+
+        }
+        console.log(pedidoActualizado);
+
+        this.database.actualizar("pedidos", pedidoActualizado, this.pedidoDelUsuario.id)
+      });
+
+    }else{
+      Swal.fire({
+        title: 'Error',
+        text: 'Usted aún no realizo el pedido',
+        icon: 'error',
+        confirmButtonText: 'Aceptar',
+        confirmButtonColor: 'var(--ion-color-primary)',
+        heightAuto: false
+      });
+    }
+
+  }
 }
