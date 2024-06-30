@@ -35,6 +35,7 @@ export class AltaPage implements OnInit {
   form: FormGroup;
   clientesExistentes: any[] = [];
   clienteAnonimo: boolean = false;
+  nombreArchivo:string="";
 
   constructor(
     private alertController: AlertController,
@@ -195,17 +196,15 @@ export class AltaPage implements OnInit {
     }
   }
 
-  async guardarImagen(foto: string) {
+  async guardarImagen() {
+    alert(this.fotoUrl)
     try {
-      const nombreArchivo = `${this.dni + this.nombre + this.apellido}`;
-      const fotoBase64 = foto;
+      const nombreArchivo =  this.form.value.dni + this.form.value.nombre + this.form.value.apellido;
+      alert(nombreArchivo);
+      const fotoBase64 = this.fotoUrl;
       const dataURL = `data:image/jpeg;base64,${fotoBase64}`;
 
-      const urlDescarga = await this.storage.subirImagen(
-        'fotosPerfil',
-        nombreArchivo,
-        dataURL
-      );
+      const urlDescarga = await this.storage.subirImagen('fotosPerfil',nombreArchivo,dataURL);
 
       if (!urlDescarga) {
         Swal.fire({
@@ -224,7 +223,7 @@ export class AltaPage implements OnInit {
         heightAuto: false,
       });
 
-      return true;
+      return urlDescarga;
     } catch (error) {
       console.error('Error al guardar la imagen:', error);
       return false;
@@ -253,6 +252,9 @@ export class AltaPage implements OnInit {
         heightAuto: false,
       });
     } else {
+      
+      const imagenGuardada = await this.guardarImagen();
+
       const { nombre, apellido, dni, email, clave } = this.form.value;
       const nuevoUsuario = new Cliente(
         nombre,
@@ -262,10 +264,11 @@ export class AltaPage implements OnInit {
         email,
         clave,
         this.clienteAnonimo ? 'autorizado' : 'pendiente',
-        this.clienteAnonimo
+        this.clienteAnonimo,
+        imagenGuardada ? imagenGuardada.toString() : '' ,
+        "Cliente"
       );
 
-      const imagenGuardada = await this.guardarImagen(this.fotoUrl);
 
       if (imagenGuardada) {
         this.database

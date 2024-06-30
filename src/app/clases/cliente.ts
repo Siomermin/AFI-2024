@@ -10,9 +10,10 @@ export class Cliente {
   clave:string;
   estado:string;
   anonimo: boolean;
+  urlFoto: string;
+  perfil:string
 
-
-  constructor(nombre:string, apellido: string,dni:string, fotoUrl: any, email: string, clave:string, estado:string, anonimo: boolean) {
+  constructor(nombre:string, apellido: string,dni:string, fotoUrl: any, email: string, clave:string, estado:string, anonimo: boolean, urlFoto:string, perfil:string) {
       this.nombre = nombre;
       this.apellido = apellido;
       this.dni = dni;
@@ -21,6 +22,8 @@ export class Cliente {
       this.clave = clave;
       this.estado = estado;
       this.anonimo = anonimo;
+      this.urlFoto=urlFoto;
+      this.perfil = perfil
   }
 
 
@@ -33,7 +36,9 @@ export class Cliente {
         email: this.email,
         clave: this.clave,
         estado: this.estado,
-        anonimo: this.anonimo
+        anonimo: this.anonimo,
+        urlFoto: this.urlFoto,
+        perfil : this.perfil,
       };
   }
 

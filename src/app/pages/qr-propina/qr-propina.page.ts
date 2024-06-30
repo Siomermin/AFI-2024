@@ -29,9 +29,6 @@ export class QrPropinaPage implements OnInit {
   calcularPropina() {
     if (this.totalCuenta !== null && this.nivelSatisfaccionSeleccionado !== undefined) {
       this.propinaCalculada = (this.totalCuenta * this.nivelSatisfaccionSeleccionado) / 100;
-      console.log(this.propinaCalculada);
-      console.log(this.totalCuenta);
-      console.log(this.nivelSatisfaccionSeleccionado);
 
       this.totalConPropinaCalculada = this.totalCuenta + this.propinaCalculada;
       console.log(this.totalConPropinaCalculada);
@@ -49,7 +46,7 @@ export class QrPropinaPage implements OnInit {
       console.log('Total con propina:', this.totalConPropinaCalculada);
 
       const navigationExtras: NavigationExtras = {
-        queryParams: { dato: this.totalConPropinaCalculada }
+        queryParams: { dato: this.propinaCalculada }
       };
 
       this.router.navigate(['pedir-cuenta'], navigationExtras);

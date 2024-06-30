@@ -1,43 +1,49 @@
 <ion-header>
-  <ion-button (click)="logout()" expand="full"  color="danger">
-    Cerrar sesión
-  </ion-button>
 
 
-
+  <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
+    <ion-text class="text-center" style="margin-left: 5px;">
+      <h1 style="font-size: medium;">{{loggedUser.email}}</h1>
+    </ion-text>
+  
+    <ion-button (click)="logout()" style="border-radius: 20%; margin-right: 5px;" color="danger">
+      <img style="height: 20px;" src="../../assets/images/cerrar-sesion.png" alt="">
+    </ion-button>
+  </div>
 
 </ion-header>
 <ion-content [fullscreen]="true">
-<div class="container">
-  <ion-text class="text-center">
-    <h1>{{ loggedUser.email }}</h1>
-  </ion-text>
-</div>
+<br><br>
+<ion-card style="background-color: #e8e5e5; margin-left: 10px; margin-right: 10px;" class="ion-text-center">
+  <ion-card-title>Bienvenid&#64;!</ion-card-title>
+  <ion-card-subtitle>Escanea el QR</ion-card-subtitle>
 
-<div style="text-align: center; justify-content: center; margin-top: 15px;">
-  <ion-button (click)="scan()">
-    <img style="height: 115px;" src="../../../assets/images/qr.png" alt="">
-  </ion-button>
-</div>
-
+  <br>
+  <div style="text-align: center; justify-content: center; margin-top: 15px;">
+    <ion-button (click)="scan()">
+      <img style="height: 115px;" src="../../../assets/images/qr.png" alt="">
+    </ion-button>
+  </div>
+  <br><br>
+</ion-card>
 
 <br><br>
 
 
-<ion-button (click)="redireccionar('gestion-clientes')">
+<ion-button *ngIf="perfilUsuarioActual.toLowerCase() == 'dueño' ||perfilUsuarioActual.toLowerCase() == 'supervisor'  " (click)="redireccionar('gestion-clientes')">
   Autorizar Cliente
-</ion-button>
+</ion-button><br>
 
 
 
-<ion-button (click)="redireccionar('qr-mesa')">
+<ion-button  (click)="redireccionar('qr-mesa')">
   QR Mesa
-</ion-button>
+</ion-button><br>
 
 
-<ion-button (click)="redireccionar('qr-propina')">
+<ion-button    (click)="redireccionar('qr-propina')">
   QR Propina
-</ion-button>
+</ion-button><br>
 
 
 <ion-button (click)="redireccionar('qr-ingreso')">
@@ -46,10 +52,14 @@
 
 <ion-button (click)="redireccionar('alta-mesa')" *ngIf="this.perfilUsuarioActual === 'Supervisor' || this.perfilUsuarioActual === 'Dueño' ">
   Alta Mesa
-</ion-button>
+</ion-button><br>
 
 <ion-button (click)="redireccionar('alta-producto')" *ngIf="this.perfilUsuarioActual === 'Empleado' "><!-- && (this.tipo === 'Cocinero' || this.tipo === 'Bartender') -->
   Alta Producto
-</ion-button>
+</ion-button><br><br>
+
+<ion-button (click)="redireccionar('consulta-mozo')" *ngIf="this.perfilUsuarioActual === 'Mozo' ">
+  Chats con Clientes
+</ion-button><br><br>
 
 </ion-content>

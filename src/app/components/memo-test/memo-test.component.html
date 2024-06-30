@@ -1,0 +1,25 @@
+<ion-content [fullscreen]="true">
+  <div id="container" class="ion-text-center ion-text-uppercase">
+    <br><br><br>
+    
+    <h2>Juega para obtener<br>un 10% de descuento!</h2><br>
+    
+    <ion-card style="border: 2px solid red;">
+    <ion-text color="danger" class="text-center"><h2>Tiempo - {{minutos}} : {{segundos}}</h2></ion-text>
+
+    </ion-card>
+
+
+<br>
+    <ion-grid fixed="true">
+      <ion-row>
+        <ion-col [size]="colSize" *ngFor="let imagen of arrayImagenes; let i = index" [ngStyle]="{'height': colHeight}">
+          <img src="../../../assets/images/q.png"
+               style="height: 100%; width: auto;"
+               (click)="seleccionarImagen(imagen, i)" #imagenElemento
+               [style.pointer-events]="bloquearImagen ? 'none' : 'auto'">
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</ion-content>
