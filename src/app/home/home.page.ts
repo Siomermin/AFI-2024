@@ -5,8 +5,8 @@ import { DatabaseService } from '../auth/services/database.service';
 import { Usuario } from '../clases/usuario';
 import { Barcode, BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
 import { AlertController } from '@ionic/angular';
-import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
-import Swal from 'sweetalert2'
+import { Platform } from '@ionic/angular';
+import { FcmService } from '../shared/services/fcm.service';
 
 @Component({
   selector: 'app-home',
@@ -19,16 +19,24 @@ export class HomePage implements OnInit  {
   barcodes: Barcode[] = [];
   informacionQr: string | null = null;
 
-
   private authService = inject(AuthService);
   public loggedUser: any;
   perfilUsuarioActual:string="";
 
-
   constructor(private router:Router,
               private database:DatabaseService,
               private alertController: AlertController,
-  ){}
+              private platform: Platform,
+              private fcm: FcmService
+  ){
+    this.platform.ready().then(() => {
+      this.loggedUser = this.authService.loggedUser;
+      this.fcm.initPush(this.loggedUser.uid);  // Asegúrate de pasar el UID del usuario aquí
+    }).catch(e => {
+      console.log('error fcm: ', e);
+    });
+  }
+
   ngOnInit(): void {
     BarcodeScanner.isSupported().then((result) => {
       this.isSupported = result.supported;
@@ -43,7 +51,6 @@ export class HomePage implements OnInit  {
       }).catch((err) => console.log("Error available: " + err));
     });
 
-    this.loggedUser = this.authService.loggedUser;
 
     this.verificarPerfilUsuarioActual();
   }
@@ -55,7 +62,6 @@ export class HomePage implements OnInit  {
   redireccionar(path:string){
     this.router.navigateByUrl(path);
   }
-
 
   async verificarPerfilUsuarioActual() {
     try {
@@ -99,10 +105,13 @@ export class HomePage implements OnInit  {
     const { barcodes } = await BarcodeScanner.scan();
     if (barcodes.length > 0) {
       this.informacionQr = barcodes[0].rawValue;  // Asignar la información del primer código QR escaneado
+    } else {
+      this.informacionQr = 'No barcode detected';
     }
-    this.barcodes.push(...barcodes);
+  }
 
-    this.router.navigateByUrl('qr-'+this.informacionQr!);
+  async stopScan(): Promise<void> {
+    await BarcodeScanner.stopScan();
   }
 
 }
