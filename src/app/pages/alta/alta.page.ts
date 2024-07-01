@@ -101,25 +101,18 @@ export class AltaPage implements OnInit {
     if (this.clienteAnonimo) {
       this.form.get('apellido')?.clearValidators();
       this.form.get('dni')?.clearValidators();
-
+      this.form.get('email')?.clearValidators();
+      this.form.get('clave')?.clearValidators();
     } else {
-      this.form
-        .get('apellido')
-        ?.setValidators([
-          Validators.required,
-          Validators.pattern(/^[a-zA-Z\s]*$/),
-        ]);
-      this.form
-        .get('dni')
-        ?.setValidators([
-          Validators.required,
-          Validators.pattern(/^\d{1,10}$/),
-        ]);
-
+      this.form.get('apellido')?.setValidators([Validators.required, Validators.pattern(/^[a-zA-Z\s]*$/)]);
+      this.form.get('dni')?.setValidators([Validators.required, Validators.pattern(/^\d{1,10}$/)]);
+      this.form.get('email')?.setValidators([Validators.required, Validators.email]);
+      this.form.get('clave')?.setValidators([Validators.required, Validators.minLength(6)]);
     }
     this.form.get('apellido')?.updateValueAndValidity();
     this.form.get('dni')?.updateValueAndValidity();
-
+    this.form.get('email')?.updateValueAndValidity();
+    this.form.get('clave')?.updateValueAndValidity();
   }
 
   async scan(): Promise<void> {
@@ -250,7 +243,6 @@ export class AltaPage implements OnInit {
         heightAuto: false,
       });
     } else {
-
       const imagenGuardada = await this.guardarImagen();
 
       const { nombre, apellido, dni, email, clave } = this.form.value;
@@ -258,40 +250,37 @@ export class AltaPage implements OnInit {
         nombre,
         this.clienteAnonimo ? '' : apellido,
         this.clienteAnonimo ? '' : dni,
-        this.dni + this.nombre + this.apellido,
-        email,
-        clave,
+        dni + nombre + apellido,
+        this.clienteAnonimo ? '' : email,
+        this.clienteAnonimo ? '' : clave,
         this.clienteAnonimo ? 'autorizado' : 'pendiente',
         this.clienteAnonimo,
         imagenGuardada ? imagenGuardada.toString() : '' ,
         "Cliente"
       );
 
-
       if (imagenGuardada) {
-        this.database
-          .crear('clientes', nuevoUsuario.toJSON())
-          .then((docRef) => {
-            console.log('Documento escrito con ID: ', docRef.id);
+        this.database.crear('clientes', nuevoUsuario.toJSON()).then((docRef) => {
+          console.log('Documento escrito con ID: ', docRef.id);
 
-            this.authService.register(email, clave, this.clienteAnonimo, docRef.id);
-
-          })
-          .catch((error) => {
-            console.error('Error al crear el usuario:', error);
-            Swal.fire({
-              title: 'Error',
-              text: 'Hubo un problema al crear el usuario. Por favor, inténtelo de nuevo.',
-              icon: 'error',
-              confirmButtonText: 'Aceptar',
-              confirmButtonColor: 'var(--ion-color-primary)',
-              heightAuto: false,
-            });
+          if (this.clienteAnonimo) {
+            this.authService.registerAnonymous(docRef.id, nuevoUsuario.toJSON());
+          } else {
+            this.authService.register(email, clave, docRef.id);
+          }
+        }).catch((error) => {
+          console.error('Error al crear el usuario:', error);
+          Swal.fire({
+            title: 'Error',
+            text: 'Hubo un problema al crear el usuario. Por favor, inténtelo de nuevo.',
+            icon: 'error',
+            confirmButtonText: 'Aceptar',
+            confirmButtonColor: 'var(--ion-color-primary)',
+            heightAuto: false,
           });
+        });
       } else {
-        console.error(
-          'No se pudo guardar la imagen, abortando creación de usuario.'
-        );
+        console.error('No se pudo guardar la imagen, abortando creación de usuario.');
         Swal.fire({
           title: 'Error',
           text: 'No se pudo guardar la imagen, abortando creación de usuario.',
