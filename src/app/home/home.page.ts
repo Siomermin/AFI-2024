@@ -31,6 +31,7 @@ export class HomePage implements OnInit  {
   ){
     this.platform.ready().then(() => {
       this.loggedUser = this.authService.loggedUser;
+      console.log(this.loggedUser.uid);
       this.fcm.initPush(this.loggedUser.uid);  // Asegúrate de pasar el UID del usuario aquí
     }).catch(e => {
       console.log('error fcm: ', e);

@@ -3,7 +3,7 @@ import { DatabaseService } from 'src/app/auth/services/database.service';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs';
 import { Cliente } from 'src/app/clases/cliente';
-import emailjs from '@emailjs/browser';
+import { NotificationService } from '../../shared/services/notification.service';
 
 @Component({
   selector: 'app-gestion-clientes',
@@ -12,7 +12,7 @@ import emailjs from '@emailjs/browser';
 })
 export class GestionClientesPage implements OnInit {
 
-  constructor(private database:DatabaseService) { }
+  constructor(private database:DatabaseService, private notificationSvc: NotificationService) { }
 
   clientes:any[]=[];
   idUsuarioSeleccionado:any;
@@ -40,54 +40,53 @@ export class GestionClientesPage implements OnInit {
   }
 
 
-  async gestionarSolicitud(clienteSeleccionado: any, autorizar: boolean) {
-    try {
-      const idUsuarioSeleccionado = await this.obtenerIdClienteSeleccionado(clienteSeleccionado.dni);
-      if (idUsuarioSeleccionado) {
-        let nuevoEstado = '';
-        if (autorizar) {
-          nuevoEstado = 'autorizado';
-          await this.enviarCorreoElectronico(clienteSeleccionado.nombre, 'Aceptada', clienteSeleccionado.email);
-        } else {
-          nuevoEstado = 'rechazado';
-          await this.enviarCorreoElectronico(clienteSeleccionado.nombre, 'Rechazada', clienteSeleccionado.email);
-        }
 
-        const clienteActualizado = new Cliente(
-          clienteSeleccionado.nombre,
-          clienteSeleccionado.apellido,
-          clienteSeleccionado.dni,
-          clienteSeleccionado.fotoUrl,
-          clienteSeleccionado.email,
-          clienteSeleccionado.clave,
-          nuevoEstado,
-          clienteSeleccionado.anonimo,
-          clienteSeleccionado.fotoUrl,
-          clienteSeleccionado.perfil
-        );
+async gestionarSolicitud(clienteSeleccionado: any, autorizar: boolean) {
+  try {
+    const idUsuarioSeleccionado = await this.obtenerIdClienteSeleccionado(clienteSeleccionado.dni);
+    if (idUsuarioSeleccionado) {
+      let nuevoEstado = '';
 
-        await this.database.actualizar("clientes", clienteActualizado.toJSON(), idUsuarioSeleccionado);
-
-        console.log('Cliente actualizado con éxito.');
+      if (autorizar) {
+        nuevoEstado = 'autorizado';
       } else {
-        console.log('No se pudo encontrar el cliente para actualizar.');
+        nuevoEstado = 'rechazado';
       }
-    } catch (error) {
-      console.error('Error al actualizar el cliente:', error);
+
+      const clienteActualizado = new Cliente(
+        clienteSeleccionado.nombre,
+        clienteSeleccionado.apellido,
+        clienteSeleccionado.dni,
+        clienteSeleccionado.fotoUrl,
+        clienteSeleccionado.email,
+        clienteSeleccionado.clave,
+        nuevoEstado,
+        clienteSeleccionado.anonimo,
+        clienteSeleccionado.fotoUrl,
+        clienteSeleccionado.perfil
+      );
+
+      await this.database.actualizar("clientes", clienteActualizado.toJSON(), idUsuarioSeleccionado);
+
+      // Llamar a sendMail con el estado de autorización adecuado
+      this.notificationSvc.sendMail(autorizar, clienteSeleccionado.nombre, clienteSeleccionado.email)
+        .subscribe({
+          next: (response) => {
+            console.log('Correo enviado con éxito:', response);
+          },
+          error: (error) => {
+            console.error('Error al enviar el correo:', error);
+          }
+        });
+
+      console.log('Cliente actualizado con éxito.');
+    } else {
+      console.log('No se pudo encontrar el cliente para actualizar.');
     }
+  } catch (error) {
+    console.error('Error al actualizar el cliente:', error);
   }
-
-  async enviarCorreoElectronico(nombreCliente: string, estado: string, emailCliente: string) {
-    emailjs.init('GDS9E7Y2LFxVYkFeh');
-
-    const res = await emailjs.send('service_2hoxsd5', 'template_wh08x79', {
-      nombre_cliente: nombreCliente,
-      estado: estado,
-      email_cliente: emailCliente
-    });
-    console.log('Respuesta:');
-    console.log(res);
-  }
+}
 
   obtenerIdClienteSeleccionado(clienteSeleccionadoDni: any): Promise<string | null> {
     const clientesObservable: Observable<any[]> = this.database.obtenerTodos('clientes')!.pipe(

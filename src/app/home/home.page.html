@@ -5,7 +5,7 @@
     <ion-text class="text-center" style="margin-left: 5px;">
       <h1 style="font-size: medium;">{{loggedUser.email}}</h1>
     </ion-text>
-  
+
     <ion-button (click)="logout()" style="border-radius: 20%; margin-right: 5px;" color="danger">
       <img style="height: 20px;" src="../../assets/images/cerrar-sesion.png" alt="">
     </ion-button>
@@ -30,7 +30,7 @@
 <br><br>
 
 
-<ion-button *ngIf="perfilUsuarioActual.toLowerCase() == 'dueño' ||perfilUsuarioActual.toLowerCase() == 'supervisor'  " (click)="redireccionar('gestion-clientes')">
+<ion-button *ngIf="perfilUsuarioActual.toLowerCase() === 'dueño' ||perfilUsuarioActual.toLowerCase() === 'supervisor'  " (click)="redireccionar('gestion-clientes')">
   Autorizar Cliente
 </ion-button><br>
 

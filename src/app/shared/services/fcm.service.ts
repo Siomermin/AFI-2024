@@ -106,17 +106,6 @@ export class FcmService {
       async (notification: PushNotificationSchema) => {
         console.log('Push received: ' + JSON.stringify(notification));
 
-        // Muestra una alerta cuando la notificación se recibe en primer plano
-        if (this.platform.is('capacitor')) {
-          const alert = document.createElement('ion-alert');
-          alert.header = notification.title;
-          alert.message = notification.body;
-          alert.buttons = ['OK'];
-
-          document.body.appendChild(alert);
-          await alert.present();
-        }
-
         const data = notification?.data;
         if (data?.redirect) this._redirect.next(data?.redirect);
       }

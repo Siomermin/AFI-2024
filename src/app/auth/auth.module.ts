@@ -7,12 +7,11 @@ import { RouterModule } from '@angular/router';
 
 import { SharedModule } from '../shared/shared.module';
 
-import { RegisterPageComponent } from './pages/register-page/register-page.component';
 import { LoginPageComponent } from './pages/login-page/login-page.component';
 
 
 @NgModule({
-  declarations: [LoginPageComponent, RegisterPageComponent],
+  declarations: [LoginPageComponent],
   imports: [
     AuthRoutingModule,
     CommonModule,
