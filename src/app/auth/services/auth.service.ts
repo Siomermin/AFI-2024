@@ -5,6 +5,7 @@ import { TestUser } from '../interfaces/testUser.Interface';
 import { ValidatorsService } from 'src/app/shared/services/validators.service';
 import Swal from 'sweetalert2';
 import { DatabaseService } from './database.service';
+import { NotificationService } from 'src/app/shared/services/notification.service';
 
 @Injectable({
   providedIn: 'root',
@@ -15,6 +16,7 @@ export class AuthService {
   private ngZone = inject(NgZone);
   private validatorsService = inject(ValidatorsService);
   private database = inject(DatabaseService);
+  private notificationService = inject(NotificationService);
 
   public loggedUser?: any;
 
@@ -129,13 +131,19 @@ export class AuthService {
   }
 
 
-  register(email: string, password: string, docId?: any): Promise<void> {
+
+  register(email: string, password: string, clienteAnonimo: boolean, docId?: any): Promise<void> {
     return new Promise<void>((resolve, reject) => {
-      this.afAuth
-        .createUserWithEmailAndPassword(email, password)
+      this.afAuth.createUserWithEmailAndPassword(email, password)
         .then((userCredential) => {
-        this.handleSuccessfulAuth(userCredential, 'Usuario registrado exitosamente!');
-          this.logout();
+          this.handleSuccessfulAuth(userCredential, 'Usuario registrado exitosamente!');
+
+          if (!clienteAnonimo) {
+            this.notificationService.sendNotificationToRole('Nuevo Cliente Registrado!', 'Hay nuevos clientes esperando su aprobación', 'Supervisor');
+            this.notificationService.sendNotificationToRole('Nuevo Cliente Registrado!', 'Hay nuevos clientes esperando su aprobación', 'Dueño');
+            this.logout();
+          }
+
           resolve();
         })
         .catch((error) => {
@@ -144,6 +152,7 @@ export class AuthService {
         });
     });
   }
+
 
   observeUserState() {
     this.afAuth.authState.subscribe((userState) => {

@@ -10,8 +10,6 @@ export class AppComponent implements OnInit
  {
   public router = inject(Router);
 
-  constructor() {}
-
  ngOnInit(): void {
     this.router.navigateByUrl('splash');
  }

@@ -1,7 +1,7 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.AFI2024.app',
+  appId: 'com.afi.segundoparcial',
   appName: 'AFI2024',
   webDir: 'www',
   server: {
@@ -18,6 +18,9 @@ const config: CapacitorConfig = {
       splashFullScreen: true,
       splashImmersive: true,
     },
+    PushNotifications: {
+      presentationOptions: ["badge", "sound", "alert"],
+    }
   },
 };
 

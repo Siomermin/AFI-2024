@@ -68,7 +68,7 @@ export class AltaPage implements OnInit {
         }
       }).catch((err) => console.log("Error available: " + err));
     });
-  
+
     const menuObservable: Observable<any[]> = this.database
       .obtenerTodos('clientes')!
       .pipe(
@@ -197,10 +197,8 @@ export class AltaPage implements OnInit {
   }
 
   async guardarImagen() {
-    alert(this.fotoUrl)
     try {
       const nombreArchivo =  this.form.value.dni + this.form.value.nombre + this.form.value.apellido;
-      alert(nombreArchivo);
       const fotoBase64 = this.fotoUrl;
       const dataURL = `data:image/jpeg;base64,${fotoBase64}`;
 
@@ -252,7 +250,7 @@ export class AltaPage implements OnInit {
         heightAuto: false,
       });
     } else {
-      
+
       const imagenGuardada = await this.guardarImagen();
 
       const { nombre, apellido, dni, email, clave } = this.form.value;
@@ -276,7 +274,8 @@ export class AltaPage implements OnInit {
           .then((docRef) => {
             console.log('Documento escrito con ID: ', docRef.id);
 
-            this.authService.register(email, clave, docRef.id);
+            this.authService.register(email, clave, this.clienteAnonimo, docRef.id);
+
           })
           .catch((error) => {
             console.error('Error al crear el usuario:', error);
