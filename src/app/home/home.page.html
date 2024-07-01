@@ -54,7 +54,7 @@
   Alta Mesa
 </ion-button><br>
 
-<ion-button (click)="redireccionar('alta-producto')" *ngIf="this.perfilUsuarioActual === 'Empleado' "><!-- && (this.tipo === 'Cocinero' || this.tipo === 'Bartender') -->
+<ion-button (click)="redireccionar('alta-producto')" *ngIf="this.perfilUsuarioActual.toLowerCase() === 'cocinero' || this.perfilUsuarioActual.toLowerCase() === 'bartender'">
   Alta Producto
 </ion-button><br><br>
 
