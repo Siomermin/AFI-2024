@@ -154,5 +154,5 @@ export class PedirCuentaPage implements OnInit {
         heightAuto: false
       });
     });
-  }
+  } //Agregar cambio en 'lista-espera', actualizar estado a 'finalizado'
 }
