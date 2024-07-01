@@ -175,17 +175,26 @@ export class AuthService {
             'Usuario registrado exitosamente!'
           );
 
+          this.logout();
+
           this.notificationService.sendNotificationToRole(
             'Nuevo Cliente Registrado!',
             'Hay nuevos clientes esperando su aprobación',
             'Supervisor'
+          ).subscribe(
+            response => console.log('Notificación a Supervisor enviada con éxito', response),
+            error => console.error('Error al enviar notificación a Supervisor', error)
           );
+
           this.notificationService.sendNotificationToRole(
             'Nuevo Cliente Registrado!',
             'Hay nuevos clientes esperando su aprobación',
             'Dueño'
+          ).subscribe(
+            response => console.log('Notificación a Dueño enviada con éxito', response),
+            error => console.error('Error al enviar notificación a Dueño', error)
           );
-          this.logout();
+
 
           resolve();
         })
