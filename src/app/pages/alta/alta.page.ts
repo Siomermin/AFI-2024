@@ -111,17 +111,24 @@ export class AltaPage implements OnInit {
       this.form.get('dni')?.clearValidators();
       this.form.get('email')?.clearValidators();
       this.form.get('clave')?.clearValidators();
+      this.form.get('confirmarClave')?.clearValidators();
+      this.form.clearValidators(); // Eliminar los validadores a nivel de formulario
     } else {
       this.form.get('apellido')?.setValidators([Validators.required, Validators.pattern(/^[a-zA-Z\s]*$/)]);
       this.form.get('dni')?.setValidators([Validators.required, Validators.pattern(/^\d{1,10}$/)]);
       this.form.get('email')?.setValidators([Validators.required, Validators.email]);
       this.form.get('clave')?.setValidators([Validators.required, Validators.minLength(6)]);
+      this.form.get('confirmarClave')?.setValidators([Validators.required]);
+      this.form.setValidators(this.passwordMatchValidator); // Agregar validador a nivel de formulario
     }
     this.form.get('apellido')?.updateValueAndValidity();
     this.form.get('dni')?.updateValueAndValidity();
     this.form.get('email')?.updateValueAndValidity();
     this.form.get('clave')?.updateValueAndValidity();
+    this.form.get('confirmarClave')?.updateValueAndValidity();
+    this.form.updateValueAndValidity(); // Actualizar validadores a nivel de formulario
   }
+
 
   async scan(): Promise<void> {
     const granted = await this.requestPermissions();
@@ -258,8 +265,8 @@ export class AltaPage implements OnInit {
         nombre,
         this.clienteAnonimo ? '' : apellido,
         this.clienteAnonimo ? '' : dni,
-        email,
-        clave,
+        this.clienteAnonimo ? '' : email,
+        this.clienteAnonimo ? '' : clave,
         this.clienteAnonimo ? 'autorizado' : 'pendiente',
         this.clienteAnonimo,
         imagenGuardada ? imagenGuardada.toString() : '' ,
