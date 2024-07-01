@@ -62,15 +62,15 @@ async gestionarSolicitud(clienteSeleccionado: any, autorizar: boolean) {
         clienteSeleccionado.nombre,
         clienteSeleccionado.apellido,
         clienteSeleccionado.dni,
-        clienteSeleccionado.fotoUrl,
         clienteSeleccionado.email,
         clienteSeleccionado.clave,
         nuevoEstado,
         clienteSeleccionado.anonimo,
-        clienteSeleccionado.fotoUrl,
+        clienteSeleccionado.urlFoto,
         clienteSeleccionado.perfil
       );
 
+      console.log(clienteActualizado)
       console.log(clienteActualizado.toJSON(), idUsuarioSeleccionado);
       await this.database.actualizar("clientes", clienteActualizado.toJSON(), idUsuarioSeleccionado);
 

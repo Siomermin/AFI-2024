@@ -4,18 +4,18 @@ import { Router, ActivatedRoute, NavigationExtras} from '@angular/router';
 import { DatabaseService } from 'src/app/auth/services/database.service';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { QueryList, ElementRef } from '@angular/core';
+
 @Component({
   selector: 'app-memo-test',
   templateUrl: './memo-test.component.html',
   styleUrls: ['./memo-test.component.scss'],
 })
-export class MemoTestComponent  implements OnInit {
-
+export class MemoTestComponent implements OnInit {
 
   @ViewChildren('imagenElemento') imagenElementos!: QueryList<ElementRef>;
   @Output() datosEnviados = new EventEmitter<number>();
 
-  constructor(private router: ActivatedRoute, public route : Router, public database : DatabaseService, private afAuth : AngularFireAuth) {}
+  constructor(private router: ActivatedRoute, public route: Router, public database: DatabaseService, private afAuth: AngularFireAuth) {}
 
   public dificultad: string = "";
   public arrayImagenes: string[] = [];
@@ -35,7 +35,6 @@ export class MemoTestComponent  implements OnInit {
   elementosImg: HTMLImageElement[] = [];
   private userEmail: string | null = "";
 
-  
   descuento = 0;
   colSize: string = "";
   colHeight: string = "";
@@ -53,7 +52,6 @@ export class MemoTestComponent  implements OnInit {
 
     this.updateLayout();
   }
-
 
   enviarDatos() {
     this.datosEnviados.emit(this.descuento);
@@ -136,7 +134,7 @@ export class MemoTestComponent  implements OnInit {
   seleccionarImagen(nombreImagen: string, indice: number) {
     this.seleccionRonda++;
 
-    this.elementosImg[indice].src = `../../assets/juego/comida/${this.dificultad}/${nombreImagen}.png`;
+    this.elementosImg[indice].src = this.getImagePath(nombreImagen);
 
     if (this.seleccionRonda === 1) {
       this.primeraImagen = nombreImagen;
@@ -150,8 +148,8 @@ export class MemoTestComponent  implements OnInit {
         this.bloquearImagen = false;
       } else {
         setTimeout(() => {
-          this.elementosImg[indice].src = `../../../assets/images/q.png`;
-          this.elementosImg[this.indiceAnterior].src = `../../../assets/images/q.png`;
+          this.elementosImg[indice].src = `assets/images/q.png`;
+          this.elementosImg[this.indiceAnterior].src = `assets/images/q.png`;
           this.bloquearImagen = false;
         }, 1000);
       }
@@ -163,6 +161,10 @@ export class MemoTestComponent  implements OnInit {
       clearInterval(this.cronometro);
       this.mostrarResultado();
     }
+  }
+
+  getImagePath(nombreImagen: string): string {
+    return `assets/juego/comida/${this.dificultad}/${nombreImagen}.png`;
   }
 
   mostrarResultado() {
@@ -196,7 +198,7 @@ export class MemoTestComponent  implements OnInit {
     clearInterval(this.cronometro);
     Swal.fire({
       title: "Has abandonado el juego!",
-      imageUrl: "../../assets/img/medio.png",
+      imageUrl: "assets/img/medio.png",
       imageWidth: 130,
       imageHeight: 100,
       heightAuto: false,

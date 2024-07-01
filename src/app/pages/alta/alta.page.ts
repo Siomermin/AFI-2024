@@ -266,7 +266,6 @@ export class AltaPage implements OnInit {
         nombre,
         this.clienteAnonimo ? '' : apellido,
         this.clienteAnonimo ? '' : dni,
-        this.dni + this.nombre + this.apellido,
         email,
         clave,
         this.clienteAnonimo ? 'autorizado' : 'pendiente',

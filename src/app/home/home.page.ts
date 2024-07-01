@@ -110,17 +110,15 @@ export class HomePage implements OnInit  {
       this.informacionQr = 'No barcode detected';
     }
 
-    if(this.informacionQr == 'qr-propina' ||this.informacionQr == 'qr-ingreso') {
-      this.router.navigateByUrl(this.informacionQr);
+    if(this.informacionQr == 'propina' ||this.informacionQr == 'ingreso') {
+      this.router.navigateByUrl("qr-"+ this.informacionQr);
     }else{
 
       const navigationExtras: NavigationExtras = {
         queryParams: { dato: this.informacionQr }
       };
      
-
       this.router.navigate(['qr-mesa'], navigationExtras);
-
     }
   
     }
