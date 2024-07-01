@@ -10,7 +10,7 @@
 </ion-header>
 
 <ion-content [fullscreen]="true" class="ion-text-center" style="display: flex; justify-content: center; align-items: center;">
- 
+
   <div>
     <ion-button *ngIf="usuarioVinculado" size="large" (click)="mostrarMesasLibres()" class="ion-text-center">
       Ver disponibilidad <br> de mesa
@@ -23,7 +23,8 @@
     </ion-button>
   </div>
 
-  <div *ngIf="pedidoDelUsuario && pedidoDelUsuario.estado == 'entregado-confirmado' && usuarioVinculado">
+
+  <div *ngIf="pedidoDelUsuario && pedidoDelUsuario.estado === 'entregado-confirmado' && usuarioVinculado">
     <ion-button size="large"  (click)="redireccionar('pedir-cuenta')" class="ion-text-center">
       Pedir cuenta
     </ion-button>
@@ -53,9 +54,9 @@
     </ion-button>
   </div>
 
-  <div *ngIf="pedidoDelUsuario && pedidoDelUsuario.estado == 'entregado' && usuarioVinculado">
+  <div *ngIf="pedidoDelUsuario && pedidoDelUsuario.estado === 'entregado' && usuarioVinculado">
   <ion-button size="large"  (click)="confirmarRecepcionPedido()" class="ion-text-center">
-    Confirmar Recepción 
+    Confirmar Recepción
   </ion-button>
   </div>
 </ion-content>

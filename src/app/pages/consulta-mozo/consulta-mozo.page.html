@@ -4,7 +4,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content *ngIf="perfilUsuarioActual &&  perfilUsuarioActual.toLowerCase() =='mozo'" class="chat-background">
+<ion-content *ngIf="perfilUsuarioActual &&  perfilUsuarioActual.toLowerCase() ==='mozo'" class="chat-background">
 
   <div *ngIf="!mostrarChat && mesasVigentes">
     <h2 class="ion-text-center">Mesas con clientes:</h2><br>
@@ -21,12 +21,12 @@
   <br>
   <div class="message-list" #contenedorDeMensajes *ngIf="mostrarChat">
     <div *ngFor="let mensaje of consultasDelUsuario" class="msj">
-      <div class="contenedor-mensaje" 
+      <div class="contenedor-mensaje"
            [ngClass]="{
              'usuario-actual': esUsuarioLogeado(mensaje.emisorUid),
              'usuario-ajeno': !esUsuarioLogeado(mensaje.emisorUid)
            }">
-          
+
            <span style="font-size: small;">{{ formatTimestamp(mensaje.timestamp) }}</span>
            <p style="font-weight: 600;">{{ mensaje.texto }}</p>
       </div>
@@ -34,16 +34,16 @@
   </div>
 </ion-content>
 
-<ion-content *ngIf="perfilUsuarioActual.toLowerCase() =='cliente'" class="chat-background"  >
+<ion-content *ngIf="perfilUsuarioActual.toLowerCase() ==='cliente'" class="chat-background"  >
   <br>
-  <div class="message-list" #contenedorDeMensajes *ngIf="consultasDelUsuario!= 'undefined' || consultasDelUsuario.length>0" >
+  <div class="message-list" #contenedorDeMensajes *ngIf="consultasDelUsuario!== 'undefined' || consultasDelUsuario.length>0" >
     <div *ngFor="let mensaje of consultasDelUsuario" class="msj">
-      <div class="contenedor-mensaje" 
+      <div class="contenedor-mensaje"
            [ngClass]="{
              'usuario-actual': esUsuarioLogeado(mensaje.emisorUid),
              'usuario-ajeno': !esUsuarioLogeado(mensaje.emisorUid)
            }">
-          
+
            <span style="font-size: small;">{{ formatTimestamp(mensaje.timestamp) }}</span>
            <p style="font-weight: 600;">{{ mensaje.texto }}</p>
       </div>

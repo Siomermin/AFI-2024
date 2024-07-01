@@ -237,4 +237,3 @@ export class ConsultaMozoPage implements OnInit {
     this.mostrarChat=true;
   }
 }
-

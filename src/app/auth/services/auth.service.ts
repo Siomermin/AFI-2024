@@ -35,18 +35,39 @@ export class AuthService {
       profile: 'supervisor',
       gender: 'femenino',
     },
-    {
-      id: 3,
-      email: 'empleado@empleado.com',
-      password: '333333',
-      profile: 'empleado',
-      gender: 'masculino',
-    },
+    // {
+    //   id: 3,
+    //   email: 'empleado@empleado.com',
+    //   password: '333333',
+    //   profile: 'empleado',
+    //   gender: 'masculino',
+    // },
     {
       id: 4,
       email: 'cliente@cliente.com',
       password: '444444',
       profile: 'cliente',
+      gender: 'masculino',
+    },
+    // {
+    //   id: 5,
+    //   email: 'maitre@maitre.com',
+    //   password: '555555',
+    //   profile: 'maitre',
+    //   gender: 'masculino',
+    // },
+    {
+      id: 6,
+      email: 'mozo@mozo.com',
+      password: '666666',
+      profile: 'mozo',
+      gender: 'masculino',
+    },
+    {
+      id: 7,
+      email: 'cocinero@cocinero.com',
+      password: '777777',
+      profile: 'cocinero',
       gender: 'masculino',
     },
   ];
@@ -69,17 +90,19 @@ export class AuthService {
   }
 
   login(email: string, password: string) {
-    return this.database.obtenerClientePorEmail(email)
-      .then(async cliente => {
+    return this.database
+      .obtenerClientePorEmail(email)
+      .then(async (cliente) => {
         if (cliente) {
           if (cliente.estado === 'autorizado') {
             // Si el cliente está autorizado, proceder con el login
-            return this.afAuth.signInWithEmailAndPassword(email, password)
-              .then(userCredential => {
+            return this.afAuth
+              .signInWithEmailAndPassword(email, password)
+              .then((userCredential) => {
                 this.handleSuccessfulAuth(userCredential);
                 return userCredential;
               })
-              .catch(error => {
+              .catch((error) => {
                 this.handleErrorAuth(error);
                 return;
               });
@@ -90,31 +113,43 @@ export class AuthService {
           }
         } else {
           // Si no se encuentra el cliente, proceder con el login normal
-          return this.afAuth.signInWithEmailAndPassword(email, password)
-            .then(userCredential => {
+          return this.afAuth
+            .signInWithEmailAndPassword(email, password)
+            .then((userCredential) => {
               this.handleSuccessfulAuth(userCredential);
               return userCredential;
             })
-            .catch(error => {
+            .catch((error) => {
               this.handleErrorAuth(error);
             });
         }
       })
-      .catch(error => {
+      .catch((error) => {
         console.error('Error retrieving cliente:', error);
         this.handleErrorAuth(error);
       });
   }
 
-
   handleClienteEstado(estado: string) {
     switch (estado) {
       case 'pendiente':
-        return this.showEstadoAlert('Acceso denegado', 'Tu cuenta está pendiente de aprobación.', 'warning');
+        return this.showEstadoAlert(
+          'Acceso denegado',
+          'Tu cuenta está pendiente de aprobación.',
+          'warning'
+        );
       case 'rechazado':
-        return this.showEstadoAlert('Acceso denegado', 'Tu cuenta ha sido rechazada.', 'error');
+        return this.showEstadoAlert(
+          'Acceso denegado',
+          'Tu cuenta ha sido rechazada.',
+          'error'
+        );
       default:
-        return this.showEstadoAlert('Acceso denegado', 'Estado de cuenta desconocido.', 'error');
+        return this.showEstadoAlert(
+          'Acceso denegado',
+          'Estado de cuenta desconocido.',
+          'error'
+        );
     }
   }
 
@@ -130,19 +165,36 @@ export class AuthService {
     });
   }
 
-
-
-  register(email: string, password: string, clienteAnonimo: boolean, docId?: any): Promise<void> {
+  register(email: string, password: string, docId?: any): Promise<void> {
     return new Promise<void>((resolve, reject) => {
-      this.afAuth.createUserWithEmailAndPassword(email, password)
+      this.afAuth
+        .createUserWithEmailAndPassword(email, password)
         .then((userCredential) => {
-          this.handleSuccessfulAuth(userCredential, 'Usuario registrado exitosamente!');
+          this.handleSuccessfulAuth(
+            userCredential,
+            'Usuario registrado exitosamente!'
+          );
 
-          if (!clienteAnonimo) {
-            this.notificationService.sendNotificationToRole('Nuevo Cliente Registrado!', 'Hay nuevos clientes esperando su aprobación', 'Supervisor');
-            this.notificationService.sendNotificationToRole('Nuevo Cliente Registrado!', 'Hay nuevos clientes esperando su aprobación', 'Dueño');
-            this.logout();
-          }
+          this.logout();
+
+          this.notificationService.sendNotificationToRole(
+            'Nuevo Cliente Registrado!',
+            'Hay nuevos clientes esperando su aprobación',
+            'Supervisor'
+          ).subscribe(
+            response => console.log('Notificación a Supervisor enviada con éxito', response),
+            error => console.error('Error al enviar notificación a Supervisor', error)
+          );
+
+          this.notificationService.sendNotificationToRole(
+            'Nuevo Cliente Registrado!',
+            'Hay nuevos clientes esperando su aprobación',
+            'Dueño'
+          ).subscribe(
+            response => console.log('Notificación a Dueño enviada con éxito', response),
+            error => console.error('Error al enviar notificación a Dueño', error)
+          );
+
 
           resolve();
         })
@@ -153,6 +205,45 @@ export class AuthService {
     });
   }
 
+  public async registerAnonymous(clienteId: string, usuario: any) {
+    try {
+      const userCredential = await this.afAuth.signInAnonymously();
+      const user = userCredential.user;
+
+      if (user) {
+        await this.database.actualizar(
+          'clientes',
+          { uid: user.uid,
+            ...usuario
+           },
+          clienteId
+        );
+
+        Swal.fire({
+          title: 'Éxito',
+          text: 'Cliente anónimo registrado con éxito.',
+          icon: 'success',
+          confirmButtonText: 'Aceptar',
+          confirmButtonColor: 'var(--ion-color-primary)',
+          heightAuto: false,
+        });
+
+        this.ngZone.run(() => {
+          this.router.navigate(['/home']);
+        });
+      }
+    } catch (error) {
+      console.error('Error al registrar cliente anónimo:', error);
+      Swal.fire({
+        title: 'Error',
+        text: 'Hubo un problema al registrar el cliente anónimo. Por favor, inténtelo de nuevo.',
+        icon: 'error',
+        confirmButtonText: 'Aceptar',
+        confirmButtonColor: 'var(--ion-color-primary)',
+        heightAuto: false,
+      });
+    }
+  }
 
   observeUserState() {
     this.afAuth.authState.subscribe((userState) => {
@@ -175,7 +266,8 @@ export class AuthService {
 
   handleErrorAuth(error: any, docId?: any): void {
     if (docId) {
-      this.database.borrar('clientes', docId)
+      this.database
+        .borrar('clientes', docId)
         .then(() => {
           console.log('Documento borrado con éxito');
           // Puedes agregar aquí cualquier lógica adicional que desees ejecutar después del borrado exitoso
@@ -183,11 +275,12 @@ export class AuthService {
         .catch((err) => {
           console.error('Error al borrar el documento: ', err);
           // Muestra un mensaje de error si el borrado falla
-
         });
     }
 
-    const errorMessage = this.validatorsService.getFirebaseAuthErrorByCode(error.code);
+    const errorMessage = this.validatorsService.getFirebaseAuthErrorByCode(
+      error.code
+    );
     Swal.fire({
       title: 'Error',
       text: errorMessage,
@@ -199,7 +292,6 @@ export class AuthService {
     console.log(error.code);
     console.error(error.message);
   }
-
 
   get isLoggedIn(): boolean {
     const loggedUser = JSON.parse(localStorage.getItem('loggedUser')!);
