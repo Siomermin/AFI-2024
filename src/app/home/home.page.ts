@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { AuthService } from '../auth/services/auth.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { DatabaseService } from '../auth/services/database.service';
 import { Usuario } from '../clases/usuario';
 import { Barcode, BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
@@ -109,10 +109,33 @@ export class HomePage implements OnInit  {
     } else {
       this.informacionQr = 'No barcode detected';
     }
-  }
+
+    if(this.informacionQr == 'qr-propina' ||this.informacionQr == 'qr-ingreso') {
+      this.router.navigateByUrl(this.informacionQr);
+    }else{
+
+      const navigationExtras: NavigationExtras = {
+        queryParams: { dato: this.informacionQr }
+      };
+     
+
+      this.router.navigate(['qr-mesa'], navigationExtras);
+
+    }
+  
+    }
+  
 
   async stopScan(): Promise<void> {
     await BarcodeScanner.stopScan();
   }
 
+  mesa(){
+    const navigationExtras: NavigationExtras = {
+      queryParams: { dato: "4"  }
+    };
+
+    this.router.navigate(['qr-mesa'], navigationExtras);
+  }
+  
 }
