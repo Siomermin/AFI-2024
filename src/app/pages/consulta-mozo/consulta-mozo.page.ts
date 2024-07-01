@@ -4,6 +4,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { Router, ActivatedRoute, Data } from '@angular/router';
 import { Observable, map, switchMap } from 'rxjs';
+import { NotificationService } from '../../shared/services/notification.service';
 
 @Component({
   selector: 'app-consulta-mozo',
@@ -35,10 +36,11 @@ export class ConsultaMozoPage implements OnInit {
     private authService: AuthService,
     private firestore: AngularFirestore,
     private router: ActivatedRoute,
-    private database: DatabaseService
+    private database: DatabaseService,
+    private notificationService: NotificationService
   ) {}
 
-  
+
   ngOnInit() {
     this.usuarioLogeado = this.authService.loggedUser;
 
@@ -54,14 +56,14 @@ export class ConsultaMozoPage implements OnInit {
       const mesas = data;
       mesas.forEach(item => {
         if (item.estado ==  "vigente") {
-         this.mesasVigentes.push(item); 
+         this.mesasVigentes.push(item);
           return;
         }
       });
     }, error => {
       console.log(error);
     });
-  
+
 
     //obtengo perfil del usuario actualmente loggeado
     const usuarios: Observable<any[]> = this.database.obtenerTodos('usuarios')!.pipe(
@@ -71,7 +73,7 @@ export class ConsultaMozoPage implements OnInit {
         return { id, ...data };
       }))
     );
-  
+
     usuarios.subscribe(data => {
       this.usuarios = data;
       const usuarioEncontrado = this.usuarios.find(item => item.email == this.usuarioLogeado.email);
@@ -81,10 +83,10 @@ export class ConsultaMozoPage implements OnInit {
     }, error => {
       console.log(error);
     });
-  
+
 
     //si no enconto el perfil del usuario significa que es cliente
-   
+
 
     //obtengo toda la lista de cosnsultas
     const menuObservable: Observable<any[]> = this.database.obtenerTodos('consultas')!.pipe(
@@ -94,10 +96,10 @@ export class ConsultaMozoPage implements OnInit {
         return { id, ...data };
       }))
     );
-  
+
     if(!this.perfilUsuarioActual){
       this.mostrarChat=true;
-      this.perfilUsuarioActual= "Cliente"; 
+      this.perfilUsuarioActual= "Cliente";
       console.log(this.perfilUsuarioActual);
     menuObservable.subscribe(data => {
       this.consultas = data;
@@ -122,15 +124,15 @@ export class ConsultaMozoPage implements OnInit {
 
   enviarMensaje() {
     if (this.nuevoMensaje === "" || !this.usuarioLogeado || !this.usuarioLogeado.uid) return;
-  
+
     const mensaje = {
       emisorUid: this.usuarioLogeado.uid,
       texto: this.nuevoMensaje,
       timestamp: new Date().toISOString()  // Usar ISO string para la fecha
     };
-  
+
     console.log(mensaje);
-  
+
     if (this.consultasDelUsuario.length === 0) {
       // Crear un nuevo documento si no existe uno para el usuario
       const nuevaConsulta = {
@@ -138,6 +140,7 @@ export class ConsultaMozoPage implements OnInit {
         consultas: { mensajes: [mensaje] }  // Inicializar con el nuevo mensaje
       };
       this.database.crear('consultas', nuevaConsulta).then(() => {
+        this.notificationService.sendNotificationToRole('Hay consultas pendientes!', 'Un cliente acaba de realizar una nueva consulta', 'mozo');
         console.log('Nuevo documento creado.');
         this.scrollToTheLastItem();
       }).catch(error => {
@@ -145,22 +148,23 @@ export class ConsultaMozoPage implements OnInit {
       });
     } else {
       this.consultasDelUsuario.push(mensaje);
-    
+
       const actualizacionConsulta = {
         idCliente: this.consultaActual.idCliente,
         consultas: {
           mensajes: this.consultasDelUsuario
         }
       };
-      
+
       this.database.actualizar('consultas', actualizacionConsulta, this.idConsulta).then(() => {
+        this.notificationService.sendNotificationToRole('Hay consultas pendientes!', 'Un cliente acaba de realizar una nueva consulta', 'mozo');
         console.log('Documento actualizado.');
         this.scrollToTheLastItem();
       }).catch(error => {
         console.log('Error al actualizar el documento:', error);
       });
     }
-  
+
     this.nuevoMensaje = "";
   }
 
@@ -176,20 +180,20 @@ export class ConsultaMozoPage implements OnInit {
 
   formatTimestamp(timestamp: string): string {
     const date = new Date(timestamp);
-    
+
     // Formatear la fecha
     const fecha = date.toLocaleDateString('es-ES', {
       day: '2-digit',
       month: '2-digit',
       year: 'numeric'
     });
-  
+
     // Formatear la hora
     const hora = date.toLocaleTimeString('es-ES', {
       hour: '2-digit',
       minute: '2-digit'
     });
-  
+
     return `${fecha} - ${hora}`;
   }
 

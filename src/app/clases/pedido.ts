@@ -6,18 +6,17 @@ export class Pedido {
     tiempo:any;
     estado:string;
     preciosUnitarios:any[];
+    confirmacionMozo: boolean;
 
 
-
-    constructor(idCliente:string, items:any[], montoTotal:number, tiempo: any, estado: string, preciosUnitarios:any[]) {
+    constructor(idCliente:string, items:any[], montoTotal:number, tiempo: any, estado: string, preciosUnitarios:any[], confirmacionMozo: boolean) {
         this.idCliente = idCliente;
         this.items = items;
         this.montoTotal = montoTotal;
         this.tiempo = tiempo;
-        this.estado = estado;  
+        this.estado = estado;
         this.preciosUnitarios = preciosUnitarios
-
-
+        this.confirmacionMozo = confirmacionMozo;
     }
 
 
@@ -28,8 +27,8 @@ export class Pedido {
          montoTotal: this.montoTotal,
          tiempo: this.tiempo,
          estado: this.estado,
-         precioUnitarios: this.preciosUnitarios
-
+         precioUnitarios: this.preciosUnitarios,
+         confirmacionMozo: this.confirmacionMozo
 
 
         };

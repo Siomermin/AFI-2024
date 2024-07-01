@@ -51,7 +51,7 @@ export class QrMesaPage implements OnInit {
         if (item.idCliente == this.uidUsuarioActual && item.estado != 'finalizado') {
           this.pedidoDelUsuario = item;
           console.log(this.pedidoDelUsuario);
-          break;  
+          break;
         }
       }
     }, error => {
@@ -103,7 +103,7 @@ export class QrMesaPage implements OnInit {
         })),
         first() // Completa el observable después de la primera emisión
       );
-  
+
       mesasObservable.subscribe(data => {
         this.mesas = data;
         console.log(this.mesas);
@@ -112,7 +112,7 @@ export class QrMesaPage implements OnInit {
             this.mesaLibre = item;
             this.uidMesaLibre = item.id; // Asigna el id de la mesa libre a this.uidMesaLibre
             console.log(this.mesaLibre.numeroMesa);
-            break; 
+            break;
           }
         }
         console.log(this.mesaLibre);
@@ -133,14 +133,14 @@ export class QrMesaPage implements OnInit {
 
       if(!this.usuarioVinculado){
       if (clienteEnEspera) {
-  
+
         if (this.uidUsuarioActual != "" && this.mesaLibre != undefined) {
           const nuevaMesa = {
             idCliente: this.uidUsuarioActual,
             numeroMesa: this.mesaLibre.numeroMesa,
             estado: 'vigente',
           };
-  
+
           await this.database.crear("mesa-cliente", nuevaMesa);
 
           const mesaActualizada = {
@@ -154,7 +154,7 @@ export class QrMesaPage implements OnInit {
           await this.database.actualizar("lista-espera", listaEsperaActualizada, this.uidListaEspera);
 
           await this.database.actualizar("mesas", mesaActualizada, this.uidMesaLibre);
-  
+
           this.usuarioVinculado=true;
           // Mostrar mensaje de éxito
           Swal.fire({
@@ -208,12 +208,12 @@ export class QrMesaPage implements OnInit {
       });
     }
   }
-  
+
   async mostrarMesasLibres() {
     await this.verificarMesaLibre();
     // Filtrar las mesas con estado "libre"
     const mesasLibres = this.mesas.filter(mesa => mesa.estado === 'libre');
-  
+
     console.log(this.mesas);
 
     console.log(mesasLibres);
@@ -223,7 +223,7 @@ export class QrMesaPage implements OnInit {
       contenidoHTML += `<li>Mesa número: ${mesa.numeroMesa}</li>`;
     });
     contenidoHTML += '</ul>';
-  
+
     // Mostrar el SweetAlert con las mesas libres
     Swal.fire({
       title: "Mesas Libres",
@@ -244,7 +244,7 @@ export class QrMesaPage implements OnInit {
           return { id, ...data };
         }))
       );
-  
+
       listaEsperaObservable.subscribe(data => {
         this.listaEspera = data;
         this.clienteEnEspera = false; // Reiniciar el estado del cliente en espera
@@ -274,7 +274,7 @@ export class QrMesaPage implements OnInit {
         })),
         first() // Completa el observable después de la primera emisión
       );
-  
+
       usuarioVinculadoObservable.subscribe(data => {
         const usuariosEnMesas = data;
         this.usuarioVinculado = usuariosEnMesas.some(item => item.idCliente == this.uidUsuarioActual && item.estado == "vigente");
@@ -285,11 +285,12 @@ export class QrMesaPage implements OnInit {
       });
     });
   }
-  
+
   confirmarRecepcionPedido(){
 
     console.log(this.pedidoDelUsuario)
-    if(this.pedidoDelUsuario && this.pedidoDelUsuario.estado == "entregado"){
+
+     if(this.pedidoDelUsuario && this.pedidoDelUsuario.estado == "entregado"){
       Swal.fire({
         title: 'Tu pedido ya fue entregado',
         icon: 'success',
@@ -306,12 +307,12 @@ export class QrMesaPage implements OnInit {
           items: this.pedidoDelUsuario.items,
           montoTotal:this.pedidoDelUsuario.montoTotal,
           tiempo: this.pedidoDelUsuario.tiempo,
-          preciosUnitarios: this.pedidoDelUsuario.preciosUnitarios,
+          preciosUnitarios: this.pedidoDelUsuario.precioUnitarios,
 
         }
         console.log(pedidoActualizado);
 
-        this.database.actualizar("pedidos", pedidoActualizado, this.pedidoDelUsuario.id)
+        this.database.actualizar2("pedidos", pedidoActualizado, this.pedidoDelUsuario.id)
       });
 
     }else{

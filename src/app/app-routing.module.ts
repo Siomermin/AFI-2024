@@ -67,19 +67,31 @@ const routes: Routes = [
     loadChildren: () => import('./pages/alta-producto/alta-producto.module').then( m => m.AltaProductoPageModule)
   },
   {
+    path: 'pedidos-pendientes',
+    loadChildren: () => import('./pages/pedidos-pendientes/pedidos-pendientes.module').then( m => m.PedidosPendientesPageModule)
+  },
+  {
+    path: 'pedidos-por-confirmar-mozo',
+    loadChildren: () => import('./pages/pedidos-por-confirmar-mozo/pedidos-por-confirmar-mozo.module').then( m => m.PedidosPorConfirmarMozoPageModule)
+  },
+  {
     path: '**',
     redirectTo: 'home'
   },
-  
 
- 
 
- 
- 
 
-  
 
-  
+
+
+
+
+
+
+
+
+
+
 
 
 

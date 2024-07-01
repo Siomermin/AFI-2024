@@ -75,18 +75,18 @@ export class MenuPage implements OnInit {
     console.log(this.pedidoParcial);
     this.tiempoTotalPedido= Math.max(...this.tiemposPlatos);
     this.preciosUnitarios.push(precioPlato);
-    
+
   }
 
   finalizarPedido(){
     this.pedidoCompleto = this.pedidoParcial;
     this.verificarMayorTiempo();
-    const nuevoPedido= new Pedido(this.idClienteActual, this.pedidoCompleto, this.montoTotal, this.tiempoTotalPedido, "pendiente", this.preciosUnitarios );
+    const nuevoPedido= new Pedido(this.idClienteActual, this.pedidoCompleto, this.montoTotal, this.tiempoTotalPedido, "pendiente", this.preciosUnitarios, false);
     this.database.crear("pedidos", nuevoPedido.toJSON())
         .then((docRef) => {
           // Operación exitosa
           console.log("Documento escrito con ID: ", docRef.id);
-         
+
           Swal.fire({
             position: "top-end",
             icon: "success",
@@ -124,7 +124,7 @@ export class MenuPage implements OnInit {
     }
     this.tiempoTotalPedido= Math.max(...this.tiemposPlatos);
     return;
-  
+
   }
 
   verPedido(){
@@ -136,7 +136,7 @@ export class MenuPage implements OnInit {
     contenidoHTML += '</ul>';
     contenidoHTML += `<p><strong>Total: $${this.montoTotal.toFixed(2)}</strong></p>`; // Añadir el monto total debajo de la lista
 
-    
+
     Swal.fire({
       title: "Tu pedido:",
       heightAuto: false,

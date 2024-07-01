@@ -2,10 +2,8 @@ import { Component, OnInit, inject } from '@angular/core';
 import { AuthService } from '../auth/services/auth.service';
 import { Router } from '@angular/router';
 import { DatabaseService } from '../auth/services/database.service';
-import { Usuario } from '../clases/usuario';
 import { Barcode, BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
-import { AlertController } from '@ionic/angular';
-import { Platform } from '@ionic/angular';
+import { AlertController, Platform } from '@ionic/angular';
 import { FcmService } from '../shared/services/fcm.service';
 
 @Component({
@@ -21,16 +19,18 @@ export class HomePage implements OnInit  {
 
   private authService = inject(AuthService);
   public loggedUser: any;
-  perfilUsuarioActual:string="";
+  private _perfilUsuarioActual: string = '';
 
-  constructor(private router:Router,
-              private database:DatabaseService,
-              private alertController: AlertController,
-              private platform: Platform,
-              private fcm: FcmService
-  ){
+  constructor(
+    private router: Router,
+    private database: DatabaseService,
+    private alertController: AlertController,
+    private platform: Platform,
+    private fcm: FcmService
+  ) {
     this.platform.ready().then(() => {
       this.loggedUser = this.authService.loggedUser;
+      console.log(this.loggedUser.email);
       console.log(this.loggedUser.uid);
       this.fcm.initPush(this.loggedUser.uid);  // Asegúrate de pasar el UID del usuario aquí
     }).catch(e => {
@@ -39,10 +39,11 @@ export class HomePage implements OnInit  {
   }
 
   ngOnInit(): void {
+    this.loggedUser = this.authService.loggedUser;
+
     BarcodeScanner.isSupported().then((result) => {
       this.isSupported = result.supported;
       BarcodeScanner.isGoogleBarcodeScannerModuleAvailable().then((res) => {
-
         if (res.available == false) {
           BarcodeScanner.installGoogleBarcodeScannerModule().then(() => {
             BarcodeScanner.addListener("googleBarcodeScannerModuleInstallProgress", () => console.log("Instalación finalizada"));
@@ -52,34 +53,32 @@ export class HomePage implements OnInit  {
       }).catch((err) => console.log("Error available: " + err));
     });
 
-
     this.verificarPerfilUsuarioActual();
+  }
+
+  get perfilUsuarioActual(): string {
+    return this._perfilUsuarioActual.toLowerCase();
   }
 
   logout() {
     this.authService.logout();
   }
 
-  redireccionar(path:string){
+  redireccionar(path: string) {
     this.router.navigateByUrl(path);
   }
 
   async verificarPerfilUsuarioActual() {
     try {
-      const usuariosObservable = await this.database.obtenerTodos("usuarios");
-      if (usuariosObservable) {
-        usuariosObservable.subscribe(usuarios => {
-          usuarios.forEach(action => {
-            const usuario = action.payload.doc.data() as Usuario & { tipo?: string };  // Añadimos el campo opcional "tipo"
-            if (usuario.email === this.loggedUser.email) {
-              this.perfilUsuarioActual = usuario.perfil;
-              console.log(this.perfilUsuarioActual);
-            }
-          });
-        });
+      const usuario = await this.database.obtenerUsuarioPorEmail(this.loggedUser.email);
+      if (usuario) {
+        this._perfilUsuarioActual = usuario.perfil;
+      } else {
+        this._perfilUsuarioActual = 'cliente'; // Perfil predeterminado si no se encuentra el usuario
       }
+      console.log(this._perfilUsuarioActual);
     } catch (error) {
-      console.error("Error al obtener los usuarios: ", error);
+      console.error('Error al verificar el perfil del usuario:', error);
     }
   }
 
@@ -114,5 +113,4 @@ export class HomePage implements OnInit  {
   async stopScan(): Promise<void> {
     await BarcodeScanner.stopScan();
   }
-
 }
