@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Barcode, BarcodeScanner, GoogleBarcodeScannerModuleInstallState } from '@capacitor-mlkit/barcode-scanning';
 import { AlertController } from '@ionic/angular';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
@@ -43,16 +43,24 @@ export class AltaPage implements OnInit {
     private storage: StorageService,
     private fb: FormBuilder // Añadido FormBuilder
   ) {
-    this.form = this.fb.group({
-      nombre: ['', [Validators.required, Validators.pattern(/^[a-zA-Z\s]*$/)]],
-      apellido: [
-        '',
-        [Validators.required, Validators.pattern(/^[a-zA-Z\s]*$/)],
-      ],
-      dni: ['', [Validators.required, Validators.pattern(/^\d{1,10}$/)]],
-      email: ['', [Validators.required, Validators.email]],
-      clave: ['', [Validators.required, Validators.minLength(6)]],
-    });
+    this.form = this.fb.group(
+      {
+        nombre: ['', [Validators.required, Validators.pattern(/^[a-zA-Z\s]*$/)]],
+        apellido: ['', [Validators.required, Validators.pattern(/^[a-zA-Z\s]*$/)]],
+        dni: ['', [Validators.required, Validators.pattern(/^\d{1,10}$/)]],
+        email: ['', [Validators.required, Validators.email]],
+        clave: ['', [Validators.required, Validators.minLength(6)]],
+        confirmarClave: ['', [Validators.required]]
+      },
+      { validators: this.passwordMatchValidator }
+    );
+  }
+
+  passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
+    const clave = control.get('clave');
+    const confirmarClave = control.get('confirmarClave');
+    if (!clave || !confirmarClave) return null;
+    return clave.value === confirmarClave.value ? null : { passwordMismatch: true };
   }
   ngOnInit() {
     BarcodeScanner.isSupported().then((result) => {
@@ -246,13 +254,12 @@ export class AltaPage implements OnInit {
       const imagenGuardada = await this.guardarImagen();
 
       const { nombre, apellido, dni, email, clave } = this.form.value;
-      const nuevoUsuario = new Cliente(
+   const nuevoUsuario = new Cliente(
         nombre,
         this.clienteAnonimo ? '' : apellido,
         this.clienteAnonimo ? '' : dni,
-        dni + nombre + apellido,
-        this.clienteAnonimo ? '' : email,
-        this.clienteAnonimo ? '' : clave,
+        email,
+        clave,
         this.clienteAnonimo ? 'autorizado' : 'pendiente',
         this.clienteAnonimo,
         imagenGuardada ? imagenGuardada.toString() : '' ,

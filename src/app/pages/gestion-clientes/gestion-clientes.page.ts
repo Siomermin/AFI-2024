@@ -16,6 +16,7 @@ export class GestionClientesPage implements OnInit {
 
   clientes:any[]=[];
   idUsuarioSeleccionado:any;
+  clientesPendientes:any[]=[];
 
   ngOnInit() {
 
@@ -33,7 +34,11 @@ export class GestionClientesPage implements OnInit {
 
     clientesPendientesObservable.subscribe(data => {
       this.clientes = data;
-      console.log(this.clientes);
+      this.clientes.forEach( cliente => {
+        if(cliente.estado == "pendiente"){
+          this.clientesPendientes.push(cliente);
+        }
+      })
     }, error => {
       console.log(error);
     });
@@ -57,15 +62,16 @@ async gestionarSolicitud(clienteSeleccionado: any, autorizar: boolean) {
         clienteSeleccionado.nombre,
         clienteSeleccionado.apellido,
         clienteSeleccionado.dni,
-        clienteSeleccionado.fotoUrl,
         clienteSeleccionado.email,
         clienteSeleccionado.clave,
         nuevoEstado,
         clienteSeleccionado.anonimo,
-        clienteSeleccionado.fotoUrl,
+        clienteSeleccionado.urlFoto,
         clienteSeleccionado.perfil
       );
 
+      console.log(clienteActualizado)
+      console.log(clienteActualizado.toJSON(), idUsuarioSeleccionado);
       await this.database.actualizar("clientes", clienteActualizado.toJSON(), idUsuarioSeleccionado);
 
       // Llamar a sendMail con el estado de autorización adecuado

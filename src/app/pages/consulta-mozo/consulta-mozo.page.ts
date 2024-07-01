@@ -3,8 +3,7 @@ import { DatabaseService } from 'src/app/auth/services/database.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { Router, ActivatedRoute, Data } from '@angular/router';
-import { Observable, map, switchMap } from 'rxjs';
-import { NotificationService } from '../../shared/services/notification.service';
+import { Observable, map, switchMap, forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-consulta-mozo',
@@ -36,11 +35,10 @@ export class ConsultaMozoPage implements OnInit {
     private authService: AuthService,
     private firestore: AngularFirestore,
     private router: ActivatedRoute,
-    private database: DatabaseService,
-    private notificationService: NotificationService
+    private database: DatabaseService
   ) {}
 
-
+  
   ngOnInit() {
     this.usuarioLogeado = this.authService.loggedUser;
 
@@ -52,19 +50,41 @@ export class ConsultaMozoPage implements OnInit {
         return { id, ...data };
       }))
     );
-    numerosMesas.subscribe(data => {
+    
+    numerosMesas.subscribe(
+      data => {
+        const mesas = data;
+        console.log(mesas);
+        
+        mesas.forEach(item => {
+          if (item.estado === 'vigente') {
+            this.mesasVigentes.push(item);
+          }
+        });
+        console.log(this.mesasVigentes);
+      },
+      error => {
+        console.log(error);
+      }
+    );
+  
+    
+    const consultasObservable: Observable<any[]> = this.database.obtenerTodos('consultas')!.pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as any;
+        const id = a.payload.doc.id;
+        return { id, ...data };
+      }))
+      
+    );
+
+    consultasObservable.subscribe(data => {
       const mesas = data;
-      mesas.forEach(item => {
-        if (item.estado ==  "vigente") {
-         this.mesasVigentes.push(item);
-          return;
-        }
-      });
+      this.consultas=data;
     }, error => {
       console.log(error);
     });
-
-
+  
     //obtengo perfil del usuario actualmente loggeado
     const usuarios: Observable<any[]> = this.database.obtenerTodos('usuarios')!.pipe(
       map(actions => actions.map(a => {
@@ -73,66 +93,73 @@ export class ConsultaMozoPage implements OnInit {
         return { id, ...data };
       }))
     );
-
+  
     usuarios.subscribe(data => {
       this.usuarios = data;
       const usuarioEncontrado = this.usuarios.find(item => item.email == this.usuarioLogeado.email);
       if (usuarioEncontrado) {
         this.perfilUsuarioActual = usuarioEncontrado.perfil;
+      }else{
+
+        const menuObservable: Observable<any[]> = this.database.obtenerTodos('consultas')!.pipe(
+          map(actions => actions.map(a => {
+            const data = a.payload.doc.data() as any;
+            const id = a.payload.doc.id;
+            return { id, ...data };
+          }))
+        );
+      
+        if(!this.perfilUsuarioActual){
+          this.mostrarChat=true;
+          this.perfilUsuarioActual= "Cliente"; 
+          console.log(this.perfilUsuarioActual);
+        menuObservable.subscribe(data => {
+          this.consultas = data;
+          console.log(this.consultas);
+          console.log(this.usuarioLogeado.uid);
+          this.consultas.forEach(item => {
+            if (item.idCliente == this.usuarioLogeado.uid) {
+              this.consultasDelUsuario = item.consultas?.mensajes || [];  // Inicializa como un array si está indefinido
+              console.log(this.consultasDelUsuario);
+              this.idConsulta = item.id;
+              this.consultaActual= item;
+              console.log("Id de la consulta", item.id);
+              return;
+            }
+          });
+        }, error => {
+          console.log(error);
+          });
+        }
+
+
       }
     }, error => {
       console.log(error);
     });
-
+  
 
     //si no enconto el perfil del usuario significa que es cliente
-
+   
 
     //obtengo toda la lista de cosnsultas
-    const menuObservable: Observable<any[]> = this.database.obtenerTodos('consultas')!.pipe(
-      map(actions => actions.map(a => {
-        const data = a.payload.doc.data() as any;
-        const id = a.payload.doc.id;
-        return { id, ...data };
-      }))
-    );
-
-    if(!this.perfilUsuarioActual){
-      this.mostrarChat=true;
-      this.perfilUsuarioActual= "Cliente";
-      console.log(this.perfilUsuarioActual);
-    menuObservable.subscribe(data => {
-      this.consultas = data;
-      console.log(this.consultas);
-      console.log(this.usuarioLogeado.uid);
-      this.consultas.forEach(item => {
-        if (item.idCliente == this.usuarioLogeado.uid) {
-          this.consultasDelUsuario = item.consultas?.mensajes || [];  // Inicializa como un array si está indefinido
-          console.log(this.consultasDelUsuario);
-          this.idConsulta = item.id;
-          this.consultaActual= item;
-          console.log("Id de la consulta", item.id);
-          return;
-        }
-      });
-    }, error => {
-      console.log(error);
-      });
-    }
+   
   }
 
 
+ 
+
   enviarMensaje() {
     if (this.nuevoMensaje === "" || !this.usuarioLogeado || !this.usuarioLogeado.uid) return;
-
+  
     const mensaje = {
       emisorUid: this.usuarioLogeado.uid,
       texto: this.nuevoMensaje,
       timestamp: new Date().toISOString()  // Usar ISO string para la fecha
     };
-
+  
     console.log(mensaje);
-
+  
     if (this.consultasDelUsuario.length === 0) {
       // Crear un nuevo documento si no existe uno para el usuario
       const nuevaConsulta = {
@@ -140,7 +167,6 @@ export class ConsultaMozoPage implements OnInit {
         consultas: { mensajes: [mensaje] }  // Inicializar con el nuevo mensaje
       };
       this.database.crear('consultas', nuevaConsulta).then(() => {
-        this.notificationService.sendNotificationToRole('Hay consultas pendientes!', 'Un cliente acaba de realizar una nueva consulta', 'mozo');
         console.log('Nuevo documento creado.');
         this.scrollToTheLastItem();
       }).catch(error => {
@@ -148,23 +174,22 @@ export class ConsultaMozoPage implements OnInit {
       });
     } else {
       this.consultasDelUsuario.push(mensaje);
-
+    
       const actualizacionConsulta = {
         idCliente: this.consultaActual.idCliente,
         consultas: {
           mensajes: this.consultasDelUsuario
         }
       };
-
+      
       this.database.actualizar('consultas', actualizacionConsulta, this.idConsulta).then(() => {
-        this.notificationService.sendNotificationToRole('Hay consultas pendientes!', 'Un cliente acaba de realizar una nueva consulta', 'mozo');
         console.log('Documento actualizado.');
         this.scrollToTheLastItem();
       }).catch(error => {
         console.log('Error al actualizar el documento:', error);
       });
     }
-
+  
     this.nuevoMensaje = "";
   }
 
@@ -180,20 +205,20 @@ export class ConsultaMozoPage implements OnInit {
 
   formatTimestamp(timestamp: string): string {
     const date = new Date(timestamp);
-
+    
     // Formatear la fecha
     const fecha = date.toLocaleDateString('es-ES', {
       day: '2-digit',
       month: '2-digit',
       year: 'numeric'
     });
-
+  
     // Formatear la hora
     const hora = date.toLocaleTimeString('es-ES', {
       hour: '2-digit',
       minute: '2-digit'
     });
-
+  
     return `${fecha} - ${hora}`;
   }
 
@@ -212,4 +237,3 @@ export class ConsultaMozoPage implements OnInit {
     this.mostrarChat=true;
   }
 }
-
