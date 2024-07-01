@@ -28,7 +28,7 @@ export class Pedido {
          montoTotal: this.montoTotal,
          tiempo: this.tiempo,
          estado: this.estado,
-         precioUnitarios: this.preciosUnitarios
+         preciosUnitarios: this.preciosUnitarios
 
 
 
