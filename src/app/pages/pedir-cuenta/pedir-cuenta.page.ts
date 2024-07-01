@@ -75,6 +75,28 @@ export class PedirCuentaPage implements OnInit {
     });
   }
 
+  async actualizarLista() {
+    let docEnLista : any;
+
+    await this.database.obtenerTodos("lista-espera")?.subscribe(next => {
+      let arrayResults = next.map((obj: any) => obj.payload.doc.data());
+
+      for (let doc of arrayResults) {
+        if (doc.idCliente === this.idUsuarioActual && doc.estado === "asignado") {
+          docEnLista = doc;
+          console.log(docEnLista);
+          break;
+        }
+      }
+    });// Hasta aca llegamos
+
+    const listaEsperaActualizada = {
+      estado: 'finalizado',
+      idCliente: docEnLista.idCliente 
+    };
+    this.database.actualizar("lista-espera", listaEsperaActualizada, docEnLista.id).then(()=> console.log("Estado lista-espera actualizado")); //Creo que esto falló
+  }
+
   async requestPermissions(): Promise<boolean> {
     const { camera } = await BarcodeScanner.requestPermissions();
     return camera === 'granted' || camera === 'limited';
@@ -121,7 +143,7 @@ export class PedirCuentaPage implements OnInit {
     this.router.navigate(['qr-propina'], navigationExtras);
   }
 
-  realizarPago(){
+  async realizarPago(){
 
     const pedidoActualizado={
       estado: "finalizado",
@@ -134,6 +156,8 @@ export class PedirCuentaPage implements OnInit {
     }
     this.database.actualizar("pedidos", pedidoActualizado, this.pedidoActual.id)
     .then(() => {
+      this.actualizarLista();
+
       Swal.fire({
         position: "top-end",
         icon: "success",
