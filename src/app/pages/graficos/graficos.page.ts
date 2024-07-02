@@ -1,4 +1,5 @@
 import { Component, AfterViewInit } from '@angular/core';
+import { Location } from '@angular/common';
 import { DatabaseService } from 'src/app/auth/services/database.service';
 import { Chart, registerables } from 'chart.js';
 
@@ -10,7 +11,7 @@ import { Chart, registerables } from 'chart.js';
 export class GraficosPage implements AfterViewInit {
   listaEncuestas: any[] = [];
 
-  constructor(private database: DatabaseService) {}
+  constructor(private location: Location, private database: DatabaseService) {}
 
   ngAfterViewInit() {
     this.database.obtenerTodos("encuestas")?.subscribe(encuestas => {
@@ -19,6 +20,11 @@ export class GraficosPage implements AfterViewInit {
       this.dibujarGraficoBarrasHorizontal();
       this.dibujarGraficoBarrasVertical();
     });
+  }
+
+  //Vuelve a la ruta anterior
+  volver() {
+    this.location.back();
   }
 
   dibujarGraficoTorta() {
