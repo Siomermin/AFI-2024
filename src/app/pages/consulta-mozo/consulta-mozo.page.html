@@ -1,17 +1,17 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title class="ion-text-center"><img routerLink="/qr-mesa" src="../../../assets/images/back.png" alt="" height="15px">  Consulta Mozo</ion-title>
+    <ion-title class="ion-text-center"> Consulta Mozo</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content *ngIf="perfilUsuarioActual &&  perfilUsuarioActual.toLowerCase() ==='mozo'" class="chat-background">
 
   <div *ngIf="!mostrarChat && mesasVigentes">
-    <h2 class="ion-text-center">Mesas con clientes:</h2><br>
+    <h1 class="ion-text-center">Mesas con clientes:</h1><br>
     <ion-card *ngFor="let item of mesasVigentes" class="ion-text-center">
       <br>
       <ion-card-title>Numero de Mesa: {{item.numeroMesa}}</ion-card-title>
-      <ion-button color="secondary"  (click)="vincularChatConConsultaDelUsuario(item)" >Ver Chat</ion-button>
+      <ion-button style="margin-top: 9px;" color="secondary"  (click)="vincularChatConConsultaDelUsuario(item)" >Ver Chat</ion-button>
       <br><br>
     </ion-card>
   </div>

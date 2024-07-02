@@ -1,68 +1,43 @@
-
-
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title class="ion-text-center">
-      <img routerLink="/home" src="../../../assets/images/back.png" alt="" height="15px">
-      Opciones
+      QR Mesa
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" class="ion-text-center" style="display: flex; justify-content: center; align-items: center;">
-
-  <div>
-    <ion-button *ngIf="usuarioVinculado" size="large" (click)="mostrarMesasLibres()" class="ion-text-center">
-      Ver disponibilidad <br> de mesa
+<ion-content [fullscreen]="true" class="ion-text-center content-background">
+  <div class="container">
+    <ion-button *ngIf="usuarioVinculado" expand="full" (click)="mostrarMesasLibres()" class="custom-button">
+      Ver disponibilidad de mesa
     </ion-button>
-  </div>
 
-  <div *ngIf="!usuarioVinculado">
-    <ion-button size="large" (click)="vincularMesa()" class="ion-text-center">
+    <ion-button *ngIf="!usuarioVinculado" expand="full" (click)="vincularMesa()" class="custom-button">
       Vincularme con una mesa
     </ion-button>
-  </div>
 
-
-  <div *ngIf="pedidoDelUsuario && pedidoDelUsuario.estado === 'entregado-confirmado' && usuarioVinculado">
-    <ion-button size="large"  (click)="redireccionar('pedir-cuenta')" class="ion-text-center">
+    <ion-button *ngIf="pedidoDelUsuario && pedidoDelUsuario.estado === 'entregado-confirmado' && usuarioVinculado" expand="full" (click)="redireccionar('pedir-cuenta')" class="custom-button">
       Pedir cuenta
     </ion-button>
-  </div>
 
-  <div>
-    <ion-button size="large" *ngIf="usuarioVinculado" (click)="redireccionar('consulta-mozo')" class="ion-text-center">
+    <ion-button *ngIf="usuarioVinculado" expand="full" (click)="redireccionar('consulta-mozo')" class="custom-button">
       Consultar al mozo
     </ion-button>
-  </div>
 
-  <div>
-    <ion-button *ngIf="!pedidoDelUsuario && usuarioVinculado" size="large" (click)="redireccionar('menu')" class="ion-text-center">
+    <ion-button *ngIf="!pedidoDelUsuario && usuarioVinculado" expand="full" (click)="redireccionar('menu')" class="custom-button">
       Ver menú
     </ion-button>
-  </div>
 
-  <div  *ngIf="pedidoDelUsuario && usuarioVinculado">
-    <ion-button size="large" (click)="mostrarPedido()" class="ion-text-center">
+    <ion-button *ngIf="pedidoDelUsuario && usuarioVinculado" expand="full" (click)="mostrarPedido()" class="custom-button">
       Ver estado del pedido
     </ion-button>
-  </div>
 
-  <div>
-    <ion-button *ngIf="usuarioVinculado" size="large" (click)="redireccionar('encuesta')" class="ion-text-center">
+    <ion-button *ngIf="usuarioVinculado" expand="full" (click)="redireccionar('encuesta')" class="custom-button">
       Acceder a encuestas
     </ion-button>
-  </div>
 
-  <div *ngIf="pedidoDelUsuario && pedidoDelUsuario.estado === 'entregado' && usuarioVinculado">
-  <ion-button size="large"  (click)="confirmarRecepcionPedido()" class="ion-text-center">
-    Confirmar Recepción
-  </ion-button>
+    <ion-button *ngIf="pedidoDelUsuario && pedidoDelUsuario.estado === 'entregado' && usuarioVinculado" expand="full" (click)="confirmarRecepcionPedido()" class="custom-button">
+      Confirmar Recepción
+    </ion-button>
   </div>
 </ion-content>
-
-
-
-
-
-
