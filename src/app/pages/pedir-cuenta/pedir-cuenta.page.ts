@@ -4,6 +4,7 @@ import { ActivatedRoute, Data, Route, Router, NavigationExtras } from '@angular/
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Barcode, BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
 import { AlertController } from '@ionic/angular';
+import { Observable, map } from 'rxjs';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -24,6 +25,7 @@ export class PedirCuentaPage implements OnInit {
   mostrarJuego: boolean = false;
   totalConDescuento: number | null = null;
   propina: number | null = null;
+  usuarioEnLista: any = null;
   constructor(
     private afAuth: AngularFireAuth,
     private database: DatabaseService,
@@ -38,6 +40,7 @@ export class PedirCuentaPage implements OnInit {
       if (user) {
         this.idUsuarioActual = user.uid;
         this.cargarPedidos();
+        this.cargarListaEspera();
       }
     });
     this.activatedRouter.queryParams.subscribe(params => {
@@ -61,40 +64,58 @@ export class PedirCuentaPage implements OnInit {
   }
 
   cargarPedidos() {
-    this.database.obtenerTodos("pedidos")?.subscribe(pedidos => {
-      this.listaPedidos = pedidos.map((pedido: any) => pedido.payload.doc.data());
+    const pedidosObs : Observable<any[]> = this.database.obtenerTodos('pedidos')!.pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as any;
+        const id = a.payload.doc.id;
+        return { id, ...data };
+      }))
+    );
 
+    pedidosObs.subscribe(data => {
+      this.listaPedidos = data;
       for (let item of this.listaPedidos) {
         if (item.idCliente === this.idUsuarioActual && item.estado === "entregado-confirmado") {
           this.pedidoActual = item;
           this.preciosUnitarios = item.preciosUnitarios;
           console.log(this.pedidoActual);
-          break; // Termina el bucle una vez que se encuentra el pedido actual
+          break;
+        }
+      }
+    }); 
+  }
+
+  cargarListaEspera() {
+    const listaEsperaObs : Observable<any[]> = this.database.obtenerTodos('lista-espera')!.pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as any;
+        const id = a.payload.doc.id;
+        return { id, ...data };
+      }))
+    );
+
+    listaEsperaObs.subscribe(data => {
+      let arrayResults = data;
+      for (let doc of arrayResults) {
+        console.log(doc);
+        if (doc.idCliente == this.idUsuarioActual && doc.estado === "asignado") {
+          this.usuarioEnLista = doc;
+          console.log(this.usuarioEnLista);
+          break;
         }
       }
     });
   }
 
   async actualizarLista() {
-    let docEnLista : any;
-
-    await this.database.obtenerTodos("lista-espera")?.subscribe(next => {
-      let arrayResults = next.map((obj: any) => obj.payload.doc.data());
-
-      for (let doc of arrayResults) {
-        if (doc.idCliente === this.idUsuarioActual && doc.estado === "asignado") {
-          docEnLista = doc;
-          console.log(docEnLista);
-          break;
-        }
-      }
-    });// Hasta aca llegamos
-
     const listaEsperaActualizada = {
       estado: 'finalizado',
-      idCliente: docEnLista.idCliente 
+      idCliente: this.usuarioEnLista.idCliente 
     };
-    this.database.actualizar("lista-espera", listaEsperaActualizada, docEnLista.id).then(()=> console.log("Estado lista-espera actualizado")); //Creo que esto falló
+
+    await this.database.actualizar("lista-espera", listaEsperaActualizada, this.usuarioEnLista.id)
+    .then(()=> console.log("Estado lista-espera actualizado"))
+    .catch((error) => console.log(error)); 
   }
 
   async requestPermissions(): Promise<boolean> {
