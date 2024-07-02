@@ -33,6 +33,7 @@ export class GestionClientesPage implements OnInit {
     );
 
     clientesPendientesObservable.subscribe(data => {
+      this.clientesPendientes = [];
       this.clientes = data;
       this.clientes.forEach( cliente => {
         if(cliente.estado == "pendiente"){

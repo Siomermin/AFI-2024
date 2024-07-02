@@ -77,7 +77,11 @@ const routes: Routes = [
   {
     path: '**',
     redirectTo: 'home'
+  },  {
+    path: 'lista-espera',
+    loadChildren: () => import('./lista-espera/lista-espera.module').then( m => m.ListaEsperaPageModule)
   },
+
 
 
 

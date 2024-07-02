@@ -13,7 +13,7 @@ import Swal from 'sweetalert2';
 })
 export class QrIngresoPage implements OnInit {
 
-  private uidUsuarioActual: string = '';
+  private uidUsuarioActual : string = '';
   private arrayListaEspera : Array<any> = [];
   private docEnLista : any = null;
 
@@ -122,8 +122,7 @@ export class QrIngresoPage implements OnInit {
       });
     }
   }
-
-  //Avisar al mozo con push notification
+  
   enviarNotificacion() {
 
   }
