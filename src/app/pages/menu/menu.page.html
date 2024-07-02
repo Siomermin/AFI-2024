@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title class="ion-text-center"><img routerLink="/qr-mesa" src="../../../assets/images/back.png" alt="" height="15px"> Menu</ion-title>
   </ion-toolbar>
@@ -15,11 +15,10 @@
 
   </ion-fab>
 
-  <ion-fab slot="fixed" vertical="top" horizontal="end" edge="true" *ngIf="montoTotal>0">
-    <ion-fab-button color="primary">
-     Total <br> ${{montoTotal}}
+  <ion-fab slot="fixed" vertical="top" horizontal="end" edge="true" *ngIf="montoTotal > 0">
+    <ion-fab-button color="primary" class="custom-fab-button">
+      Total <br> ${{ montoTotal }}
     </ion-fab-button>
-
   </ion-fab>
 
   <ion-fab slot="fixed" vertical="bottom" horizontal="end" *ngIf="tiempoTotalPedido > 0" size="large">
@@ -35,8 +34,8 @@
 
 
 
-  <h2>Platos Principales</h2>
-<ion-card *ngFor="let item of principales; let i = index" style="background-color: #ccc;" (click)="mostrarInputCantidad(i)">
+  <h2 style="color: #000; font-weight: 800;">Platos Principales</h2>
+<ion-card *ngFor="let item of principales; let i = index" (click)="mostrarInputCantidad(i)">
   <div *ngIf="item.tipo === 'principal'">
     <ion-card-header>
       <ion-card-title>{{item.nombre}}</ion-card-title>
@@ -49,12 +48,12 @@
       </div>
     </div>
 
-    <ion-card-content>
+    <ion-card-content style="font-size: 18px;">
       {{item.descripcion}}
       <!-- Input para seleccionar la cantidad -->
     </ion-card-content>
     <div *ngIf="i === selectedCardIndex">
-      <ion-input style="border: 2px solid #b2b1b1; padding: 4px; width: 150px; margin-left: 5px; border-radius: 15px;" type="number" label="&nbsp;&nbsp;Cantidad:"         (ionChange)="actualizarCantidad(i, $event)" ></ion-input>
+      <ion-input style="font-size: 14px;border: 2px solid #b2b1b1; padding: 4px; width: 150px; margin-left: 5px; border-radius: 15px;" type="number" label="&nbsp;&nbsp;Cantidad:"         (ionChange)="actualizarCantidad(i, $event)" ></ion-input>
     </div>
     <br><br>
     <ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)="agregarPlatoAlPedido(item.nombre, item.precio, item.tiempo, i)" >
@@ -66,9 +65,9 @@
 </ion-card>
 
 
-  <h2>Guarniciones</h2>
+  <h2 style="color: #000; font-weight: 800;">Guarniciones</h2>
 
-  <ion-card *ngFor="let item of guarniciones ;let i = index" style="background-color: #ccc;"  (click)="mostrarInputCantidad(i)">
+  <ion-card *ngFor="let item of guarniciones ;let i = index"  (click)="mostrarInputCantidad(i)">
     <div *ngIf="item.tipo === 'guarnicion'">
       <ion-card-header>
         <ion-card-title>{{item.nombre}}</ion-card-title>
@@ -81,11 +80,11 @@
         </div>
       </div>
 
-      <ion-card-content>
+      <ion-card-content  style="font-size: 18px;">
         {{item.descripcion}}
       </ion-card-content>
       <div *ngIf="i === selectedCardIndex">
-        <ion-input style="border: 2px solid #b2b1b1; padding: 4px; width: 150px; margin-left: 5px; border-radius: 15px;" type="number" label="&nbsp;&nbsp;Cantidad:"         (ionChange)="actualizarCantidad(i, $event)" ></ion-input>
+        <ion-input style="font-size: 14px;border: 2px solid #b2b1b1; padding: 4px; width: 150px; margin-left: 5px; border-radius: 15px;" type="number" label="&nbsp;&nbsp;Cantidad:"         (ionChange)="actualizarCantidad(i, $event)" ></ion-input>
       </div>
       <br><br>
       <ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)="agregarPlatoAlPedido(item.nombre, item.precio, item.tiempo, i)" >
@@ -96,9 +95,9 @@
     </div>
   </ion-card>
 
-  <h2>Postres</h2>
+  <h2 style="color: #000; font-weight: 800;">Postres</h2>
 
-  <ion-card *ngFor="let item of postres ;let i = index" style="background-color: #ccc ;"  (click)="mostrarInputCantidad(i)" >
+  <ion-card *ngFor="let item of postres ;let i = index"  (click)="mostrarInputCantidad(i)" >
     <div *ngIf="item.tipo==='postre'">
     <ion-card-header>
       <ion-card-title>{{item.nombre}}</ion-card-title>
@@ -113,12 +112,12 @@
     </div>
 
 
-    <ion-card-content>
+    <ion-card-content style="font-size: 18px;">
       {{item.descripcion}}
     </ion-card-content>
 
     <div *ngIf="i === selectedCardIndex">
-      <ion-input style="border: 2px solid #b2b1b1; padding: 4px; width: 150px; margin-left: 5px; border-radius: 15px;" type="number" label="&nbsp;&nbsp;Cantidad:"         (ionChange)="actualizarCantidad(i, $event)" ></ion-input>
+      <ion-input style="font-size: 14px;border: 2px solid #b2b1b1; padding: 4px; width: 150px; margin-left: 5px; border-radius: 15px;" type="number" label="&nbsp;&nbsp;Cantidad:"         (ionChange)="actualizarCantidad(i, $event)" ></ion-input>
     </div>
     <br><br>
     <ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)="agregarPlatoAlPedido(item.nombre, item.precio, item.tiempo, i)" >
@@ -130,9 +129,9 @@
   </div>
   </ion-card>
 
-  <h2>Bebidas</h2>
+  <h2 style="color: #000; font-weight: 800;">Bebidas</h2>
 
-  <ion-card *ngFor="let item of bebidas ;let i = index " style="background-color: #ccc ;"   (click)="mostrarInputCantidad(i)" >
+  <ion-card *ngFor="let item of bebidas ;let i = index "   (click)="mostrarInputCantidad(i)" >
     <div  *ngIf="item.tipo==='bebida'">
     <ion-card-header>
       <ion-card-title>{{item.nombre}}</ion-card-title>
@@ -146,11 +145,11 @@
       </div>
     </div>
 
-    <ion-card-content>
+    <ion-card-content style="font-size: 18px;">
       {{item.descripcion}}
     </ion-card-content>
     <div *ngIf="i === selectedCardIndex">
-      <ion-input style="border: 2px solid #b2b1b1; padding: 4px; width: 150px; margin-left: 5px; border-radius: 15px;" type="number" label="&nbsp;&nbsp;Cantidad:"         (ionChange)="actualizarCantidad(i, $event)" ></ion-input>
+      <ion-input style="font-size: 14px;border: 2px solid #b2b1b1; padding: 4px; width: 150px; margin-left: 5px; border-radius: 15px;" type="number" label="&nbsp;&nbsp;Cantidad:"         (ionChange)="actualizarCantidad(i, $event)" ></ion-input>
     </div>
     <br><br>
     <ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)="agregarPlatoAlPedido(item.nombre, item.precio, item.tiempo, i)" >
@@ -163,8 +162,12 @@
 
   </ion-card>
 
-  <ion-button *ngIf="pedidoParcial.length>0" color="success" (click)="finalizarPedido()">Finalizar Pedido</ion-button>
-  <ion-button color="danger" routerLink="/home">Cancelar</ion-button>
+
   <br><br>
 
 </ion-content>
+<ion-footer [translucent]="true">
+  <ion-toolbar class="ion-text-center">
+    <ion-button expand="full" *ngIf="pedidoParcial.length>0" color="success" (click)="finalizarPedido()">Finalizar Pedido</ion-button>
+    <ion-button expand="full" color="danger" routerLink="/home">Cancelar</ion-button>  </ion-toolbar>
+</ion-footer>
