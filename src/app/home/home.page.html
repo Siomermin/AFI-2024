@@ -30,7 +30,7 @@
 <br><br>
 
 
-<ion-button *ngIf="perfilUsuarioActual.toLowerCase() === 'dueño' ||perfilUsuarioActual.toLowerCase() === 'supervisor'  " (click)="redireccionar('gestion-clientes')">
+<ion-button *ngIf="perfilUsuarioActual === 'dueño' || perfilUsuarioActual === 'supervisor'" (click)="redireccionar('gestion-clientes')">
   Autorizar Cliente
 </ion-button><br>
 
@@ -40,6 +40,9 @@
   QR Mesa
 </ion-button><br>
 
+<ion-button  (click)="mesa()">
+  QR Mesa - prueba
+</ion-button><br>
 
 <ion-button    (click)="redireccionar('qr-propina')">
   QR Propina
@@ -50,16 +53,24 @@
   QR Ingreso al local
 </ion-button>
 
-<ion-button (click)="redireccionar('alta-mesa')" *ngIf="this.perfilUsuarioActual === 'Supervisor' || this.perfilUsuarioActual === 'Dueño' ">
+<ion-button (click)="redireccionar('alta-mesa')" *ngIf="this.perfilUsuarioActual === 'supervisor' || this.perfilUsuarioActual === 'dueño' ">
   Alta Mesa
 </ion-button><br>
 
-<ion-button (click)="redireccionar('alta-producto')" *ngIf="this.perfilUsuarioActual.toLowerCase() === 'cocinero' || this.perfilUsuarioActual.toLowerCase() === 'bartender'">
+<ion-button (click)="redireccionar('alta-producto')" *ngIf="this.perfilUsuarioActual === 'cocinero' || this.perfilUsuarioActual === 'bartender'">
   Alta Producto
 </ion-button><br><br>
 
-<ion-button (click)="redireccionar('consulta-mozo')" *ngIf="this.perfilUsuarioActual === 'Mozo' ">
+<ion-button (click)="redireccionar('consulta-mozo')" *ngIf="this.perfilUsuarioActual === 'mozo' ">
   Chats con Clientes
+</ion-button><br><br>
+
+<ion-button (click)="redireccionar('pedidos-por-confirmar-mozo')" *ngIf="this.perfilUsuarioActual === 'mozo'">
+  Pedidos Por Confirmar
+</ion-button><br><br>
+
+<ion-button (click)="redireccionar('pedidos-pendientes')" *ngIf="this.perfilUsuarioActual === 'cocinero' || this.perfilUsuarioActual === 'bartender'">
+  Pedidos Pendientes
 </ion-button><br><br>
 
 </ion-content>

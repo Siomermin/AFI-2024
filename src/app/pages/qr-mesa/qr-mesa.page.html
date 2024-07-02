@@ -10,20 +10,21 @@
 </ion-header>
 
 <ion-content [fullscreen]="true" class="ion-text-center" style="display: flex; justify-content: center; align-items: center;">
- 
+
   <div>
-    <ion-button size="large" (click)="mostrarMesasLibres()" class="ion-text-center">
+    <ion-button *ngIf="usuarioVinculado" size="large" (click)="mostrarMesasLibres()" class="ion-text-center">
       Ver disponibilidad <br> de mesa
     </ion-button>
   </div>
 
-  <div *ngIf="!clienteEnEspera && !usuarioVinculado">
+  <div *ngIf="!usuarioVinculado">
     <ion-button size="large" (click)="vincularMesa()" class="ion-text-center">
       Vincularme con una mesa
     </ion-button>
   </div>
 
-  <div *ngIf="pedidoDelUsuario && pedidoDelUsuario.estado == 'entregado-confirmado'">
+
+  <div *ngIf="pedidoDelUsuario && pedidoDelUsuario.estado === 'entregado-confirmado' && usuarioVinculado">
     <ion-button size="large"  (click)="redireccionar('pedir-cuenta')" class="ion-text-center">
       Pedir cuenta
     </ion-button>
@@ -36,26 +37,26 @@
   </div>
 
   <div>
-    <ion-button *ngIf="!pedidoDelUsuario" size="large" (click)="redireccionar('menu')" class="ion-text-center">
+    <ion-button *ngIf="!pedidoDelUsuario && usuarioVinculado" size="large" (click)="redireccionar('menu')" class="ion-text-center">
       Ver menú
     </ion-button>
   </div>
 
-  <div  *ngIf="pedidoDelUsuario">
+  <div  *ngIf="pedidoDelUsuario && usuarioVinculado">
     <ion-button size="large" (click)="mostrarPedido()" class="ion-text-center">
       Ver estado del pedido
     </ion-button>
   </div>
 
   <div>
-    <ion-button size="large" (click)="redireccionar('encuesta')" class="ion-text-center">
+    <ion-button *ngIf="usuarioVinculado" size="large" (click)="redireccionar('encuesta')" class="ion-text-center">
       Acceder a encuestas
     </ion-button>
   </div>
 
-  <div *ngIf="pedidoDelUsuario && pedidoDelUsuario.estado == 'entregado'">
+  <div *ngIf="pedidoDelUsuario && pedidoDelUsuario.estado === 'entregado' && usuarioVinculado">
   <ion-button size="large"  (click)="confirmarRecepcionPedido()" class="ion-text-center">
-    Confirmar Recepción 
+    Confirmar Recepción
   </ion-button>
   </div>
 </ion-content>

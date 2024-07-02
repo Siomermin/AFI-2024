@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Barcode, BarcodeScanner, GoogleBarcodeScannerModuleInstallState } from '@capacitor-mlkit/barcode-scanning';
 import { AlertController } from '@ionic/angular';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
@@ -43,16 +43,24 @@ export class AltaPage implements OnInit {
     private storage: StorageService,
     private fb: FormBuilder // Añadido FormBuilder
   ) {
-    this.form = this.fb.group({
-      nombre: ['', [Validators.required, Validators.pattern(/^[a-zA-Z\s]*$/)]],
-      apellido: [
-        '',
-        [Validators.required, Validators.pattern(/^[a-zA-Z\s]*$/)],
-      ],
-      dni: ['', [Validators.required, Validators.pattern(/^\d{1,10}$/)]],
-      email: ['', [Validators.required, Validators.email]],
-      clave: ['', [Validators.required, Validators.minLength(6)]],
-    });
+    this.form = this.fb.group(
+      {
+        nombre: ['', [Validators.required, Validators.pattern(/^[a-zA-Z\s]*$/)]],
+        apellido: ['', [Validators.required, Validators.pattern(/^[a-zA-Z\s]*$/)]],
+        dni: ['', [Validators.required, Validators.pattern(/^\d{1,10}$/)]],
+        email: ['', [Validators.required, Validators.email]],
+        clave: ['', [Validators.required, Validators.minLength(6)]],
+        confirmarClave: ['', [Validators.required]]
+      },
+      { validators: this.passwordMatchValidator }
+    );
+  }
+
+  passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
+    const clave = control.get('clave');
+    const confirmarClave = control.get('confirmarClave');
+    if (!clave || !confirmarClave) return null;
+    return clave.value === confirmarClave.value ? null : { passwordMismatch: true };
   }
   ngOnInit() {
     BarcodeScanner.isSupported().then((result) => {
@@ -101,26 +109,26 @@ export class AltaPage implements OnInit {
     if (this.clienteAnonimo) {
       this.form.get('apellido')?.clearValidators();
       this.form.get('dni')?.clearValidators();
-
+      this.form.get('email')?.clearValidators();
+      this.form.get('clave')?.clearValidators();
+      this.form.get('confirmarClave')?.clearValidators();
+      this.form.clearValidators(); // Eliminar los validadores a nivel de formulario
     } else {
-      this.form
-        .get('apellido')
-        ?.setValidators([
-          Validators.required,
-          Validators.pattern(/^[a-zA-Z\s]*$/),
-        ]);
-      this.form
-        .get('dni')
-        ?.setValidators([
-          Validators.required,
-          Validators.pattern(/^\d{1,10}$/),
-        ]);
-
+      this.form.get('apellido')?.setValidators([Validators.required, Validators.pattern(/^[a-zA-Z\s]*$/)]);
+      this.form.get('dni')?.setValidators([Validators.required, Validators.pattern(/^\d{1,10}$/)]);
+      this.form.get('email')?.setValidators([Validators.required, Validators.email]);
+      this.form.get('clave')?.setValidators([Validators.required, Validators.minLength(6)]);
+      this.form.get('confirmarClave')?.setValidators([Validators.required]);
+      this.form.setValidators(this.passwordMatchValidator); // Agregar validador a nivel de formulario
     }
     this.form.get('apellido')?.updateValueAndValidity();
     this.form.get('dni')?.updateValueAndValidity();
-
+    this.form.get('email')?.updateValueAndValidity();
+    this.form.get('clave')?.updateValueAndValidity();
+    this.form.get('confirmarClave')?.updateValueAndValidity();
+    this.form.updateValueAndValidity(); // Actualizar validadores a nivel de formulario
   }
+
 
   async scan(): Promise<void> {
     const granted = await this.requestPermissions();
@@ -250,48 +258,43 @@ export class AltaPage implements OnInit {
         heightAuto: false,
       });
     } else {
-
       const imagenGuardada = await this.guardarImagen();
 
       const { nombre, apellido, dni, email, clave } = this.form.value;
-      const nuevoUsuario = new Cliente(
+   const nuevoUsuario = new Cliente(
         nombre,
         this.clienteAnonimo ? '' : apellido,
         this.clienteAnonimo ? '' : dni,
-        this.dni + this.nombre + this.apellido,
-        email,
-        clave,
+        this.clienteAnonimo ? '' : email,
+        this.clienteAnonimo ? '' : clave,
         this.clienteAnonimo ? 'autorizado' : 'pendiente',
         this.clienteAnonimo,
         imagenGuardada ? imagenGuardada.toString() : '' ,
         "Cliente"
       );
 
-
       if (imagenGuardada) {
-        this.database
-          .crear('clientes', nuevoUsuario.toJSON())
-          .then((docRef) => {
-            console.log('Documento escrito con ID: ', docRef.id);
+        this.database.crear('clientes', nuevoUsuario.toJSON()).then((docRef) => {
+          console.log('Documento escrito con ID: ', docRef.id);
 
-            this.authService.register(email, clave, this.clienteAnonimo, docRef.id);
-
-          })
-          .catch((error) => {
-            console.error('Error al crear el usuario:', error);
-            Swal.fire({
-              title: 'Error',
-              text: 'Hubo un problema al crear el usuario. Por favor, inténtelo de nuevo.',
-              icon: 'error',
-              confirmButtonText: 'Aceptar',
-              confirmButtonColor: 'var(--ion-color-primary)',
-              heightAuto: false,
-            });
+          if (this.clienteAnonimo) {
+            this.authService.registerAnonymous(docRef.id, nuevoUsuario.toJSON());
+          } else {
+            this.authService.register(email, clave, docRef.id);
+          }
+        }).catch((error) => {
+          console.error('Error al crear el usuario:', error);
+          Swal.fire({
+            title: 'Error',
+            text: 'Hubo un problema al crear el usuario. Por favor, inténtelo de nuevo.',
+            icon: 'error',
+            confirmButtonText: 'Aceptar',
+            confirmButtonColor: 'var(--ion-color-primary)',
+            heightAuto: false,
           });
+        });
       } else {
-        console.error(
-          'No se pudo guardar la imagen, abortando creación de usuario.'
-        );
+        console.error('No se pudo guardar la imagen, abortando creación de usuario.');
         Swal.fire({
           title: 'Error',
           text: 'No se pudo guardar la imagen, abortando creación de usuario.',

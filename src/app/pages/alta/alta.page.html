@@ -1,25 +1,12 @@
-
 <ion-header>
   <ion-toolbar>
     <ion-title class="ion-text-center">
       <img routerLink="/auth/login" src="../../../assets/images/back.png" alt="" height="15px">   Formulario de Alta
     </ion-title>
   </ion-toolbar>
-
-  <ion-fab slot="fixed" vertical="top" horizontal="end">
-    <ion-fab-button (click)="scan()">
-      <img style="height: 40px; padding: 5px;" src="../../../assets/images/qr.png" alt="">
-    </ion-fab-button>
-  </ion-fab>
 </ion-header>
 
 <ion-content class="ion-text-center">
-  <ion-fab size="small" slot="fixed" vertical="top" horizontal="end" edge="true">
-    <ion-fab-button (click)="scan()" color="primary">
-      <img src="../../../assets/images/qr.png"  style="padding: 10px;" alt="">
-    </ion-fab-button>
-  </ion-fab>
-
   <br><br>
   <div>
     <img class="ion-text-center" src="../../../assets/images/user-icon.png" style="height: 80px;" alt="">
@@ -28,7 +15,6 @@
       <ion-card-content>
         ¿Desea registrarse como Cliente Anónimo?<br>
       </ion-card-content>
-
       <ion-toggle [ngModel]="clienteAnonimo" (ionChange)="toggleAnonimo($event)">Anónimo</ion-toggle><br /><br />
     </ion-card>
 
@@ -58,20 +44,27 @@
           DNI debe contener hasta 10 caracteres numéricos.
         </div>
 
-        <ion-item>
+        <ion-item *ngIf="!clienteAnonimo">
           <ion-label position="stacked">Email</ion-label>
           <ion-input formControlName="email" type="email"></ion-input>
         </ion-item>
         <div *ngIf="form.controls['email'].invalid && form.controls['email'].touched" class="error-message">
           Email no es válido.
         </div>
-
-        <ion-item>
+        <ion-item *ngIf="!clienteAnonimo">
           <ion-label position="stacked">Clave</ion-label>
           <ion-input formControlName="clave" type="password"></ion-input>
         </ion-item>
         <div *ngIf="form.controls['clave'].invalid && form.controls['clave'].touched" class="error-message">
           Clave debe tener al menos 6 caracteres.
+        </div>
+
+        <ion-item *ngIf="!clienteAnonimo">
+          <ion-label position="stacked">Confirmar Clave</ion-label>
+          <ion-input formControlName="confirmarClave" type="password"></ion-input>
+        </ion-item>
+        <div *ngIf="form.hasError('passwordMismatch') && form.controls['confirmarClave'].touched" class="error-message">
+          Las claves no coinciden.
         </div>
 
         <ion-item>

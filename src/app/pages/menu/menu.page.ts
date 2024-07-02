@@ -15,6 +15,10 @@ export class MenuPage implements OnInit {
 
   constructor(private database:DatabaseService, private afAuth: AngularFireAuth, private router: Router) { }
 
+  selectedCardIndex: number | null = null;
+
+  cantidades: { [key: number]: number } = {}; // Estructura para almacenar las cantidades
+
   menu:any[] = [];
   idClienteActual:string="";
   pedidoParcial:any[]=[];
@@ -67,26 +71,38 @@ export class MenuPage implements OnInit {
       console.log(error);
     });
   }
+  actualizarCantidad(index: number, event: any) {
+    const cantidad = event.target.value;
+    this.cantidades[index] = cantidad;
+  }
 
-  agregarPlatoAlPedido(platoSeleccionado:string, precioPlato:string, tiempoPlato:string){
-    this.pedidoParcial.push(platoSeleccionado);
-    this.montoTotal+= parseInt(precioPlato);
+  agregarPlatoAlPedido(platoSeleccionado:string, precioPlato:string, tiempoPlato:string, index:number){
+    const cantidad = this.cantidades[index] || 0;
+    console.log(cantidad);
+    for(let i =0; i < cantidad! ; i++){
+      this.pedidoParcial.push(platoSeleccionado);
+      this.montoTotal+= parseInt(precioPlato);
+      this.preciosUnitarios.push(precioPlato);
+
+
+    }
+    console.log(this.preciosUnitarios, this.montoTotal)
     this.tiemposPlatos.push(parseInt(tiempoPlato));
     console.log(this.pedidoParcial);
     this.tiempoTotalPedido= Math.max(...this.tiemposPlatos);
-    this.preciosUnitarios.push(precioPlato);
-    
+
+
   }
 
   finalizarPedido(){
     this.pedidoCompleto = this.pedidoParcial;
     this.verificarMayorTiempo();
-    const nuevoPedido= new Pedido(this.idClienteActual, this.pedidoCompleto, this.montoTotal, this.tiempoTotalPedido, "pendiente", this.preciosUnitarios );
+    const nuevoPedido= new Pedido(this.idClienteActual, this.pedidoCompleto, this.montoTotal, this.tiempoTotalPedido, "pendiente", this.preciosUnitarios, false );
     this.database.crear("pedidos", nuevoPedido.toJSON())
         .then((docRef) => {
           // Operación exitosa
           console.log("Documento escrito con ID: ", docRef.id);
-         
+
           Swal.fire({
             position: "top-end",
             icon: "success",
@@ -96,7 +112,7 @@ export class MenuPage implements OnInit {
             heightAuto:false
           });
 
-          this.router.navigateByUrl('home');
+          this.router.navigateByUrl('qr-mesa');
         })
         .catch((error) => {
           // Ocurrió un error
@@ -108,7 +124,7 @@ export class MenuPage implements OnInit {
             confirmButtonColor: "red",
           }).then((result) => {
             if (result.isConfirmed) {
-              this.router.navigateByUrl('home');
+              this.router.navigateByUrl('qr-mesa');
             }
           });
 
@@ -124,7 +140,7 @@ export class MenuPage implements OnInit {
     }
     this.tiempoTotalPedido= Math.max(...this.tiemposPlatos);
     return;
-  
+
   }
 
   verPedido(){
@@ -136,7 +152,7 @@ export class MenuPage implements OnInit {
     contenidoHTML += '</ul>';
     contenidoHTML += `<p><strong>Total: $${this.montoTotal.toFixed(2)}</strong></p>`; // Añadir el monto total debajo de la lista
 
-    
+
     Swal.fire({
       title: "Tu pedido:",
       heightAuto: false,
@@ -147,8 +163,8 @@ export class MenuPage implements OnInit {
 
   }
 
+  mostrarInputCantidad(index: number) {
+    this.selectedCardIndex = index;
+  }
 
 }
-
-
-

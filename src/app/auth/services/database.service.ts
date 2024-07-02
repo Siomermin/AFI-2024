@@ -30,6 +30,27 @@ export class DatabaseService {
     }
   }
 
+  obtenerUsuarioPorEmail(email: string): Promise<any | null> {
+    return this.firestore.collection('usuarios', ref => ref.where('email', '==', email))
+      .snapshotChanges()
+      .pipe(
+        map(actions => {
+          if (actions.length === 0) {
+            return null; // No encontro usuario
+          }
+          const data = actions[0].payload.doc.data() as any;
+          const id = actions[0].payload.doc.id;
+          return { id, ...data }; // Retorno el primer usuario encontrado
+        }),
+        first()
+      )
+      .toPromise()
+      .catch(error => {
+        console.error('Error retrieving usuario:', error);
+        return null; // Return null in case of error
+      });
+  }
+
   obtenerClientePorEmail(email: string): Promise<any | null> {
     return this.firestore.collection('clientes', ref => ref.where('email', '==', email))
       .snapshotChanges()
@@ -52,10 +73,48 @@ export class DatabaseService {
   }
 
 
+  obtenerPedidos(estado: string, confirmacionMozo: boolean) {
+    try {
+      return this.firestore.collection('pedidos', ref => ref
+        .where('estado', '==', estado)
+        .where('confirmacionMozo', '==', confirmacionMozo)
+      ).snapshotChanges();
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  }
+
+  obtenerPedidosParaElMozo(estado: string[]) {
+    try {
+      return this.firestore.collection('pedidos', ref => ref
+        .where('estado', 'in', estado) // Utiliza 'in' para comparar con múltiples valores
+      ).snapshotChanges();
+    } catch (error) {
+      console.error('Error fetching pedidos:', error);
+      return null;
+    }
+  }
+
+  obtenerPedidosPorEstados(estado: string[], confirmacionMozo: boolean) {
+    try {
+      return this.firestore.collection('pedidos', ref => ref
+        .where('estado', 'in', estado) // Utiliza 'in' para comparar con múltiples valores
+        .where('confirmacionMozo', '==', confirmacionMozo)
+      ).snapshotChanges();
+    } catch (error) {
+      console.error('Error fetching pedidos:', error);
+      return null;
+    }
+  }
+
   public actualizar(coleccion: string, data: any, id: string) {
     return this.firestore.collection(coleccion).doc(id).set(data);
   }
 
+  public actualizar2(coleccion: string, data: any, id: string) {
+    return this.firestore.collection(coleccion).doc(id).update(data);
+  }
 
   public crear(collection: string, data: any): Promise<any> {
     return this.firestore.collection(collection).add(data);

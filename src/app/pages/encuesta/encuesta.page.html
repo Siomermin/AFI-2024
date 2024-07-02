@@ -4,7 +4,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" class="ion-text-center">
   <div *ngIf="encuestasIncompletasDelUsuario!=undefined && !mostrarFormEncuesta" class="ion-text-center">
     <h2 >Encuestas Pendientes</h2>
     <img src="../../../assets/images/encuesta.png" style="height: 100px;" alt="">
@@ -93,9 +93,25 @@
   </div>
  
  
-  <div *ngIf="encuestasIncompletasDelUsuario.length==0">
-    <p>Usted no tiene encuestas pendientes por completar</p>
+  <div *ngIf="!encuestasIncompletasDelUsuario || encuestasIncompletasDelUsuario.length==0">
+    <ion-card>
+
+      <ion-card-content>
+        Usted no tiene encuestas pendientes por completar
+
+      </ion-card-content>
+    </ion-card>
   </div>
 
-  <ion-button routerLink="/graficos" size="large">Ver Gráficos</ion-button>
+  <br><br>
+  <h2>Gráficos</h2>
+  <img src="../../../assets/images/grafico.png" style="height: 100px;" alt="">
+  <ion-card>
+    <ion-card-content>
+      <p>Accede a los gráficos y reseñas de los clientes que ya pasaron por nuestro local</p>
+      <ion-button routerLink="/graficos" size="large">Ver Gráficos</ion-button>
+    </ion-card-content>
+  
+
+  </ion-card>
 </ion-content>

@@ -1,6 +1,6 @@
 
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationExtras, ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { DatabaseService } from 'src/app/auth/services/database.service';
@@ -14,7 +14,7 @@ import { first } from 'rxjs';
 })
 export class QrMesaPage implements OnInit {
 
-  constructor(private router: Router, private database:DatabaseService, private afAuth:AngularFireAuth) { }
+  constructor(private router: Router, private database:DatabaseService, private afAuth:AngularFireAuth, private activatedRoute: ActivatedRoute) { }
   pedidos:any[]=[];
   uidUsuarioActual:any;
   pedidoDelUsuario:any;
@@ -25,8 +25,10 @@ export class QrMesaPage implements OnInit {
   clienteEnEspera:boolean=false;
   usuarioVinculado:boolean=true;
   uidListaEspera:string="";
+  mesaEscaneada:any;
+  mesaEscaneadaLibre:boolean=false;
 
-  ngOnInit() {
+  async ngOnInit() {
 
     this.afAuth.authState.subscribe(user => {
       if (user) {
@@ -37,6 +39,14 @@ export class QrMesaPage implements OnInit {
       }
     });
 
+    this.activatedRoute.queryParams.subscribe(params => {
+      if (params['dato']) {
+        this.mesaEscaneada = parseInt(params['dato']);
+      }
+    });
+    
+    this.verificarUsuarioVinculado();
+    this.verificarClienteEnEspera();
     const pedidosObservable: Observable<any[]> = this.database.obtenerTodos('pedidos')!.pipe(
       map(actions => actions.map(a => {
         const data = a.payload.doc.data() as any;
@@ -58,10 +68,90 @@ export class QrMesaPage implements OnInit {
       console.log(error);
     });
 
-    this.verificarUsuarioVinculado();
 
   }
 
+  async vincularMesa(){
+
+
+    await this.verificarUsuarioVinculado();
+      if(!this.usuarioVinculado){
+        await this.verificarMesaLibre()
+        if(this.mesaEscaneadaLibre){
+          if(this.clienteEnEspera){
+            const mesaActualizada = {
+              estado: "ocupada",
+              numeroMesa: this.mesaEscaneada
+            };
+            const listaEsperaActualizada = {
+              estado: "asignado",
+              idCliente: this.uidUsuarioActual
+            };
+            const nuevaMesa = {
+              idCliente: this.uidUsuarioActual,
+              numeroMesa: this.mesaEscaneada,
+              estado: "vigente",
+              fecha: new Date().toISOString(),
+              encuestaCompleta: false,
+
+            };
+        
+            await this.database.crear("mesa-cliente", nuevaMesa);
+        
+            await this.database.actualizar("lista-espera", listaEsperaActualizada, this.uidListaEspera);
+        
+            await this.database.actualizar("mesas", mesaActualizada, this.uidMesaLibre);
+        
+            this.usuarioVinculado=true;
+            // Mostrar mensaje de éxito
+            Swal.fire({
+              title: 'Éxito',
+              text: 'Se le ha asignado la mesa: ' + this.mesaEscaneada,
+              icon: 'success',
+              confirmButtonText: 'Aceptar',
+              confirmButtonColor: 'var(--ion-color-primary)',
+              heightAuto: false
+            });
+        
+
+          }else{
+            Swal.fire({
+              title: 'Error',
+              text: 'Antes de vincularse con una mesa debe ingresar a la lista de espera',
+              icon: 'error',
+              confirmButtonText: 'Aceptar',
+              confirmButtonColor: 'var(--ion-color-primary)',
+              heightAuto: false
+            });
+          }
+        }else{
+          Swal.fire({
+            title: 'Error',
+            text: 'La mesa escaneada se encuentra ocupada',
+            icon: 'error',
+            confirmButtonText: 'Aceptar',
+            confirmButtonColor: 'var(--ion-color-primary)',
+            heightAuto: false
+          });
+        }
+        
+      
+      }else{
+        Swal.fire({
+          title: 'Error',
+          text: 'Usted ya se encuentra vinculado a una mesa',
+          icon: 'error',
+          confirmButtonText: 'Aceptar',
+          confirmButtonColor: 'var(--ion-color-primary)',
+          heightAuto: false
+        });
+      }
+
+  
+    
+  }
+
+  
   redireccionar(path:string){
     console.log(path);
     this.router.navigateByUrl(path);
@@ -107,16 +197,17 @@ export class QrMesaPage implements OnInit {
       mesasObservable.subscribe(data => {
         this.mesas = data;
         console.log(this.mesas);
-        for (let item of this.mesas) {
-          if (item.estado == 'libre') {
-            this.mesaLibre = item;
-            this.uidMesaLibre = item.id; // Asigna el id de la mesa libre a this.uidMesaLibre
-            console.log(this.mesaLibre.numeroMesa);
-            break; 
+
+        this.mesas.forEach(mesa =>{
+          console.log(mesa.numeroMesa, this.mesaEscaneada, mesa.estado)
+          if(mesa.numeroMesa == this.mesaEscaneada && mesa.estado=="libre"){
+            this.mesaEscaneadaLibre=true;
+            this.uidMesaLibre= mesa.id;
+          }else if(mesa.numeroMesa == this.mesaEscaneada && mesa.estado=="ocupada"){
+            this.mesaEscaneadaLibre=false;
           }
-        }
-        console.log(this.mesaLibre);
-        console.log(this.uidMesaLibre); // Verificar que uidMesaLibre se asignó correctamente
+        })
+
         resolve(); // Resuelve la promesa cuando se haya asignado mesaLibre
       }, error => {
         console.log(error);
@@ -125,89 +216,7 @@ export class QrMesaPage implements OnInit {
     });
   }
 
-  async vincularMesa() {
-    try {
-      await this.verificarMesaLibre();
-      const clienteEnEspera = await this.verificarClienteEnEspera();
-      await this.verificarUsuarioVinculado();
-
-      if(!this.usuarioVinculado){
-      if (clienteEnEspera) {
-  
-        if (this.uidUsuarioActual != "" && this.mesaLibre != undefined) {
-          const nuevaMesa = {
-            idCliente: this.uidUsuarioActual,
-            numeroMesa: this.mesaLibre.numeroMesa,
-            estado: 'vigente',
-          };
-  
-          await this.database.crear("mesa-cliente", nuevaMesa);
-
-          const mesaActualizada = {
-            estado: "ocupada",
-            numeroMesa: this.mesaLibre.numeroMesa,
-          };
-          const listaEsperaActualizada = {
-            estado: "asignado",
-            idCliente: this.uidUsuarioActual
-          };
-          await this.database.actualizar("lista-espera", listaEsperaActualizada, this.uidListaEspera);
-
-          await this.database.actualizar("mesas", mesaActualizada, this.uidMesaLibre);
-  
-          this.usuarioVinculado=true;
-          // Mostrar mensaje de éxito
-          Swal.fire({
-            title: 'Éxito',
-            text: 'Se le ha asignado la mesa: ' + this.mesaLibre.numeroMesa,
-            icon: 'success',
-            confirmButtonText: 'Aceptar',
-            confirmButtonColor: 'var(--ion-color-primary)',
-            heightAuto: false
-          });
-        } else {
-          // Mostrar mensaje de error si las condiciones iniciales no se cumplen
-          Swal.fire({
-            title: 'Error',
-            text: 'No se puede vincular la mesa porque falta información.',
-            icon: 'error',
-            confirmButtonText: 'Aceptar',
-            confirmButtonColor: 'var(--ion-color-primary)',
-            heightAuto: false
-          });
-        }
-      } else {
-        Swal.fire({
-          title: 'Error',
-          text: 'Antes de tomar una mesa debe anotarse en la lista de espera.',
-          icon: 'error',
-          confirmButtonText: 'Aceptar',
-          confirmButtonColor: 'var(--ion-color-primary)',
-          heightAuto: false
-        });
-      }
-    }else{
-      Swal.fire({
-        title: 'Error',
-        text: 'Usted ya se encuentra vinculado a una mesa.',
-        icon: 'error',
-        confirmButtonText: 'Aceptar',
-        confirmButtonColor: 'var(--ion-color-primary)',
-        heightAuto: false
-      });
-    }
-    } catch (error) {
-      // Mostrar mensaje de error en caso de que verificarMesaLibre falle
-      Swal.fire({
-        title: 'Error',
-        text: `Hubo un problema al verificar la mesa`,
-        icon: 'error',
-        confirmButtonText: 'Aceptar',
-        confirmButtonColor: 'var(--ion-color-primary)',
-        heightAuto: false
-      });
-    }
-  }
+ 
   
   async mostrarMesasLibres() {
     await this.verificarMesaLibre();
@@ -326,4 +335,94 @@ export class QrMesaPage implements OnInit {
     }
 
   }
+
+
+
+
+
+
+  /* async vincularMesa() {
+    try {
+      await this.verificarMesaLibre();
+      const clienteEnEspera = await this.verificarClienteEnEspera();
+      await this.verificarUsuarioVinculado();
+
+      if(!this.usuarioVinculado){
+      if (clienteEnEspera) {
+  
+        if (this.uidUsuarioActual != "" && this.mesaLibre != undefined) {
+          const nuevaMesa = {
+            idCliente: this.uidUsuarioActual,
+            numeroMesa: this.mesaLibre.numeroMesa,
+            estado: 'vigente',
+          };
+  
+          await this.database.crear("mesa-cliente", nuevaMesa);
+
+          const mesaActualizada = {
+            estado: "ocupada",
+            numeroMesa: this.mesaLibre.numeroMesa,
+          };
+          const listaEsperaActualizada = {
+            estado: "asignado",
+            idCliente: this.uidUsuarioActual
+          };
+          await this.database.actualizar("lista-espera", listaEsperaActualizada, this.uidListaEspera);
+
+          await this.database.actualizar("mesas", mesaActualizada, this.uidMesaLibre);
+  
+          this.usuarioVinculado=true;
+          // Mostrar mensaje de éxito
+          Swal.fire({
+            title: 'Éxito',
+            text: 'Se le ha asignado la mesa: ' + this.mesaLibre.numeroMesa,
+            icon: 'success',
+            confirmButtonText: 'Aceptar',
+            confirmButtonColor: 'var(--ion-color-primary)',
+            heightAuto: false
+          });
+        } else {
+          // Mostrar mensaje de error si las condiciones iniciales no se cumplen
+          Swal.fire({
+            title: 'Error',
+            text: 'No se puede vincular la mesa porque falta información.',
+            icon: 'error',
+            confirmButtonText: 'Aceptar',
+            confirmButtonColor: 'var(--ion-color-primary)',
+            heightAuto: false
+          });
+        }
+      } else {
+        Swal.fire({
+          title: 'Error',
+          text: 'Antes de tomar una mesa debe anotarse en la lista de espera.',
+          icon: 'error',
+          confirmButtonText: 'Aceptar',
+          confirmButtonColor: 'var(--ion-color-primary)',
+          heightAuto: false
+        });
+      }
+    }else{
+      Swal.fire({
+        title: 'Error',
+        text: 'Usted ya se encuentra vinculado a una mesa.',
+        icon: 'error',
+        confirmButtonText: 'Aceptar',
+        confirmButtonColor: 'var(--ion-color-primary)',
+        heightAuto: false
+      });
+    }
+    } catch (error) {
+      // Mostrar mensaje de error en caso de que verificarMesaLibre falle
+      Swal.fire({
+        title: 'Error',
+        text: `Hubo un problema al verificar la mesa`,
+        icon: 'error',
+        confirmButtonText: 'Aceptar',
+        confirmButtonColor: 'var(--ion-color-primary)',
+        heightAuto: false
+      });
+    }
+  }*/
+
 }
