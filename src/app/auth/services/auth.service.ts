@@ -49,13 +49,13 @@ export class AuthService {
       profile: 'cliente',
       gender: 'masculino',
     },
-    // {
-    //   id: 5,
-    //   email: 'maitre@maitre.com',
-    //   password: '555555',
-    //   profile: 'maitre',
-    //   gender: 'masculino',
-    // },
+    {
+      id: 5,
+      email: 'maitre@maitre.com',
+      password: '555555',
+      profile: 'maitre',
+      gender: 'masculino',
+    },
     {
       id: 6,
       email: 'mozo@mozo.com',
