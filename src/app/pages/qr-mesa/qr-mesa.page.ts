@@ -305,7 +305,7 @@ export class QrMesaPage implements OnInit {
       usuarioVinculadoObservable.subscribe(data => {
         const usuariosEnMesas = data;
         const usuarioVinculado = usuariosEnMesas.find(item => item.idCliente == this.uidUsuarioActual && item.estado == "vigente");
-  
+
         if (usuarioVinculado) {
           this.usuarioVinculado = true;
           this.uidMesaCliente = usuarioVinculado.id;
@@ -313,7 +313,7 @@ export class QrMesaPage implements OnInit {
         } else {
           this.usuarioVinculado = false;
         }
-  
+
         resolve(); // Resuelve la promesa después de verificar todos los usuarios
       }, error => {
         console.log(error);
@@ -373,7 +373,7 @@ export class QrMesaPage implements OnInit {
         })),
         first() // Completa el observable después de la primera emisión
       );
-  
+
       mesas.subscribe(data => {
         const mesas = data;
         mesas.forEach(mesa => {
@@ -397,7 +397,7 @@ export class QrMesaPage implements OnInit {
     await this.verificarUsuarioVinculado();
 
     await this.obtenerUidMesaParaActualizar();
-  
+
     console.log(this.mesaActualizar, this.uidMesaActualizar, this.uidMesaCliente);
         if (this.uidMesaActualizar && this.uidMesaCliente) {
           // Actualiza la mesa
@@ -408,7 +408,7 @@ export class QrMesaPage implements OnInit {
 
           console.log(mesaActualizada + this.uidMesaActualizar)
           this.database.actualizar("mesas", mesaActualizada, this.uidMesaActualizar);
-  
+
           // Actualiza el estado de mesa-cliente
           const mesaCliente = {
             estado: "finalizado",
@@ -418,9 +418,9 @@ export class QrMesaPage implements OnInit {
           console.log(mesaCliente + this.uidMesaCliente)
 
           this.database.actualizar("mesa-cliente", mesaCliente, this.uidMesaCliente);
-  
+
           this.router.navigateByUrl("pedir-cuenta");
-        } 
+        }
       }
 
   }
