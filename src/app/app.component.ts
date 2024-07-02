@@ -11,6 +11,6 @@ export class AppComponent implements OnInit
   public router = inject(Router);
 
  ngOnInit(): void {
-    this.router.navigateByUrl('menu');
+    this.router.navigateByUrl('splash');
  }
 }
