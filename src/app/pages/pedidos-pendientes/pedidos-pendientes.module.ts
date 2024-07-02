@@ -8,13 +8,15 @@ import { PedidosPendientesPageRoutingModule } from './pedidos-pendientes-routing
 
 import { PedidosPendientesPage } from './pedidos-pendientes.page';
 import { TiempoEsperaModalPage } from './components/tiempo-espera-modal/tiempo-espera-modal.component';
+import { PedidosPorConfirmarMozoPageModule } from '../pedidos-por-confirmar-mozo/pedidos-por-confirmar-mozo.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    PedidosPendientesPageRoutingModule
+    PedidosPendientesPageRoutingModule,
+    PedidosPorConfirmarMozoPageModule
   ],
   declarations: [PedidosPendientesPage, TiempoEsperaModalPage]
 })

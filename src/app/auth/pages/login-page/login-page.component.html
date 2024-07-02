@@ -45,7 +45,7 @@
 <ion-list>
   <h3 class="ion-margin">Acceso rápido</h3>
   <ion-item *ngFor="let user of testUsers" (click)="selectCheckbox(user)" (click)="fastLogin(user.email, user.password)">
-    <ion-checkbox [checked]="checkboxSelected === user" justify="space-between">{{ user.profile }}</ion-checkbox>
+    <ion-checkbox [checked]="checkboxSelected === user" justify="space-between">{{ user.profile | titlecase }}</ion-checkbox>
   </ion-item>
 </ion-list>
   </div>

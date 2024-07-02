@@ -1,23 +1,23 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>Pedidos Pendientes MOZO</ion-title>
+    <ion-title class="custom-title">Pedidos Pendientes del Mozo</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" class="content-background">
-    <ion-card *ngFor="let pedido of pedidos" class="transparent-card">
-      <ion-card-header>
-        <ion-card-title>Pedido</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <ion-label>
-          <p>Estado: <strong>{{ pedido.estado }} {{ pedido.confirmacionMozo ? '- En la cocina' : '' }}</strong></p>
-          <!-- <p>Confirmado: <strong>{{ pedido.confirmacionMozo ? 'Si' : 'No' }}</strong></p> -->
-          <p>Productos: <strong>{{ pedido.items.join(', ') }}</strong></p>
-          <p>Tiempo mínimo de espera: <strong>{{ pedido.tiempo }}</strong></p>
-        </ion-label>
-        <ion-button *ngIf="!pedido.confirmacionMozo" expand="full" color="success" (click)="confirmarPedido(pedido.id)">Confirmar</ion-button>
-        <ion-button *ngIf="pedido.estado === 'listo'" expand="full" color="danger" (click)="entregarPedido(pedido.id)">Entregar</ion-button>
-      </ion-card-content>
-    </ion-card>
+<ion-content class="content-background">
+  <ion-card *ngFor="let pedido of pedidos" class="transparent-card">
+    <ion-card-header>
+      <ion-card-title>Pedido</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-label>
+        <p>Estado: <strong>{{ pedido.estado | titlecase }} {{ pedido.confirmacionMozo ? '- En la cocina' : '' }}</strong></p>
+        <p>Productos pedidos: <strong>{{ pedido.items | agruparProductos }}</strong></p>
+        <p>Tiempo de espera: <strong>{{ pedido.tiempo }} minutos</strong></p>
+      </ion-label>
+      <br *ngIf="!pedido.confirmacionMozo || pedido.estado === 'listo'">
+      <ion-button *ngIf="!pedido.confirmacionMozo" expand="full" color="success" (click)="confirmarPedido(pedido.id)">Confirmar</ion-button>
+      <ion-button *ngIf="pedido.estado === 'listo'" expand="full" color="danger" (click)="entregarPedido(pedido.id)">Entregar</ion-button>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

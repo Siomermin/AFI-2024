@@ -47,7 +47,7 @@ export class QrMesaPage implements OnInit {
         this.mesaEscaneada = parseInt(params['dato']);
       }
     });
-    
+
     this.verificarUsuarioVinculado();
     this.verificarClienteEnEspera();
     const pedidosObservable: Observable<any[]> = this.database.obtenerTodos('pedidos')!.pipe(
@@ -64,7 +64,7 @@ export class QrMesaPage implements OnInit {
         if (item.idCliente == this.uidUsuarioActual && item.estado != 'finalizado') {
           this.pedidoDelUsuario = item;
           console.log(this.pedidoDelUsuario);
-          break;  
+          break;
         }
       }
     }, error => {
@@ -98,13 +98,13 @@ export class QrMesaPage implements OnInit {
               encuestaCompleta: false,
 
             };
-        
+
             await this.database.crear("mesa-cliente", nuevaMesa);
-        
+
             await this.database.actualizar("lista-espera", listaEsperaActualizada, this.uidListaEspera);
-        
+
             await this.database.actualizar("mesas", mesaActualizada, this.uidMesaLibre);
-        
+
             this.usuarioVinculado=true;
             // Mostrar mensaje de éxito
             Swal.fire({
@@ -115,7 +115,7 @@ export class QrMesaPage implements OnInit {
               confirmButtonColor: 'var(--ion-color-primary)',
               heightAuto: false
             });
-        
+
 
           }else{
             Swal.fire({
@@ -137,8 +137,8 @@ export class QrMesaPage implements OnInit {
             heightAuto: false
           });
         }
-        
-      
+
+
       }else{
         Swal.fire({
           title: 'Error',
@@ -150,11 +150,11 @@ export class QrMesaPage implements OnInit {
         });
       }
 
-  
-    
+
+
   }
 
-  
+
   redireccionar(path:string){
     console.log(path);
     this.router.navigateByUrl(path);
@@ -196,7 +196,7 @@ export class QrMesaPage implements OnInit {
         })),
         first() // Completa el observable después de la primera emisión
       );
-  
+
       mesasObservable.subscribe(data => {
         this.mesas = data;
         console.log(this.mesas);
@@ -219,23 +219,37 @@ export class QrMesaPage implements OnInit {
     });
   }
 
- 
-  
+
+
   async mostrarMesasLibres() {
     await this.verificarMesaLibre();
+
     // Filtrar las mesas con estado "libre"
     const mesasLibres = this.mesas.filter(mesa => mesa.estado === 'libre');
-  
-    console.log(this.mesas);
 
+    if (mesasLibres.length === 0) {
+      // Si no hay mesas libres, mostrar mensaje de que no hay mesas disponibles
+      Swal.fire({
+        title: "No hay mesas disponibles",
+        text: "Lo sentimos, en este momento no hay mesas libres para asignar.",
+        icon: "warning",
+        confirmButtonText: "Aceptar",
+        confirmButtonColor: 'var(--ion-color-primary)',
+        heightAuto: false
+      });
+      return; // Salir de la función si no hay mesas libres
+    }
+
+    console.log(this.mesas);
     console.log(mesasLibres);
+
     // Construir el contenido HTML para el SweetAlert
     let contenidoHTML = '<ul style="text-align: left; padding-left: 20px;">';
     mesasLibres.forEach(mesa => {
       contenidoHTML += `<li>Mesa número: ${mesa.numeroMesa}</li>`;
     });
     contenidoHTML += '</ul>';
-  
+
     // Mostrar el SweetAlert con las mesas libres
     Swal.fire({
       title: "Mesas Libres",
@@ -247,6 +261,7 @@ export class QrMesaPage implements OnInit {
     });
   }
 
+
   async verificarClienteEnEspera() {
     return new Promise((resolve, reject) => {
       const listaEsperaObservable: Observable<any[]> = this.database.obtenerTodos('lista-espera')!.pipe(
@@ -256,7 +271,7 @@ export class QrMesaPage implements OnInit {
           return { id, ...data };
         }))
       );
-  
+
       listaEsperaObservable.subscribe(data => {
         this.listaEspera = data;
         this.clienteEnEspera = false; // Reiniciar el estado del cliente en espera
@@ -286,7 +301,7 @@ export class QrMesaPage implements OnInit {
         })),
         first() // Completa el observable después de la primera emisión
       );
-  
+
       usuarioVinculadoObservable.subscribe(data => {
         const usuariosEnMesas = data;
         const usuarioVinculado = usuariosEnMesas.find(item => item.idCliente == this.uidUsuarioActual && item.estado == "vigente");
@@ -306,7 +321,7 @@ export class QrMesaPage implements OnInit {
       });
     });
   }
-  
+
   confirmarRecepcionPedido(){
 
     console.log(this.pedidoDelUsuario)
@@ -376,6 +391,7 @@ export class QrMesaPage implements OnInit {
     });
   }
 
+
   async pedirCuenta() {
 
     await this.verificarUsuarioVinculado();
@@ -408,8 +424,3 @@ export class QrMesaPage implements OnInit {
       }
 
   }
-
-
-
- 
-
