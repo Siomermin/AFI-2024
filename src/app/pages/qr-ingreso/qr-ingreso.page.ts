@@ -130,7 +130,6 @@ export class QrIngresoPage implements OnInit {
 
   redireccionar(path : string) {
     this.router.navigateByUrl(path);
-    //this.router.navigateBack();
   }
   
 }
