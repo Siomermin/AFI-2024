@@ -1,7 +1,25 @@
+* {
+  color: #000;
+}
+
+ion-content {
+  --background: rgba(255, 255, 255, 0.8) url('../../../assets/images/chat-back2.jpeg');
+  --background-size: cover;
+  --background-position: center;
+}
+
+.lista-items {
+  display: flex;
+}
+
+.transparent {
+  --background: rgba(255, 255, 255, 0.5); /* Fondo semi-transparente */
+}
+
 .item-label {
     flex: 1;
   }
-  
+
   .price-label {
     flex: 0;
     font-weight: 600;

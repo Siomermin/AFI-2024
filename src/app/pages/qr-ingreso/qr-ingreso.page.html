@@ -1,20 +1,18 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title class="ion-text-center">
-      <img (click)="redireccionar('home')" src="../../../assets/images/back.png" alt="" height="15px">
-      Opciones
+      QR Ingreso al local
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" class="ion-text-center" style="display: flex; justify-content: center; align-items: center;">
-  <ion-card>
-    <ion-button (click)="agregarListaEspera()">
+<ion-content [fullscreen]="true" class="ion-text-center content-background">
+  <div class="container">
+    <ion-button class="custom-button" expand="full" (click)="agregarListaEspera()">
       Agregarme a la lista de espera
     </ion-button>
-    <ion-button (click)="redireccionar('graficos')">
+    <ion-button class="custom-button" expand="full" (click)="redireccionar('graficos')">
       Ver gráficos de encuestas
     </ion-button>
-  </ion-card>
-  
+  </div>
 </ion-content>

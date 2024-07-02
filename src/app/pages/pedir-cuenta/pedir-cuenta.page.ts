@@ -63,6 +63,8 @@ export class PedirCuentaPage implements OnInit {
     this.calcularTotalConDescuento();
   }
 
+ 
+
   cargarPedidos() {
     const pedidosObs : Observable<any[]> = this.database.obtenerTodos('pedidos')!.pipe(
       map(actions => actions.map(a => {
@@ -175,6 +177,10 @@ export class PedirCuentaPage implements OnInit {
       tiempo: this.pedidoActual.tiempo,
 
     }
+   
+   
+
+
     this.database.actualizar("pedidos", pedidoActualizado, this.pedidoActual.id)
     .then(() => {
       this.actualizarLista();

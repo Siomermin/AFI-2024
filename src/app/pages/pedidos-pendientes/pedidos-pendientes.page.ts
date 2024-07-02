@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DatabaseService } from 'src/app/auth/services/database.service';
 import { ModalController } from '@ionic/angular';
-import { TiempoEsperaModalPage } from './components/tiempo-espera-modal/tiempo-espera-modal.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-pedidos-pendientes',
@@ -36,51 +36,55 @@ export class PedidosPendientesPage implements OnInit {
   }
 
   async aceptarPedido(pedidoId: string) {
-    // const modal = await this.modalController.create({
-    //   component: TiempoEsperaModalPage,
-    //   componentProps: {
-    //     pedidoId: pedidoId
-    //   }
-    // });
-
-    // modal.onDidDismiss().then((data) => {
-    //   if (data.data) {
-    //     const tiempoEspera = data.data.tiempoEspera;
-    //     const dataPedido = {
-    //       estado: 'realizando',
-    //       tiempoMinimoEspera: parseInt(tiempoEspera)
-    //     };
-
     const dataPedido = {
       estado: 'realizando',
     };
     this.database
       .actualizar2('pedidos', dataPedido, pedidoId)
       .then(() => {
-        console.log('Pedido aceptado correctamente.');
+        Swal.fire({
+          heightAuto: false,
+          icon: 'success',
+          title: 'Pedido aceptado',
+          text: 'El pedido ha sido aceptado correctamente.',
+          confirmButtonText: 'OK',
+        });
         this.cargarPedidosPendientes();
       })
       .catch((error) => {
+        Swal.fire({
+          heightAuto: false,
+          icon: 'error',
+          title: 'Error',
+          text: 'Hubo un error al aceptar el pedido.',
+          confirmButtonText: 'OK'
+        });
         console.error('Error al aceptar pedido:', error);
       });
   }
-  // });
-
-  // return await modal.present();
-  //}
 
   terminarPedido(pedidoId: string) {
     this.database
       .actualizar2('pedidos', { estado: 'listo' }, pedidoId)
       .then(() => {
-        console.log('Pedido aceptado correctamente.');
+        Swal.fire({
+          icon: 'success',
+          title: 'Pedido terminado',
+          text: 'El pedido ha sido terminado correctamente.',
+          confirmButtonText: 'OK',
+          heightAuto: false
+        });
         this.cargarPedidosPendientes();
       })
       .catch((error) => {
-        console.error('Error al aceptar pedido:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Hubo un error al terminar el pedido.',
+          confirmButtonText: 'OK',
+          heightAuto: false
+        });
+        console.error('Error al terminar pedido:', error);
       });
-
-    // Actualizar la lista de pedidos después de terminar
-    this.cargarPedidosPendientes();
   }
 }

@@ -12,14 +12,14 @@
     <ion-fab-button (click)="verPedido()" color="success">
       <img src="../../../assets/images/compra.png" style="padding: 8px;" alt="">
     </ion-fab-button>
-    
+
   </ion-fab>
 
   <ion-fab slot="fixed" vertical="top" horizontal="end" edge="true" *ngIf="montoTotal>0">
     <ion-fab-button color="primary">
      Total <br> ${{montoTotal}}
     </ion-fab-button>
-    
+
   </ion-fab>
 
   <ion-fab slot="fixed" vertical="bottom" horizontal="end" *ngIf="tiempoTotalPedido > 0" size="large">
@@ -33,11 +33,11 @@
   </ion-fab>
 
 
- 
+
 
   <h2>Platos Principales</h2>
 <ion-card *ngFor="let item of principales; let i = index" style="background-color: #ccc;" (click)="mostrarInputCantidad(i)">
-  <div *ngIf="item.tipo == 'principal'">
+  <div *ngIf="item.tipo === 'principal'">
     <ion-card-header>
       <ion-card-title>{{item.nombre}}</ion-card-title>
       <ion-card-title>${{item.precio}}</ion-card-title>
@@ -69,7 +69,7 @@
   <h2>Guarniciones</h2>
 
   <ion-card *ngFor="let item of guarniciones ;let i = index" style="background-color: #ccc;"  (click)="mostrarInputCantidad(i)">
-    <div *ngIf="item.tipo == 'guarnicion'">
+    <div *ngIf="item.tipo === 'guarnicion'">
       <ion-card-header>
         <ion-card-title>{{item.nombre}}</ion-card-title>
         <ion-card-title>${{item.precio}}</ion-card-title>
@@ -80,7 +80,7 @@
           <img [src]="img" alt="" style="height: 70px; width: 90px;">
         </div>
       </div>
-  
+
       <ion-card-content>
         {{item.descripcion}}
       </ion-card-content>
@@ -99,7 +99,7 @@
   <h2>Postres</h2>
 
   <ion-card *ngFor="let item of postres ;let i = index" style="background-color: #ccc ;"  (click)="mostrarInputCantidad(i)" >
-    <div *ngIf="item.tipo=='postre'">
+    <div *ngIf="item.tipo==='postre'">
     <ion-card-header>
       <ion-card-title>{{item.nombre}}</ion-card-title>
       <ion-card-title>${{item.precio}}</ion-card-title>
@@ -112,7 +112,7 @@
       </div>
     </div>
 
-  
+
     <ion-card-content>
       {{item.descripcion}}
     </ion-card-content>
@@ -133,13 +133,13 @@
   <h2>Bebidas</h2>
 
   <ion-card *ngFor="let item of bebidas ;let i = index " style="background-color: #ccc ;"   (click)="mostrarInputCantidad(i)" >
-    <div  *ngIf="item.tipo=='bebida'">
+    <div  *ngIf="item.tipo==='bebida'">
     <ion-card-header>
       <ion-card-title>{{item.nombre}}</ion-card-title>
       <ion-card-title>${{item.precio}}</ion-card-title>
 
     </ion-card-header>
-  
+
     <div>
       <div *ngFor="let img of item.imagenes; let i = index" style="display: inline-block; margin-right: 10px;">
         <img [src]="img" alt="" style="height: 70px; width: 90px;">
