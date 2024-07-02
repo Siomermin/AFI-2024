@@ -16,7 +16,9 @@
       Vincularme con una mesa
     </ion-button>
 
-    <ion-button *ngIf="pedidoDelUsuario && pedidoDelUsuario.estado === 'entregado-confirmado' && usuarioVinculado" expand="full" (click)="redireccionar('pedir-cuenta')" class="custom-button">
+
+  <div *ngIf="pedidoDelUsuario && pedidoDelUsuario.estado == 'entregado-confirmado' && usuarioVinculado">
+    <ion-button expand="full"   (click)="pedirCuenta()" class="ion-text-center custom-button">
       Pedir cuenta
     </ion-button>
 

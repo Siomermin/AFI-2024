@@ -164,7 +164,7 @@ export class MemoTestComponent implements OnInit {
   }
 
   getImagePath(nombreImagen: string): string {
-    return `assets/juego/comida/${this.dificultad}/${nombreImagen}.png`;
+    return `assets/juego/comida/${nombreImagen}.png`;
   }
 
   mostrarResultado() {
@@ -194,20 +194,5 @@ export class MemoTestComponent implements OnInit {
     return rows;
   }
 
-  abandonar() {
-    clearInterval(this.cronometro);
-    Swal.fire({
-      title: "Has abandonado el juego!",
-      imageUrl: "assets/img/medio.png",
-      imageWidth: 130,
-      imageHeight: 100,
-      heightAuto: false,
-      confirmButtonText: "Ir al Menú!",
-      confirmButtonColor: 'var(--ion-color-primary)',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.route.navigateByUrl('home');
-      }
-    });
-  }
+ 
 }
