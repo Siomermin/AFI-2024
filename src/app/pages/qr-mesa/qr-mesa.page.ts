@@ -27,7 +27,10 @@ export class QrMesaPage implements OnInit {
   uidListaEspera:string="";
   mesaEscaneada:any;
   mesaEscaneadaLibre:boolean=false;
+  uidMesaCliente:string="";
 
+  mesaActualizar:any;
+  uidMesaActualizar:any;
   async ngOnInit() {
 
     this.afAuth.authState.subscribe(user => {
@@ -286,7 +289,16 @@ export class QrMesaPage implements OnInit {
   
       usuarioVinculadoObservable.subscribe(data => {
         const usuariosEnMesas = data;
-        this.usuarioVinculado = usuariosEnMesas.some(item => item.idCliente == this.uidUsuarioActual && item.estado == "vigente");
+        const usuarioVinculado = usuariosEnMesas.find(item => item.idCliente == this.uidUsuarioActual && item.estado == "vigente");
+  
+        if (usuarioVinculado) {
+          this.usuarioVinculado = true;
+          this.uidMesaCliente = usuarioVinculado.id;
+          this.mesaActualizar = usuarioVinculado.numeroMesa;
+        } else {
+          this.usuarioVinculado = false;
+        }
+  
         resolve(); // Resuelve la promesa después de verificar todos los usuarios
       }, error => {
         console.log(error);
@@ -336,93 +348,68 @@ export class QrMesaPage implements OnInit {
 
   }
 
-
-
-
-
-
-  /* async vincularMesa() {
-    try {
-      await this.verificarMesaLibre();
-      const clienteEnEspera = await this.verificarClienteEnEspera();
-      await this.verificarUsuarioVinculado();
-
-      if(!this.usuarioVinculado){
-      if (clienteEnEspera) {
+  obtenerUidMesaParaActualizar(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const mesas: Observable<any[]> = this.database.obtenerTodos('mesas')!.pipe(
+        map(actions => actions.map(a => {
+          const data = a.payload.doc.data() as any;
+          const id = a.payload.doc.id; // Este es el id del documento en la base de datos
+          return { id, ...data }; // Combinamos el id con el resto de los datos
+        })),
+        first() // Completa el observable después de la primera emisión
+      );
   
-        if (this.uidUsuarioActual != "" && this.mesaLibre != undefined) {
-          const nuevaMesa = {
-            idCliente: this.uidUsuarioActual,
-            numeroMesa: this.mesaLibre.numeroMesa,
-            estado: 'vigente',
-          };
-  
-          await this.database.crear("mesa-cliente", nuevaMesa);
-
-          const mesaActualizada = {
-            estado: "ocupada",
-            numeroMesa: this.mesaLibre.numeroMesa,
-          };
-          const listaEsperaActualizada = {
-            estado: "asignado",
-            idCliente: this.uidUsuarioActual
-          };
-          await this.database.actualizar("lista-espera", listaEsperaActualizada, this.uidListaEspera);
-
-          await this.database.actualizar("mesas", mesaActualizada, this.uidMesaLibre);
-  
-          this.usuarioVinculado=true;
-          // Mostrar mensaje de éxito
-          Swal.fire({
-            title: 'Éxito',
-            text: 'Se le ha asignado la mesa: ' + this.mesaLibre.numeroMesa,
-            icon: 'success',
-            confirmButtonText: 'Aceptar',
-            confirmButtonColor: 'var(--ion-color-primary)',
-            heightAuto: false
-          });
-        } else {
-          // Mostrar mensaje de error si las condiciones iniciales no se cumplen
-          Swal.fire({
-            title: 'Error',
-            text: 'No se puede vincular la mesa porque falta información.',
-            icon: 'error',
-            confirmButtonText: 'Aceptar',
-            confirmButtonColor: 'var(--ion-color-primary)',
-            heightAuto: false
-          });
-        }
-      } else {
-        Swal.fire({
-          title: 'Error',
-          text: 'Antes de tomar una mesa debe anotarse en la lista de espera.',
-          icon: 'error',
-          confirmButtonText: 'Aceptar',
-          confirmButtonColor: 'var(--ion-color-primary)',
-          heightAuto: false
+      mesas.subscribe(data => {
+        const mesas = data;
+        mesas.forEach(mesa => {
+          console.log(mesa.numeroMesa, this.mesaActualizar);
+          if (mesa.numeroMesa == this.mesaActualizar) {
+            console.log("entre");
+            this.uidMesaActualizar = mesa.id;
+          }
         });
-      }
-    }else{
-      Swal.fire({
-        title: 'Error',
-        text: 'Usted ya se encuentra vinculado a una mesa.',
-        icon: 'error',
-        confirmButtonText: 'Aceptar',
-        confirmButtonColor: 'var(--ion-color-primary)',
-        heightAuto: false
+        resolve(); // Resuelve la promesa después de iterar por todas las mesas
+      }, error => {
+        console.log(error);
+        reject(error); // Rechaza la promesa en caso de error
       });
-    }
-    } catch (error) {
-      // Mostrar mensaje de error en caso de que verificarMesaLibre falle
-      Swal.fire({
-        title: 'Error',
-        text: `Hubo un problema al verificar la mesa`,
-        icon: 'error',
-        confirmButtonText: 'Aceptar',
-        confirmButtonColor: 'var(--ion-color-primary)',
-        heightAuto: false
-      });
-    }
-  }*/
+    });
+  }
 
-}
+  async pedirCuenta() {
+
+    await this.verificarUsuarioVinculado();
+
+    await this.obtenerUidMesaParaActualizar();
+  
+    console.log(this.mesaActualizar, this.uidMesaActualizar, this.uidMesaCliente);
+        if (this.uidMesaActualizar && this.uidMesaCliente) {
+          // Actualiza la mesa
+          const mesaActualizada = {
+            estado: "libre",
+            numeroMesa: this.mesaActualizar,
+          };
+
+          console.log(mesaActualizada + this.uidMesaActualizar)
+          this.database.actualizar("mesas", mesaActualizada, this.uidMesaActualizar);
+  
+          // Actualiza el estado de mesa-cliente
+          const mesaCliente = {
+            estado: "finalizado",
+            numeroMesa: this.mesaActualizar,
+            idCliente: this.uidUsuarioActual,
+          };
+          console.log(mesaCliente + this.uidMesaCliente)
+
+          this.database.actualizar("mesa-cliente", mesaCliente, this.uidMesaCliente);
+  
+          this.router.navigateByUrl("pedir-cuenta");
+        } 
+      }
+
+  }
+
+
+
+ 
+

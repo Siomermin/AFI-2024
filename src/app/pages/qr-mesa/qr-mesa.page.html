@@ -24,7 +24,7 @@
   </div>
 
   <div *ngIf="pedidoDelUsuario && pedidoDelUsuario.estado == 'entregado-confirmado' && usuarioVinculado">
-    <ion-button size="large"  (click)="redireccionar('pedir-cuenta')" class="ion-text-center">
+    <ion-button size="large"  (click)="pedirCuenta()" class="ion-text-center">
       Pedir cuenta
     </ion-button>
   </div>

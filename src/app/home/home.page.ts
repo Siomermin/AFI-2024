@@ -130,7 +130,7 @@ export class HomePage implements OnInit  {
 
   mesa(){
     const navigationExtras: NavigationExtras = {
-      queryParams: { dato: "4"  }
+      queryParams: { dato: "8"  }
     };
 
     this.router.navigate(['qr-mesa'], navigationExtras);
