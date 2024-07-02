@@ -60,6 +60,8 @@ export class PedirCuentaPage implements OnInit {
     this.calcularTotalConDescuento();
   }
 
+ 
+
   cargarPedidos() {
     this.database.obtenerTodos("pedidos")?.subscribe(pedidos => {
       this.listaPedidos = pedidos.map((pedido: any) => pedido.payload.doc.data());
@@ -132,6 +134,10 @@ export class PedirCuentaPage implements OnInit {
       tiempo: this.pedidoActual.tiempo,
 
     }
+   
+   
+
+
     this.database.actualizar("pedidos", pedidoActualizado, this.pedidoActual.id)
     .then(() => {
       Swal.fire({
