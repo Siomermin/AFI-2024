@@ -2,7 +2,7 @@ import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'com.afi.segundoparcial',
-  appName: 'AFI2024',
+  appName: 'AFI Resto',
   webDir: 'www',
   server: {
     androidScheme: 'https',

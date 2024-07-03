@@ -4,6 +4,7 @@ import { DatabaseService } from 'src/app/auth/services/database.service';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Observable, map } from 'rxjs';
 import Swal from 'sweetalert2';
+import { NotificationService } from 'src/app/shared/services/notification.service';
 
 
 @Component({
@@ -18,7 +19,7 @@ export class QrIngresoPage implements OnInit {
   private arrayListaEspera : Array<any> = [];
   private docEnLista : any = null;
 
-  constructor(private router: Router, private database: DatabaseService, private auth: AngularFireAuth) { }
+  constructor(private router: Router, private database: DatabaseService, private auth: AngularFireAuth, private notificationService: NotificationService) { }
 
   ngOnInit() {
     this.auth.authState.subscribe(user => {
@@ -49,7 +50,7 @@ export class QrIngresoPage implements OnInit {
         }
       }
     });
-  
+
   }
 
   async agregarListaEspera() {
@@ -128,11 +129,18 @@ export class QrIngresoPage implements OnInit {
   }
   
   enviarNotificacion() {
-
+    this.notificationService.sendNotificationToRole(
+      'Hay nuevos clientes en la lista espera!',
+      'Estan a la espera de tomar una mesa...',
+      'Metre'
+    ).subscribe(
+      response => console.log('Notificación a Metre enviada con éxito', response),
+      error => console.error('Error al enviar notificación a Metre', error)
+    );
   }
 
   redireccionar(path : string) {
     this.router.navigateByUrl(path);
   }
-  
+
 }
