@@ -1,7 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Barcode, BarcodeScanner, GoogleBarcodeScannerModuleInstallState } from '@capacitor-mlkit/barcode-scanning';
-import { AlertController } from '@ionic/angular';
+import { AlertController, LoadingController} from '@ionic/angular';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { DatabaseService } from 'src/app/auth/services/database.service';
 import { Router } from '@angular/router';
@@ -36,12 +36,15 @@ export class AltaPage implements OnInit {
   clientesExistentes: any[] = [];
   clienteAnonimo: boolean = false;
   nombreArchivo:string="";
+  mostrarSpinner= false;
+
 
   constructor(
     private alertController: AlertController,
     private database: DatabaseService,
     private storage: StorageService,
-    private fb: FormBuilder // Añadido FormBuilder
+    private fb: FormBuilder,   private loadingController: LoadingController,
+    // Añadido FormBuilder
   ) {
     this.form = this.fb.group(
       {
@@ -222,13 +225,6 @@ export class AltaPage implements OnInit {
         return false;
       }
 
-      Swal.fire({
-        html: '<br><label style="font-size:80%">Imagen guardada exitosamente</label>',
-        confirmButtonText: 'Ok',
-        confirmButtonColor: 'var(--ion-color-primary)',
-        heightAuto: false,
-      });
-
       return urlDescarga;
     } catch (error) {
       console.error('Error al guardar la imagen:', error);
@@ -249,6 +245,7 @@ export class AltaPage implements OnInit {
     }
 
     if (!this.clienteAnonimo && this.verificarUsuarioExistente(this.form.value.dni)) {
+      this.mostrarSpinner=true;
       Swal.fire({
         title: 'Error',
         text: 'Ya hay un usuario registrado con ese DNI',
@@ -261,7 +258,7 @@ export class AltaPage implements OnInit {
       const imagenGuardada = await this.guardarImagen();
 
       const { nombre, apellido, dni, email, clave } = this.form.value;
-   const nuevoUsuario = new Cliente(
+      const nuevoUsuario = new Cliente(
         nombre,
         this.clienteAnonimo ? '' : apellido,
         this.clienteAnonimo ? '' : dni,
@@ -283,6 +280,7 @@ export class AltaPage implements OnInit {
             this.authService.register(email, clave, docRef.id);
           }
         }).catch((error) => {
+          this.mostrarSpinner=false;
           console.error('Error al crear el usuario:', error);
           Swal.fire({
             title: 'Error',
@@ -294,6 +292,8 @@ export class AltaPage implements OnInit {
           });
         });
       } else {
+        this.mostrarSpinner=false;
+
         console.error('No se pudo guardar la imagen, abortando creación de usuario.');
         Swal.fire({
           title: 'Error',
