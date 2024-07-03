@@ -63,9 +63,11 @@
   </ion-card>
 
   <ion-card class="transparent">
-    <ion-card-subtitle class="medium-font">Participa en un juego por un 10% de descuento</ion-card-subtitle>
-    <div style="text-align: center; justify-content: center; margin-top: 15px">
-      <ion-button (click)="mostrarJuego = true">Quiero Jugar</ion-button>
+    <ion-card-subtitle  class="medium-font" *ngIf="descuento==null">Puedes participar de un juego por un 10% de descuento</ion-card-subtitle>
+    <ion-card-subtitle class="medium-font" *ngIf="descuento==0">No lograste obtener el descuento</ion-card-subtitle>
+
+    <div style="text-align: center; justify-content: center; margin-top: 15px;">
+      <ion-button (click)="mostrarJuego = true" [disabled]="descuento != null" >Quiero jugar</ion-button>
     </div>
     <br />
   </ion-card>

@@ -1,11 +1,10 @@
-ion-content {
-  --background: rgba(255, 255, 255, 0.8) url('../../../assets/images/chat-back2.jpeg');
-  --background-size: cover;
-  --background-position: center;
-}
 
 
 .transparent {
   --background: rgba(255, 255, 255, 0.5); /* Fondo semi-transparente */
   color: #000; /* Color de texto negro para mejor contraste */
+}
+
+ion-content{
+    --background: url(../../../assets/images/back.jpeg);
 }

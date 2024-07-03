@@ -14,7 +14,8 @@ import { NotificationService } from 'src/app/shared/services/notification.servic
 })
 export class QrIngresoPage implements OnInit {
 
-  private uidUsuarioActual: string = '';
+  private uidUsuarioActual : string = '';
+  private email : string = '';
   private arrayListaEspera : Array<any> = [];
   private docEnLista : any = null;
 
@@ -24,6 +25,7 @@ export class QrIngresoPage implements OnInit {
     this.auth.authState.subscribe(user => {
       if (user) {
         this.uidUsuarioActual = user.uid;
+        this.email = user.email!;
         console.log('User UID:', this.uidUsuarioActual);
       } else {
         console.log('No user is logged in');
@@ -60,7 +62,8 @@ export class QrIngresoPage implements OnInit {
           case 'finalizado':
             const listaEsperaActualizada = {
               estado: 'pendiente',
-              idCliente: this.uidUsuarioActual
+              idCliente: this.uidUsuarioActual,
+              email: this.email
             };
             await this.database.actualizar("lista-espera", listaEsperaActualizada, this.docEnLista.id);
             this.enviarNotificacion();
@@ -98,7 +101,8 @@ export class QrIngresoPage implements OnInit {
         // Si no se encuentra en la lista de espera, lo agrego.
         const ingresoListaEspera = {
           estado: 'pendiente',
-          idCliente: this.uidUsuarioActual
+          idCliente: this.uidUsuarioActual,
+          email: this.email
         }
 
         await this.database.crear("lista-espera", ingresoListaEspera);
@@ -123,8 +127,7 @@ export class QrIngresoPage implements OnInit {
       });
     }
   }
-
-  //Avisar al mozo con push notification
+  
   enviarNotificacion() {
     this.notificationService.sendNotificationToRole(
       'Hay nuevos clientes en la lista espera!',
@@ -138,7 +141,6 @@ export class QrIngresoPage implements OnInit {
 
   redireccionar(path : string) {
     this.router.navigateByUrl(path);
-    //this.router.navigateBack();
   }
 
 }

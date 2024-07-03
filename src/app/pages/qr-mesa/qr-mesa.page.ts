@@ -17,6 +17,7 @@ export class QrMesaPage implements OnInit {
   constructor(private router: Router, private database:DatabaseService, private afAuth:AngularFireAuth, private activatedRoute: ActivatedRoute) { }
   pedidos:any[]=[];
   uidUsuarioActual:any;
+  emailUsuarioActual:any;
   pedidoDelUsuario:any;
   mesas:any[]=[];
   mesaLibre:any;
@@ -36,6 +37,7 @@ export class QrMesaPage implements OnInit {
     this.afAuth.authState.subscribe(user => {
       if (user) {
         this.uidUsuarioActual = user.uid;
+        this.emailUsuarioActual = user.email;
         console.log('User UID:', this.uidUsuarioActual);
       } else {
         console.log('No user is logged in');
@@ -88,7 +90,8 @@ export class QrMesaPage implements OnInit {
             };
             const listaEsperaActualizada = {
               estado: "asignado",
-              idCliente: this.uidUsuarioActual
+              idCliente: this.uidUsuarioActual,
+              email: this.emailUsuarioActual
             };
             const nuevaMesa = {
               idCliente: this.uidUsuarioActual,

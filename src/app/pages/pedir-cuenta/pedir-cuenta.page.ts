@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { DatabaseService } from 'src/app/auth/services/database.service';
-import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
+import { ActivatedRoute, Data, Route, Router, NavigationExtras } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { BarcodeScanner, Barcode } from '@capacitor-mlkit/barcode-scanning';
+import { Barcode, BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
 import { AlertController } from '@ionic/angular';
+import { Observable, map } from 'rxjs';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -14,78 +15,110 @@ import Swal from 'sweetalert2';
 export class PedirCuentaPage implements OnInit {
   listaPedidos: any[] = [];
   pedidoActual: any = null;
-  idUsuarioActual: string | null = null; // Asegúrate de definir el tipo adecuado
+  idUsuarioActual: any;
   preciosUnitarios: any[] = [];
   isSupported = false;
   barcodes: Barcode[] = [];
   informacionQr: string | null = null;
-  totalConAjustes: number | null = null;
-  descuento: number | null = null;
-  descuentoNumero: number | null = null;
-  mostrarJuego = false;
-  propina = 0;
-
+  totalConPropina:any | null = null;
+  descuento:number | null=null;
+  mostrarJuego: boolean = false;
+  totalConDescuento: number | null = null;
+  propina: number | null = null;
+  usuarioEnLista: any = null;
   constructor(
     private afAuth: AngularFireAuth,
     private database: DatabaseService,
-    private router: Router,
+    private router: Router, 
     private alertController: AlertController,
     private activatedRouter: ActivatedRoute
-  ) {}
 
-  ngOnInit(): void {
-    this.afAuth.authState.subscribe((user) => {
+  ) { }
+
+  ngOnInit() {
+    this.afAuth.authState.subscribe(user => {
       if (user) {
         this.idUsuarioActual = user.uid;
         this.cargarPedidos();
+        this.cargarListaEspera();
       }
     });
-
-    this.activatedRouter.queryParams.subscribe((params) => {
-      this.propina = parseInt(params['dato']) || 0; // Asegúrate de manejar el caso donde no hay dato
-      this.actualizarTotalConAjustes();
+    this.activatedRouter.queryParams.subscribe(params => {
+      this.propina = parseInt(params['dato']);
+      this.totalConPropina= parseInt(this.pedidoActual.montoTotal) + this.propina;
     });
   }
 
-  calcularTotalConDescuento(): void {
-    const descuento = this.descuento ? (this.pedidoActual.montoTotal * this.descuento) / 100 : 0;
-    this.descuentoNumero = descuento;
-    this.totalConAjustes = this.pedidoActual.montoTotal - descuento + this.propina;
+  calcularTotalConDescuento(){
+    const descuento: number= this.pedidoActual.montoTotal * this.descuento! / 100;
+    this.totalConDescuento = parseInt(this.pedidoActual.montoTotal) - descuento + this.propina!;
   }
+  
 
-  actualizarTotalConAjustes(): void {
-    if (this.pedidoActual) {
-      this.totalConAjustes = this.pedidoActual.montoTotal + (this.propina || 0);
-      if (this.descuento !== null) {
-        this.calcularTotalConDescuento();
-      }
-    } else {
-      this.totalConAjustes = null;
+  recibirDatos(datos: any) {
+    this.descuento = parseInt(datos);
+    if(this.descuento!= null){
+      this.mostrarJuego=false;
     }
+    this.calcularTotalConDescuento();
   }
 
-  recibirDatos(datos: any): void {
-    this.descuento = parseInt(datos) || null; // Asegúrate de manejar el caso donde datos no son válidos
-    if (this.descuento !== null) {
-      this.mostrarJuego = false;
-    }
-    this.actualizarTotalConAjustes();
-  }
+ 
 
-  cargarPedidos(): void {
-    this.database.obtenerTodos('pedidos')?.subscribe((pedidos) => {
-      this.listaPedidos = pedidos.map((pedido: any) => pedido.payload.doc.data());
+  cargarPedidos() {
+    const pedidosObs : Observable<any[]> = this.database.obtenerTodos('pedidos')!.pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as any;
+        const id = a.payload.doc.id;
+        return { id, ...data };
+      }))
+    );
 
+    pedidosObs.subscribe(data => {
+      this.listaPedidos = data;
       for (let item of this.listaPedidos) {
-        if (item.idCliente === this.idUsuarioActual && item.estado === 'entregado-confirmado') {
+        if (item.idCliente === this.idUsuarioActual && item.estado === "entregado-confirmado") {
           this.pedidoActual = item;
           this.preciosUnitarios = item.preciosUnitarios;
           console.log(this.pedidoActual);
-          this.actualizarTotalConAjustes();
-          break; // Termina el bucle una vez que se encuentra el pedido actual
+          break;
+        }
+      }
+    }); 
+  }
+
+  cargarListaEspera() {
+    const listaEsperaObs : Observable<any[]> = this.database.obtenerTodos('lista-espera')!.pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as any;
+        const id = a.payload.doc.id;
+        return { id, ...data };
+      }))
+    );
+
+    listaEsperaObs.subscribe(data => {
+      let arrayResults = data;
+      for (let doc of arrayResults) {
+        console.log(doc);
+        if (doc.idCliente == this.idUsuarioActual && doc.estado === "asignado") {
+          this.usuarioEnLista = doc;
+          console.log(this.usuarioEnLista);
+          break;
         }
       }
     });
+  }
+
+  async actualizarLista() {
+    const listaEsperaActualizada = {
+      estado: 'finalizado',
+      idCliente: this.usuarioEnLista.idCliente,
+      email: this.usuarioEnLista.email
+    };
+
+    await this.database.actualizar("lista-espera", listaEsperaActualizada, this.usuarioEnLista.id)
+    .then(()=> console.log("Estado lista-espera actualizado"))
+    .catch((error) => console.log(error)); 
   }
 
   async requestPermissions(): Promise<boolean> {
@@ -114,49 +147,64 @@ export class PedirCuentaPage implements OnInit {
     }
     this.barcodes.push(...barcodes);
 
+
     const navigationExtras: NavigationExtras = {
-      queryParams: { dato: this.pedidoActual ? parseInt(this.pedidoActual.montoTotal) : 0 }
+      queryParams: { dato: parseInt(this.pedidoActual.montoTotal)}
     };
 
     console.log(navigationExtras);
-    this.router.navigate(['qr-' + this.informacionQr!], navigationExtras);
+    this.router.navigate(['qr-'+this.informacionQr!], navigationExtras);
   }
 
-  ir(): void {
+  //este metodo es para probar sin scan de qr
+  ir(){
+
     const navigationExtras: NavigationExtras = {
-      queryParams: { dato: this.pedidoActual ? parseInt(this.pedidoActual.montoTotal) : 0 }
+      queryParams: { dato: parseInt(this.pedidoActual.montoTotal)}
     };
 
     console.log(navigationExtras);
     this.router.navigate(['qr-propina'], navigationExtras);
   }
 
-  realizarPago(): void {
-    if (!this.pedidoActual) return; // Asegura que haya un pedido actual antes de continuar
+  async realizarPago(){
 
-    const pedidoActualizado = {
-      estado: 'finalizado',
+    const pedidoActualizado={
+      estado: "finalizado",
       idCliente: this.pedidoActual.idCliente,
       items: this.pedidoActual.items,
       preciosUnitarios: this.pedidoActual.preciosUnitarios,
       montoTotal: this.pedidoActual.montoTotal,
       tiempo: this.pedidoActual.tiempo,
-    };
 
-    this.database
-      .actualizar('pedidos', pedidoActualizado, this.pedidoActual.id)
-      .then(() => {
-        Swal.fire({
-          icon: 'success',
-          title: 'Pago realizado exitosamente',
-          showConfirmButton: false,
-          heightAuto: false,
-          timer: 1500,
-        });
-        this.router.navigate(['/home']);
-      })
-      .catch((error) => {
-        console.error('Error al actualizar el pedido: ', error);
+    }
+   
+   
+
+
+    this.database.actualizar("pedidos", pedidoActualizado, this.pedidoActual.id)
+    .then(() => {
+      this.actualizarLista();
+
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "Pago realizado con éxito!",
+        showConfirmButton: false,
+        timer: 1500,
+        heightAuto: false
+      }).then(() => {
+        this.router.navigateByUrl("home");
       });
+    })
+    .catch((error) => {
+      console.error('Error al actualizar el pedido:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Algo salió mal. Por favor, inténtelo de nuevo.',
+        heightAuto: false
+      });
+    });
   }
 }
