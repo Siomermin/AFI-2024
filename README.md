@@ -47,6 +47,10 @@ Utilizamos Jira para gestiónar nuestro proyecto, cada módulo y objetivo a desa
 - **Fecha de inicio de la tarea:** 22/06/2024 
 - **Fecha de finalización de la tarea:** 26/06/2024 
 - **Branch:** fermin-branch
+
+![image](https://github.com/Siomermin/AFI-2024/assets/77855994/24c1ae9d-ad28-4c84-8b9f-1edd358768e3)
+![image](https://github.com/Siomermin/AFI-2024/assets/77855994/d11d8697-d119-48c0-9384-fb51981c634d)
+
 ---
 - **Módulos (objetivos) a desarrollar:** 
     - [Confirmar Pedidos (Cocinero y Bartender)](https://afi-pps-2024.atlassian.net/browse/KAN-32)
