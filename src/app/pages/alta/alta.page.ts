@@ -258,7 +258,7 @@ export class AltaPage implements OnInit {
       const imagenGuardada = await this.guardarImagen();
 
       const { nombre, apellido, dni, email, clave } = this.form.value;
-   const nuevoUsuario = new Cliente(
+      const nuevoUsuario = new Cliente(
         nombre,
         this.clienteAnonimo ? '' : apellido,
         this.clienteAnonimo ? '' : dni,
