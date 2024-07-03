@@ -31,6 +31,7 @@ export class ListaEsperaPage implements OnInit {
 
     clientesObservable.subscribe(next => {
       this.arrayClientes = [];
+      this.arrayShow = [];
       let result = next;
       result.forEach(cliente => {
         if (this.arrayListaEspera.find((list) => list.email == cliente.email)) {
@@ -52,6 +53,7 @@ export class ListaEsperaPage implements OnInit {
 
     listaEsperaObservable.subscribe(next => {
       this.arrayListaEspera = [];
+      this.arrayShow = [];
       let result = next;
       result.forEach(cliente => {
         console.log(cliente);
