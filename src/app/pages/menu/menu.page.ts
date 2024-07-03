@@ -122,6 +122,7 @@ export class MenuPage implements OnInit {
             icon: "error",
             title: "Ocurrió un error al realizar el pedido",
             confirmButtonColor: "red",
+            heightAuto:false
           }).then((result) => {
             if (result.isConfirmed) {
               this.router.navigateByUrl('qr-mesa');

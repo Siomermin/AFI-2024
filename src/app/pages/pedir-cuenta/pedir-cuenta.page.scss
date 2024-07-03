@@ -10,6 +10,7 @@ ion-content {
 
 .lista-items {
   display: flex;
+  justify-content: space-between;
 }
 
 .transparent {
@@ -17,11 +18,63 @@ ion-content {
 }
 
 .item-label {
-    flex: 1;
-  }
+  flex: 1;
+}
 
-  .price-label {
-    flex: 0;
-    font-weight: 600;
-    text-align: right;
-  }
+.price-label {
+  flex: 0;
+  font-weight: 600;
+  text-align: right;
+}
+
+.medium-font {
+  font-size: 1.2rem;
+}
+
+.larger-font {
+  font-size: 1.8em; /* Puedes ajustar el valor según tus necesidades */
+}
+
+.monto-card {
+  border: 2px solid rgb(103, 200, 103);
+}
+
+.monto-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.monto-label {
+  font-size: 1.4rem;
+  font-weight: 400;
+  color: black;
+  text-align: left;
+}
+
+.monto-valor {
+  font-size: 1.6rem;
+  font-weight: 400;
+  color: black;
+  text-align: right;
+}
+
+.subtotal-label {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: black;
+  text-align: left;
+}
+
+.subtotal-valor {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: black;
+  text-align: right;
+}
+
+ion-footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}

@@ -112,7 +112,8 @@ export class PedirCuentaPage implements OnInit {
   async actualizarLista() {
     const listaEsperaActualizada = {
       estado: 'finalizado',
-      idCliente: this.usuarioEnLista.idCliente 
+      idCliente: this.usuarioEnLista.idCliente,
+      email: this.usuarioEnLista.email
     };
 
     await this.database.actualizar("lista-espera", listaEsperaActualizada, this.usuarioEnLista.id)

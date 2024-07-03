@@ -36,6 +36,7 @@ export class GestionClientesPage implements OnInit {
     );
 
     clientesPendientesObservable.subscribe(data => {
+      this.clientesPendientes = [];
       this.clientes = data;
       this.clientesPendientes = this.clientes.filter(cliente => cliente.estado === "pendiente");
     }, error => {

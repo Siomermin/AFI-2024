@@ -1,17 +1,15 @@
-
-
 <ion-header [translucent]="true">
   <ion-toolbar class="ion-text-center">
-    <ion-title style="color: White;">
-      Solicitar Cuenta
-    </ion-title>
+    <ion-title style="color: White">Solicitar Cuenta</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true" class="ion-text-center">
-  <br><br>
-  <ion-card *ngIf="pedidoActual && pedidoActual.items && pedidoActual.items.length > 0" class="ion-text-center transparent">
-    <ion-card-title>Cuenta</ion-card-title>
+  <ion-card
+    *ngIf="pedidoActual && pedidoActual.items && pedidoActual.items.length > 0"
+    class="ion-text-center transparent"
+  >
+    <ion-card-title class="larger-font">Cuenta</ion-card-title>
 
     <div class="ion-padding">
       <div *ngFor="let item of pedidoActual.items; let i = index" class="lista-items">
@@ -19,57 +17,69 @@
           <div class="price-label">${{ pedidoActual.preciosUnitarios[i] }}</div>
       </div>
     </div>
-
-
   </ion-card>
 
-  <ion-card class="transparent"  *ngIf="pedidoActual" style="border: 2px solid rgb(103, 200, 103);">
+  <ion-card class="transparent monto-card" *ngIf="pedidoActual">
     <ion-row>
-      <ion-col size="4"></ion-col>
-      <ion-col size="8">
-        <a style="font-weight: 800; font-size: large; color:black"> Monto total: ${{pedidoActual.montoTotal}}</a>
+      <ion-col size="12" class="monto-item">
+        <span class="monto-label">Productos:</span>
+        <span class="monto-valor">${{ pedidoActual.montoTotal }}</span>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="propina">
+      <ion-col size="12" class="monto-item">
+        <span class="monto-label">Propina:</span>
+        <span class="monto-valor">${{ propina }}</span>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="descuento !== null">
+      <ion-col size="12" class="monto-item">
+        <span class="monto-label">Descuento:</span>
+        <span class="monto-valor">-${{ descuentoNumero }}</span>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12" class="monto-item">
+        <span class="subtotal-label">Subtotal:</span>
+        <span class="subtotal-valor">${{ totalConAjustes }}</span>
       </ion-col>
     </ion-row>
   </ion-card>
-  <ion-card class="transparent">
-    <ion-card-title>Elige la propina</ion-card-title>
 
-    <div style="text-align: center; justify-content: center; margin-top: 15px;">
+  <ion-card class="transparent">
+    <ion-card-title class="larger-font">Elige la Propina</ion-card-title>
+
+    <div style="text-align: center; justify-content: center; margin-top: 15px">
       <ion-button (click)="scan()">
-        <img  style="height: 90px;" src="../../../assets/images/qr.png" alt="">
+        <img style="height: 90px" src="../../../assets/images/qr.png" alt="" />
       </ion-button>
       <br>
     </div>
-    <br>
-  </ion-card>
-
-  <ion-card   class="ion-text-center transparent" *ngIf="propina" style="border: 2px solid rgb(53, 139, 53);">
-    <a style="font-weight: 800; font-size: large; color: black">
-      Total con propina: ${{totalConPropina}}
-    </a>
+    <br />
   </ion-card>
 
   <ion-card class="transparent">
-    <ion-card-subtitle *ngIf="descuento==null">Puedes participar de un juego por un 10% de descuento</ion-card-subtitle>
-    <ion-card-subtitle *ngIf="descuento==0">No lograste obtener el descuento</ion-card-subtitle>
+    <ion-card-subtitle  class="medium-font" *ngIf="descuento==null">Puedes participar de un juego por un 10% de descuento</ion-card-subtitle>
+    <ion-card-subtitle class="medium-font" *ngIf="descuento==0">No lograste obtener el descuento</ion-card-subtitle>
 
     <div style="text-align: center; justify-content: center; margin-top: 15px;">
       <ion-button (click)="mostrarJuego = true" [disabled]="descuento != null" >Quiero jugar</ion-button>
-
     </div>
-    <br>
+    <br />
   </ion-card>
 
   <div>
-    <app-memo-test *ngIf="mostrarJuego" (datosEnviados)="recibirDatos($event)"></app-memo-test>
+    <app-memo-test
+      *ngIf="mostrarJuego"
+      (datosEnviados)="recibirDatos($event)"
+    ></app-memo-test>
   </div>
 
-  <ion-card class="ion-text-center transparent" *ngIf="descuento!==null && totalConDescuento" style="border: 2px solid rgb(53, 139, 53);">
-      <a style="font-weight: 800; font-size: large; color:black"> Total con descuento: ${{totalConDescuento}}</a>
-  </ion-card>
-
-  <br>
-  <ion-button size="large" color="success" (click)="realizarPago()">Realizar Pago</ion-button>
-  <br><br>
+  <br />
 </ion-content>
 
+<ion-footer translucent *ngIf="!mostrarJuego">
+  <ion-toolbar>
+    <ion-button expand="full" color="success" (click)="realizarPago()">Pedir Cuenta</ion-button>
+  </ion-toolbar>
+</ion-footer>
