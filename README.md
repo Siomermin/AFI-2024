@@ -114,6 +114,7 @@ Utilizamos Jira para gestiónar nuestro proyecto, cada módulo y objetivo a desa
 - **Branch:** ian-branch
 
 ![image](https://github.com/Siomermin/AFI-2024/assets/77855994/4f058860-76e8-4ff4-9e83-8d523dc33aa8)
+![image](https://github.com/Siomermin/AFI-2024/assets/77855994/c485e319-e42d-48b3-a8dc-118cd909d9f5)
 
 ---
 - **Módulos (objetivos) a desarrollar:** 
