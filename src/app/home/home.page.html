@@ -79,6 +79,14 @@
 
   <ion-button
     expand="full"
+    (click)="redireccionar('lista-espera')"
+    *ngIf="this.perfilUsuarioActual === 'metre'"
+  >
+    Mirar Lista de Espera
+  </ion-button>
+
+  <ion-button
+    expand="full"
     (click)="redireccionar('consulta-mozo')"
     *ngIf="this.perfilUsuarioActual === 'mozo'"
   >

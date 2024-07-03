@@ -75,12 +75,14 @@ const routes: Routes = [
     loadChildren: () => import('./pages/pedidos-por-confirmar-mozo/pedidos-por-confirmar-mozo.module').then( m => m.PedidosPorConfirmarMozoPageModule)
   },
   {
+    path: 'lista-espera',
+    loadChildren: () => import('./pages/lista-espera/lista-espera.module').then( m => m.ListaEsperaPageModule)
+  },
+  {
     path: '**',
     redirectTo: 'home'
-  },  {
-    path: 'lista-espera',
-    loadChildren: () => import('./lista-espera/lista-espera.module').then( m => m.ListaEsperaPageModule)
   },
+  
 
 
 
