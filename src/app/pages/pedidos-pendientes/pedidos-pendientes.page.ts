@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DatabaseService } from 'src/app/auth/services/database.service';
-import { ModalController } from '@ionic/angular';
 import Swal from 'sweetalert2';
+import { NotificationService } from 'src/app/shared/services/notification.service';
 
 @Component({
   selector: 'app-pedidos-pendientes',
@@ -13,7 +13,7 @@ export class PedidosPendientesPage implements OnInit {
 
   constructor(
     private database: DatabaseService,
-    private modalController: ModalController
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit() {
@@ -75,6 +75,15 @@ export class PedidosPendientesPage implements OnInit {
           heightAuto: false
         });
         this.cargarPedidosPendientes();
+
+        this.notificationService.sendNotificationToRole(
+          'Hay un nuevo pedido listo!',
+          'Esta listo para ser entregado a la mesa...',
+          'Mozo'
+        ).subscribe(
+          response => console.log('Notificación a Mozo enviada con éxito', response),
+          error => console.error('Error al enviar notificación a Mozo', error)
+        );
       })
       .catch((error) => {
         Swal.fire({

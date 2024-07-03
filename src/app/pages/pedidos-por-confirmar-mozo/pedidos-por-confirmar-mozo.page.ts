@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DatabaseService } from 'src/app/auth/services/database.service';
+import { NotificationService } from 'src/app/shared/services/notification.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -11,7 +12,7 @@ export class PedidosPorConfirmarMozoPage implements OnInit {
 
   pedidos?: any[];
 
-  constructor(private database: DatabaseService) { }
+  constructor(private database: DatabaseService, private notificationService: NotificationService) { }
 
   ngOnInit() {
     this.cargarPedidosPorConfirmar();
@@ -67,6 +68,16 @@ export class PedidosPorConfirmarMozoPage implements OnInit {
         });
         // Actualizar la lista de pedidos después de confirmar
         this.cargarPedidosPorConfirmar();
+
+        this.notificationService.sendNotificationToRole(
+          'El mozo ha confirmado un nuevo pedido!',
+          'Un nuevo pedido requiere su realización...',
+          'Cocinero'
+        ).subscribe(
+          response => console.log('Notificación a Cocinero enviada con éxito', response),
+          error => console.error('Error al enviar notificación a Cocinero', error)
+        );
+
       })
       .catch(error => {
         Swal.fire({
