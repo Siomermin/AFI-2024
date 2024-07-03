@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { DatabaseService } from 'src/app/auth/services/database.service';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Observable, map } from 'rxjs';
 
 @Component({
@@ -14,20 +13,11 @@ export class ListaEsperaPage implements OnInit {
   public arrayClientes : Array<any> = [];
   public arrayAuthUsers : Array<any> = [];
 
-  constructor(private database:DatabaseService, private auth: AngularFireAuth) { }
+  constructor(private database: DatabaseService) { }
 
   ngOnInit() {
-    this.auth.authState.subscribe(user => {
-      if (user) {
-        this.arrayAuthUsers.push(user);
-      } else {
-        console.log('No user is logged in');
-      }
-    });
 
-    this.auth.app.then(eques => {
-      console.log();
-    })
+
     this.cargarClientesEnEspera();
     this.cargarClientes();
   }
