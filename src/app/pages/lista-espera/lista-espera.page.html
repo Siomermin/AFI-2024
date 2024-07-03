@@ -16,26 +16,16 @@
         <ion-card-title>Clientes pendientes</ion-card-title>
 
         <ion-list inset="true" >
-          <ion-item *ngFor="let cliente of this.arrayAuthUsers">
-            <ion-label>{{cliente}}</ion-label>
-          </ion-item>
-        </ion-list>
-        <ion-list inset="true" >
-          <ion-item *ngFor="let cliente of this.arrayClientes">
+          <ion-item *ngFor="let cliente of this.arrayShow">
             <img src="{{cliente.urlFoto}}" alt=""><br>
             <ion-label>{{cliente.nombre}} {{cliente.apellido}}</ion-label>
           </ion-item>
         </ion-list>
-        <ion-list inset="true" >
-          <ion-item *ngFor="let cliente of this.arrayListaEspera">
-            <ion-label>{{cliente.idCliente}} {{cliente.estado}}</ion-label>
-          </ion-item>
-        </ion-list>
 
-        <!--<div  *ngIf="this.arrayClientes.length==0">
+        <div *ngIf="this.arrayShow.length==0">
           <img src="../../../assets/images/check.png"  style="height: 100px;" alt="">
           <h3>No hay clientes en lista de espera</h3>
-        </div>-->
+        </div>
       </ion-card>
       
     </ion-content>

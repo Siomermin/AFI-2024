@@ -11,13 +11,11 @@ export class ListaEsperaPage implements OnInit {
 
   public arrayListaEspera : Array<any> = [];
   public arrayClientes : Array<any> = [];
-  public arrayAuthUsers : Array<any> = [];
+  public arrayShow : Array<any> = [];
 
   constructor(private database: DatabaseService) { }
 
   ngOnInit() {
-
-
     this.cargarClientesEnEspera();
     this.cargarClientes();
   }
@@ -35,12 +33,12 @@ export class ListaEsperaPage implements OnInit {
       this.arrayClientes = [];
       let result = next;
       result.forEach(cliente => {
-
-        if(cliente.id) {
-          this.arrayClientes.push(cliente);
+        if (this.arrayListaEspera.find((list) => list.email == cliente.email)) {
+          this.arrayShow.push(cliente);
         }
       });
     });
+    //this.arrayClientes.push({ urlFoto: '', nombre: 'Usuario', apellido: 'anónimo'});
   }
 
   cargarClientesEnEspera() {
@@ -57,8 +55,13 @@ export class ListaEsperaPage implements OnInit {
       let result = next;
       result.forEach(cliente => {
         console.log(cliente);
-        if(cliente.estado == "pendiente") {
-          this.arrayListaEspera.push(cliente);
+        if (cliente.estado == "pendiente") {
+          if (cliente.email) {
+            this.arrayListaEspera.push(cliente);
+          }
+          else {
+            this.arrayShow.push({ urlFoto: '', nombre: 'Usuario', apellido: 'anónimo'});
+          }
         }
       });
     });
