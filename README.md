@@ -58,6 +58,10 @@ Utilizamos Jira para gestiónar nuestro proyecto, cada módulo y objetivo a desa
 - **Fecha de inicio de la tarea:** 29/06/2024 
 - **Fecha de finalización de la tarea:** 01/07/2024 
 - **Branch:** fermin-branch
+
+![image](https://github.com/Siomermin/AFI-2024/assets/77855994/4ff14cd9-a06a-472d-b09e-b6dd906c9d25)
+![image](https://github.com/Siomermin/AFI-2024/assets/77855994/c73dedc4-7a4f-4198-a886-b72c25c25084)
+
 ### Agustina Bilotta
 - **Módulos (objetivos) a desarrollar:**
     - [Alta de Clientes](https://afi-pps-2024.atlassian.net/browse/KAN-1)
