@@ -16,6 +16,14 @@ mejorar la utilización de su servicio por medio de una aplicación para celular
 - Agustina Bilotta - [@cutiBilotta](https://www.github.com/cutiBilotta)
 - Ian Ezequiel Pereyra - [@IanEzeP](https://www.github.com/IanEzeP)
 
+
+## Gestión del proyecto
+Utilizamos Jira para gestiónar nuestro proyecto, cada módulo y objetivo a desarrollar tiene asignada su incidencia correspondiente.
+
+#### Tablero de Jira:
+[![Jira Board](https://img.shields.io/badge/JIRA-Board-blue?style=for-the-badge&logo=Jira&logoColor=white)](https://afi-pps-2024.atlassian.net/jira/software/projects/KAN/boards/1)
+
+
 ## Responsabilidades
 
 ### Fermín González
