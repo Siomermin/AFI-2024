@@ -70,6 +70,11 @@ Utilizamos Jira para gestiónar nuestro proyecto, cada módulo y objetivo a desa
 - **Fecha de inicio de la tarea:** 15/06/2024
 - **Fecha de finalización de la tarea:** 18/06/2024
 - **Branch:** agustina-branch
+
+![image](https://github.com/Siomermin/AFI-2024/assets/77855994/ac6e3a35-424e-4c67-a786-6af01c8998d9)
+![image](https://github.com/Siomermin/AFI-2024/assets/77855994/ed91d730-84b4-41cc-a4e8-69c92874b8bf)
+![image](https://github.com/Siomermin/AFI-2024/assets/77855994/ee5d86b4-8c92-43ee-bb79-d07fc1c7b9ed)
+
 ---
 - **Módulos (objetivos) a desarrollar:**
     - [QR de la Mesa](https://afi-pps-2024.atlassian.net/browse/KAN-9)
@@ -78,12 +83,20 @@ Utilizamos Jira para gestiónar nuestro proyecto, cada módulo y objetivo a desa
 - **Fecha de inicio de la tarea:** 19/06/2024
 - **Fecha de finalización de la tarea:** 23/06/2024
 - **Branch:** agustina-branch
+
+![image](https://github.com/Siomermin/AFI-2024/assets/77855994/093e7da9-554f-4a4b-b3ed-f0cdfe1b34e6)
+![image](https://github.com/Siomermin/AFI-2024/assets/77855994/e095505d-964a-46e4-8973-701f11872f34)
+
 ---
 - **Módulos (objetivos) a desarrollar:**
     - [Encuesta Clientes](https://afi-pps-2024.atlassian.net/browse/KAN-12)
 - **Fecha de inicio de la tarea:** 26/06/2024
 - **Fecha de finalización de la tarea:** 28/06/2024
 - **Branch:** agustina-branch
+
+![image](https://github.com/Siomermin/AFI-2024/assets/77855994/0e03bc17-0b08-4c2d-9803-7e72327c3b22)
+![image](https://github.com/Siomermin/AFI-2024/assets/77855994/01c7b110-bcd9-4512-9fc6-8bcb3ee9c421)
+
 
 ### Ian Ezequiel Pereyra
 - **Módulos (objetivos) a desarrollar:** 
@@ -99,6 +112,9 @@ Utilizamos Jira para gestiónar nuestro proyecto, cada módulo y objetivo a desa
 - **Fecha de inicio de la tarea:** 19/06/2024 
 - **Fecha de finalización de la tarea:** 22/06/2024
 - **Branch:** ian-branch
+
+![image](https://github.com/Siomermin/AFI-2024/assets/77855994/4f058860-76e8-4ff4-9e83-8d523dc33aa8)
+
 ---
 - **Módulos (objetivos) a desarrollar:** 
     - [QR de Ingreso al Local](https://afi-pps-2024.atlassian.net/browse/KAN-7)
@@ -106,4 +122,6 @@ Utilizamos Jira para gestiónar nuestro proyecto, cada módulo y objetivo a desa
 - **Fecha de inicio de la tarea:** 26/06/2024 
 - **Fecha de finalización de la tarea:** 29/06/2024
 - **Branch:** ian-branch
+
+![image](https://github.com/Siomermin/AFI-2024/assets/77855994/233803bf-c13a-4df7-9640-86724991a682)
 
