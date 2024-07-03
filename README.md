@@ -1,10 +1,14 @@
+
 # Segundo parcial - Práctica Profesional 
 
-#### Objetivo
+#### Objetivo: 
 
 Lograr una aplicación utilizando el hardware del dispositivo móvil para la gestión de información, enfocada en la experiencia de usuario.
 
-El enfoque va a estar dado por los usuarios de un RESTAURANTE, el cual apunta todos sus esfuerzos en mejorar la utilización de su servicio por medio de una aplicación para celulares.
+El enfoque va a estar dado por los usuarios de un RESTAURANTE, el cual apunta todos sus esfuerzos en
+mejorar la utilización de su servicio por medio de una aplicación para celulares.
+
+
 
 ## Integrantes
 
@@ -16,32 +20,68 @@ El enfoque va a estar dado por los usuarios de un RESTAURANTE, el cual apunta to
 
 ### Fermín González
 - **Módulos (objetivos) a desarrollar:** 
-  1. Alta de Mesa.
-  2. QR de propina.
-  3. Agregar un nuevo cliente registrado. 
-     - Se enviará, automáticamente, un correo electrónico informando la situación de su registro.
-     - El cliente NO podrá ingresar a la aplicación si no es aceptado previamente.  
-- **Fecha de inicio de la tarea:** 
-- **Fecha de finalización de la tarea:** 
+    - [QR de la Propina](https://afi-pps-2024.atlassian.net/browse/KAN-10)
+    - [Alta de Cliente Anónimo](https://afi-pps-2024.atlassian.net/browse/KAN-28)
+- **Fecha de inicio de la tarea:** 19/06/2024 
+- **Fecha de finalización de la tarea:** 21/06/2024 
 - **Branch:** fermin-branch
-
+---
+- **Módulos (objetivos) a desarrollar:** 
+    - [Servidor API](https://afi-pps-2024.atlassian.net/browse/KAN-29)
+    - [Push Notification](https://afi-pps-2024.atlassian.net/browse/KAN-19)
+    - [Correo Electrónico Automático](https://afi-pps-2024.atlassian.net/browse/KAN-20)
+- **Fecha de inicio de la tarea:** 22/06/2024 
+- **Fecha de finalización de la tarea:** 26/06/2024 
+- **Branch:** fermin-branch
+---
+- **Módulos (objetivos) a desarrollar:** 
+    - [Confirmar Pedidos (Cocinero y Bartender)](https://afi-pps-2024.atlassian.net/browse/KAN-32)
+    - [Listado Pedidos Pendientes (Mozo)](https://afi-pps-2024.atlassian.net/browse/KAN-33)
+- **Fecha de inicio de la tarea:** 29/06/2024 
+- **Fecha de finalización de la tarea:** 01/07/2024 
+- **Branch:** fermin-branch
 ### Agustina Bilotta
 - **Módulos (objetivos) a desarrollar:**
-  1. Alta de clientes.
-  2. QR de la mesa.
-  3. Agregar un nuevo cliente registrado. 
-     - Una vez ingresado todos los datos del cliente, el mismo estará en un listado de clientes pendientes de aprobación.
-     - Sólo el supervisor o dueño podrán aceptar o no a los clientes.
-  4. Asignación de mesa por el Metre y escaneo del código QR de la mesa asignada.
-  5. Visualización del listado de productos (comidas, bebidas, postres) con tres imágenes por producto al cargar el código QR de la mesa (en el celular del cliente).
-  6. Gestión de pedidos para todos los comensales de la mesa.
-- **Fecha de inicio de la tarea:** 
-- **Fecha de finalización de la tarea:** 
+    - [Alta de Clientes](https://afi-pps-2024.atlassian.net/browse/KAN-1)
+    - [Realizar pedidos (Platos y Bebidas)](https://afi-pps-2024.atlassian.net/browse/KAN-24)
+    - [Autorización Clientes](https://afi-pps-2024.atlassian.net/browse/KAN-26)
+- **Fecha de inicio de la tarea:** 15/06/2024
+- **Fecha de finalización de la tarea:** 18/06/2024
+- **Branch:** agustina-branch
+---
+- **Módulos (objetivos) a desarrollar:**
+    - [QR de la Mesa](https://afi-pps-2024.atlassian.net/browse/KAN-9)
+    - [Validación Campos Formulario](https://afi-pps-2024.atlassian.net/browse/KAN-15)
+    - [Asignación de una Mesa](https://afi-pps-2024.atlassian.net/browse/KAN-27)
+- **Fecha de inicio de la tarea:** 19/06/2024
+- **Fecha de finalización de la tarea:** 23/06/2024
+- **Branch:** agustina-branch
+---
+- **Módulos (objetivos) a desarrollar:**
+    - [Encuesta Clientes](https://afi-pps-2024.atlassian.net/browse/KAN-12)
+- **Fecha de inicio de la tarea:** 26/06/2024
+- **Fecha de finalización de la tarea:** 28/06/2024
 - **Branch:** agustina-branch
 
 ### Ian Ezequiel Pereyra
 - **Módulos (objetivos) a desarrollar:** 
-  1. Alta de productos.
-- **Fecha de inicio de la tarea:** 
-- **Fecha de finalización de la tarea:** 
+    - [Configuración Firebase](https://afi-pps-2024.atlassian.net/browse/KAN-30)
+    - [Creación de Usuarios Acceso Rápido](https://afi-pps-2024.atlassian.net/browse/KAN-23)
+- **Fecha de inicio de la tarea:** 11/06/2024 
+- **Fecha de finalización de la tarea:** 11/06/2024  
+---
+- **Módulos (objetivos) a desarrollar:** 
+    - [Configuración Libreria QR](https://afi-pps-2024.atlassian.net/browse/KAN-31)
+    - [Diseño Logo](https://afi-pps-2024.atlassian.net/browse/KAN-21)
+    - [Diseño SplashScreen](https://afi-pps-2024.atlassian.net/browse/KAN-22)
+- **Fecha de inicio de la tarea:** 19/06/2024 
+- **Fecha de finalización de la tarea:** 22/06/2024
 - **Branch:** ian-branch
+---
+- **Módulos (objetivos) a desarrollar:** 
+    - [QR de Ingreso al Local](https://afi-pps-2024.atlassian.net/browse/KAN-7)
+    - [Alta de Productos](https://afi-pps-2024.atlassian.net/browse/KAN-6)
+- **Fecha de inicio de la tarea:** 26/06/2024 
+- **Fecha de finalización de la tarea:** 29/06/2024
+- **Branch:** ian-branch
+
