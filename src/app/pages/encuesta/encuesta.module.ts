@@ -6,7 +6,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { EncuestaPageRoutingModule } from './encuesta-routing.module';
 import { NgForm } from '@angular/forms';
-
+import { ReactiveFormsModule } from '@angular/forms';
 import { EncuestaPage } from './encuesta.page';
 
 @NgModule({
@@ -14,7 +14,7 @@ import { EncuestaPage } from './encuesta.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    EncuestaPageRoutingModule
+    EncuestaPageRoutingModule, ReactiveFormsModule
   ],
   declarations: [EncuestaPage]
 })

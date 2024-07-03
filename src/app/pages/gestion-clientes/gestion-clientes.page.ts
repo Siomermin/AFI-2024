@@ -12,18 +12,21 @@ import { NotificationService } from '../../shared/services/notification.service'
 })
 export class GestionClientesPage implements OnInit {
 
-  constructor(private database:DatabaseService, private notificationSvc: NotificationService) { }
 
-  clientes:any[]=[];
-  idUsuarioSeleccionado:any;
-  clientesPendientes:any[]=[];
+  clientes: any[] = [];
+  idUsuarioSeleccionado: any;
+  clientesPendientes: any[] = [];
+
+  constructor(private database: DatabaseService, private notificationSvc: NotificationService) { }
 
   ngOnInit() {
-
     this.cargarClientesPendientes();
   }
 
   cargarClientesPendientes() {
+    // Limpia el array de clientes pendientes antes de agregar los nuevos
+    this.clientesPendientes = [];
+
     const clientesPendientesObservable: Observable<any[]> = this.database.obtenerClientesPendientes()!.pipe(
       map(actions => actions.map(a => {
         const data = a.payload.doc.data() as any;
@@ -34,16 +37,11 @@ export class GestionClientesPage implements OnInit {
 
     clientesPendientesObservable.subscribe(data => {
       this.clientes = data;
-      this.clientes.forEach( cliente => {
-        if(cliente.estado == "pendiente"){
-          this.clientesPendientes.push(cliente);
-        }
-      })
+      this.clientesPendientes = this.clientes.filter(cliente => cliente.estado === "pendiente");
     }, error => {
       console.log(error);
     });
   }
-
 
 
 async gestionarSolicitud(clienteSeleccionado: any, autorizar: boolean) {
