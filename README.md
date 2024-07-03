@@ -28,11 +28,17 @@ Utilizamos Jira para gestiónar nuestro proyecto, cada módulo y objetivo a desa
 
 ### Fermín González
 - **Módulos (objetivos) a desarrollar:** 
+    - [Pantalla de Login](https://afi-pps-2024.atlassian.net/browse/KAN-34)
     - [QR de la Propina](https://afi-pps-2024.atlassian.net/browse/KAN-10)
     - [Alta de Cliente Anónimo](https://afi-pps-2024.atlassian.net/browse/KAN-28)
-- **Fecha de inicio de la tarea:** 19/06/2024 
+- **Fecha de inicio de la tarea:** 18/06/2024 
 - **Fecha de finalización de la tarea:** 21/06/2024 
 - **Branch:** fermin-branch
+
+![image](https://github.com/Siomermin/AFI-2024/assets/77855994/8bfcad2b-b4a0-40b9-ad69-054eeaedad8f)
+![image](https://github.com/Siomermin/AFI-2024/assets/77855994/fe24df56-c74a-42b4-b22c-93d181a99d1f)
+![image](https://github.com/Siomermin/AFI-2024/assets/77855994/552cd56b-c960-457f-a336-39e92a36e40c)
+
 ---
 - **Módulos (objetivos) a desarrollar:** 
     - [Servidor API](https://afi-pps-2024.atlassian.net/browse/KAN-29)
