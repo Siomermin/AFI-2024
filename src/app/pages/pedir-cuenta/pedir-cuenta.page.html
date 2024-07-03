@@ -15,10 +15,8 @@
 
     <div class="ion-padding">
       <div *ngFor="let item of pedidoActual.items; let i = index" class="lista-items">
-        <ion-list>
           <div class="item-label">{{ item }}</div>
           <div class="price-label">${{ pedidoActual.preciosUnitarios[i] }}</div>
-      </ion-list>
       </div>
     </div>
 
@@ -40,7 +38,6 @@
       <ion-button (click)="scan()">
         <img  style="height: 90px;" src="../../../assets/images/qr.png" alt="">
       </ion-button>
-      <ion-button (click)="ir()">IR</ion-button>
       <br>
     </div>
     <br>
