@@ -5,6 +5,7 @@
 </ion-header>
 
 <ion-content [fullscreen]="true" class="ion-text-center">
+  <br>
   <div *ngIf="encuestasIncompletasDelUsuario!=undefined && !mostrarFormEncuesta" class="ion-text-center">
     <h2 >Encuestas Pendientes</h2>
     <img src="../../../assets/images/encuesta.png" style="height: 100px;" alt="">
@@ -19,7 +20,7 @@
   <div *ngIf="mostrarFormEncuesta">
     <form #encuestaForm="ngForm" (ngSubmit)="onSubmit()">
       <ion-list>
-  
+
         <ion-item>
           <p position="stacked">Seleccione una valoración para los platos:</p>
           <ion-range min="1" max="5" step="1" [(ngModel)]="encuesta.valoracionPlatos" name="valoracionPlatos" required>
@@ -27,7 +28,7 @@
             <ion-label slot="end">5</ion-label>
           </ion-range>
         </ion-item>
-  
+
         <ion-item>
           <p position="stacked">Seleccione una valoración para la atención:</p>
           <ion-radio-group [(ngModel)]="encuesta.valoracionAtencion" name="valoracionAtencion" required>
@@ -53,7 +54,7 @@
             </ion-item>
           </ion-radio-group>
         </ion-item>
-  
+
         <ion-item>
           <p position="stacked">¿Con cuál/es de estas características se encuentra más conforme?</p>
           <ion-checkbox-group [(ngModel)]="encuesta.caracteristicas" name="caracteristicas" required>
@@ -79,20 +80,20 @@
             </ion-item>
           </ion-checkbox-group>
         </ion-item>
-  
+
         <ion-item>
           <p position="stacked">Déjanos una valoración personal:</p>
           <ion-input [(ngModel)]="encuesta.valoracionPersonal" name="valoracionPersonal" required></ion-input>
         </ion-item>
-  
+
       </ion-list>
       <br>
       <ion-button type="submit" expand="full" color="success" [disabled]="!encuestaForm.form.valid">Enviar</ion-button>
       <br><br>
     </form>
   </div>
- 
- 
+
+
   <div *ngIf="!encuestasIncompletasDelUsuario || encuestasIncompletasDelUsuario.length==0">
     <ion-card>
 
@@ -111,7 +112,7 @@
       <p>Accede a los gráficos y reseñas de los clientes que ya pasaron por nuestro local</p>
       <ion-button routerLink="/graficos" size="large">Ver Gráficos</ion-button>
     </ion-card-content>
-  
+
 
   </ion-card>
 </ion-content>

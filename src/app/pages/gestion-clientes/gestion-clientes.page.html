@@ -6,16 +6,12 @@
 
 <ion-content [fullscreen]="true" class="ion-text-center">
 
-  <ion-content [fullscreen]="true">
-
-    <ion-content color="light">
-
       <br><br>
       <ion-card>
         <br>
         <ion-card-title>Clientes pendientes de aprobación</ion-card-title>
+        <br>
         <ion-card-subtitle>Acceso único para Dueño/Supervisor</ion-card-subtitle>
-
         <ion-list inset="true" >
           <ion-item *ngFor="let cliente of clientesPendientes">
             <img src="{{cliente.urlFoto}}" alt=""><br>
@@ -25,16 +21,13 @@
           </ion-item>
         </ion-list>
 
-        <div  *ngIf="clientesPendientes.length==0">
+        <div  *ngIf="clientesPendientes.length===0">
           <img src="../../../assets/images/check.png"  style="height: 100px;" alt="">
           <h3>No hay clientes pendientes de aprobación</h3>
 
 
         </div>
       </ion-card>
-      
-    </ion-content>
-  </ion-content>
 
 
 

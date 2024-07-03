@@ -13,7 +13,7 @@
 <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
   <ion-item>
     <ion-input labelPlacement="stacked" label="Correo electrónico" formControlName="email" type="text"></ion-input>
-    <ion-text color="danger" *ngIf="isValidField('email')">
+    <ion-text class="error" color="danger" *ngIf="isValidField('email')">
       {{ getErrorByField("email") }}</ion-text
     >
   </ion-item>
@@ -25,7 +25,7 @@
       formControlName="password"
       type="password"
     ></ion-input>
-    <ion-text color="danger" *ngIf="isValidField('password')">
+    <ion-text class="error" color="danger" *ngIf="isValidField('password')">
       {{ getErrorByField("password") }}
     </ion-text>
   </ion-item>
