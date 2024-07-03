@@ -7,8 +7,8 @@
 <ion-content [fullscreen]="true" class="ion-text-center">
   <div *ngIf="encuestasIncompletasDelUsuario!=undefined && !mostrarFormEncuesta" class="ion-text-center">
     <h2 >Encuestas Pendientes</h2>
-    <img src="../../../assets/images/encuesta.png" style="height: 100px;" alt="">
-    <ion-card  *ngFor="let item of encuestasIncompletasDelUsuario" >
+    <img src="../../../assets/images/encuesta.png" style="height: 100px;" alt="" >
+    <ion-card  *ngFor="let item of encuestasIncompletasDelUsuario"style="background-color:  #ededed;;" >
       <ion-card-header>
         <ion-card-title  (click)="habilitarEncuesta(item)"> Visita: <span style="font-size: small;">{{ formatTimestamp(item.fecha) }}</span>
         </ion-card-title>
@@ -16,78 +16,87 @@
     </ion-card>
   </div>
 
-  <div *ngIf="mostrarFormEncuesta">
-    <form #encuestaForm="ngForm" (ngSubmit)="onSubmit()">
+  <div *ngIf="mostrarFormEncuesta" style="background-image: url('../../../assets/images/back.jpeg');">
+    <form [formGroup]="encuestaForm" (ngSubmit)="onSubmit()">
       <ion-list>
   
-        <ion-item>
-          <p position="stacked">Seleccione una valoración para los platos:</p>
-          <ion-range min="1" max="5" step="1" [(ngModel)]="encuesta.valoracionPlatos" name="valoracionPlatos" required>
-            <ion-label slot="start">1</ion-label>
-            <ion-label slot="end">5</ion-label>
-          </ion-range>
-        </ion-item>
+        <ion-card>
+          <ion-item>
+            <p position="stacked">Seleccione una valoración para los platos:</p>
+            <ion-range min="1" max="5" step="1" formControlName="valoracionPlatos">
+              <ion-label slot="start">1</ion-label>
+              <ion-label slot="end">5</ion-label>
+            </ion-range>
+          </ion-item>
+        </ion-card>
   
-        <ion-item>
-          <p position="stacked">Seleccione una valoración para la atención:</p>
-          <ion-radio-group [(ngModel)]="encuesta.valoracionAtencion" name="valoracionAtencion" required>
-            <ion-item>
-              <ion-label>Muy mala</ion-label>
-              <ion-radio slot="start" value="Muy mala"></ion-radio>
-            </ion-item>
-            <ion-item>
-              <ion-label>Mala</ion-label>
-              <ion-radio slot="start" value="Mala"></ion-radio>
-            </ion-item>
-            <ion-item>
-              <ion-label>Buena</ion-label>
-              <ion-radio slot="start" value="Buena"></ion-radio>
-            </ion-item>
-            <ion-item>
-              <ion-label>Muy buena</ion-label>
-              <ion-radio slot="start" value="Muy buena"></ion-radio>
-            </ion-item>
-            <ion-item>
-              <ion-label>Excelente</ion-label>
-              <ion-radio slot="start" value="Excelente"></ion-radio>
-            </ion-item>
-          </ion-radio-group>
-        </ion-item>
+        <ion-card>
+          <ion-item>
+            <p position="stacked">Seleccione una valoración para la atención:</p>
+            <ion-radio-group formControlName="valoracionAtencion">
+              <ion-item>
+                <ion-label>Muy mala</ion-label>
+                <ion-radio slot="start" value="Muy mala"></ion-radio>
+              </ion-item>
+              <ion-item>
+                <ion-label>Mala</ion-label>
+                <ion-radio slot="start" value="Mala"></ion-radio>
+              </ion-item>
+              <ion-item>
+                <ion-label>Buena</ion-label>
+                <ion-radio slot="start" value="Buena"></ion-radio>
+              </ion-item>
+              <ion-item>
+                <ion-label>Muy buena</ion-label>
+                <ion-radio slot="start" value="Muy buena"></ion-radio>
+              </ion-item>
+              <ion-item>
+                <ion-label>Excelente</ion-label>
+                <ion-radio slot="start" value="Excelente"></ion-radio>
+              </ion-item>
+            </ion-radio-group>
+          </ion-item>
+        </ion-card>
   
-        <ion-item>
-          <p position="stacked">¿Con cuál/es de estas características se encuentra más conforme?</p>
-          <ion-checkbox-group [(ngModel)]="encuesta.caracteristicas" name="caracteristicas" required>
-            <ion-item>
-              <ion-label>Ambientación</ion-label>
-              <ion-checkbox slot="start"  (ionChange)="onCheckboxChange($event, 'Ambientacion')" value="Ambientacion"></ion-checkbox>
-            </ion-item>
-            <ion-item>
-              <ion-label>Servicio</ion-label>
-              <ion-checkbox slot="start"  (ionChange)="onCheckboxChange($event, 'Servicios')" value="Servicio"></ion-checkbox>
-            </ion-item>
-            <ion-item>
-              <ion-label>Precios</ion-label>
-              <ion-checkbox slot="start"  (ionChange)="onCheckboxChange($event, 'Precios')" value="Precios"></ion-checkbox>
-            </ion-item>
-            <ion-item>
-              <ion-label>Platos</ion-label>
-              <ion-checkbox slot="start"  (ionChange)="onCheckboxChange($event, 'Platos')" value="Platos"></ion-checkbox>
-            </ion-item>
-            <ion-item>
-              <ion-label>Accesibilidad</ion-label>
-              <ion-checkbox slot="start"  (ionChange)="onCheckboxChange($event, 'Accesibilidad')" value="Accesibilidad"></ion-checkbox>
-            </ion-item>
-          </ion-checkbox-group>
-        </ion-item>
+        <ion-card>
+          <ion-item>
+            <p position="stacked">¿Con cuál/es de estas características se encuentra más conforme?</p>
+            <!-- No existe ion-checkbox-group en Ionic -->
+            <div formArrayName="caracteristicas">
+              <ion-item>
+                <ion-label>Ambientación</ion-label>
+                <ion-checkbox slot="start" (ionChange)="onCheckboxChange($event, 'Ambientacion')" value="Ambientacion"></ion-checkbox>
+              </ion-item>
+              <ion-item>
+                <ion-label>Servicio</ion-label>
+                <ion-checkbox slot="start" (ionChange)="onCheckboxChange($event, 'Servicio')" value="Servicio"></ion-checkbox>
+              </ion-item>
+              <ion-item>
+                <ion-label>Precios</ion-label>
+                <ion-checkbox slot="start" (ionChange)="onCheckboxChange($event, 'Precios')" value="Precios"></ion-checkbox>
+              </ion-item>
+              <ion-item>
+                <ion-label>Platos</ion-label>
+                <ion-checkbox slot="start" (ionChange)="onCheckboxChange($event, 'Platos')" value="Platos"></ion-checkbox>
+              </ion-item>
+              <ion-item>
+                <ion-label>Accesibilidad</ion-label>
+                <ion-checkbox slot="start" (ionChange)="onCheckboxChange($event, 'Accesibilidad')" value="Accesibilidad"></ion-checkbox>
+              </ion-item>
+            </div>
+          </ion-item>
+        </ion-card>
   
-        <ion-item>
-          <p position="stacked">Déjanos una valoración personal:</p>
-          <ion-input [(ngModel)]="encuesta.valoracionPersonal" name="valoracionPersonal" required></ion-input>
-        </ion-item>
+        <ion-card>
+          <ion-item>
+            <p position="stacked">Déjanos una valoración personal:</p>
+            <ion-input formControlName="valoracionPersonal" required></ion-input>
+          </ion-item>
+        </ion-card>
   
       </ion-list>
       <br>
-      <ion-button type="submit" expand="full" color="success" [disabled]="!encuestaForm.form.valid">Enviar</ion-button>
+      <ion-button type="submit" expand="full" color="success" [disabled]="!encuestaForm.valid">Enviar</ion-button>
       <br><br>
     </form>
   </div>
@@ -104,14 +113,16 @@
   </div>
 
   <br><br>
-  <h2>Gráficos</h2>
-  <img src="../../../assets/images/grafico.png" style="height: 100px;" alt="">
-  <ion-card>
-    <ion-card-content>
-      <p>Accede a los gráficos y reseñas de los clientes que ya pasaron por nuestro local</p>
-      <ion-button routerLink="/graficos" size="large">Ver Gráficos</ion-button>
-    </ion-card-content>
-  
+  <div *ngIf="!mostrarFormEncuesta">
+    <h2>Gráficos</h2>
+    <img src="../../../assets/images/grafico.png" style="height: 100px;" alt="">
+    <ion-card style="background-color: #ededed;">
+      <ion-card-content>
+        <p>Accede a los gráficos y reseñas de los clientes que ya pasaron por nuestro local</p>
+        <ion-button routerLink="/graficos" size="large">Ver Gráficos</ion-button>
+      </ion-card-content>
+    </ion-card>
 
-  </ion-card>
+  </div>
+
 </ion-content>

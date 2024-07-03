@@ -5,7 +5,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
-
+import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 @Component({
   selector: 'app-encuesta',
   templateUrl: './encuesta.page.html',
@@ -13,9 +13,16 @@ import Swal from 'sweetalert2';
 })
 export class EncuestaPage implements OnInit {
 
-  @ViewChild('encuestaForm', { static: false }) encuestaForm?: NgForm;
+  encuestaForm: FormGroup;
 
-  constructor(private database: DatabaseService, private afAuth: AngularFireAuth, private router: Router) { }
+  constructor(private database: DatabaseService, private afAuth: AngularFireAuth, private router: Router,private fb: FormBuilder) // Añadido FormBuilder
+{    this.encuestaForm = this.fb.group({
+      valoracionPlatos: ['', [Validators.required]],
+      valoracionAtencion: ['', Validators.required],
+      caracteristicas: this.fb.array([], Validators.required),
+      valoracionPersonal: ['', [Validators.required]],
+    });
+  }
 
   listaMesaCliente: any[]=[];
   uidUsuarioActual:any;
@@ -24,12 +31,7 @@ export class EncuestaPage implements OnInit {
   mostrarFormEncuesta:boolean=false;
   encuestaSeleccionada:any;
  
-  encuesta = {
-    valoracionPlatos: 3,
-    valoracionAtencion: '',
-    caracteristicas: [] as string[],
-    valoracionPersonal: ''
-  };
+  
 
   ngOnInit() {
 
@@ -65,15 +67,14 @@ export class EncuestaPage implements OnInit {
   }
 
 
+  onCheckboxChange(event: any, value: string) {
+    const caracteristicas: FormArray = this.encuestaForm.get('caracteristicas') as FormArray;
 
-  onCheckboxChange(event: any, value: any) {
-    if (event.detail.checked) {
-      this.encuesta.caracteristicas.push(value);
+    if (event.target.checked) {
+      caracteristicas.push(new FormControl(value));
     } else {
-      const index = this.encuesta.caracteristicas.indexOf(value);
-      if (index > -1) {
-        this.encuesta.caracteristicas.splice(index, 1);
-      }
+      const index = caracteristicas.controls.findIndex(x => x.value === value);
+      caracteristicas.removeAt(index);
     }
   }
 
@@ -102,12 +103,18 @@ export class EncuestaPage implements OnInit {
 
   }
 
-
   onSubmit() {
-    if (this.encuestaForm?.valid) {
-      console.log(this.encuesta);
-
-      this.database.crear("encuestas", this.encuesta)
+    if (this.encuestaForm.valid) {
+      const nuevaEncuesta = {
+        valoracionPlatos: this.encuestaForm.get('valoracionPlatos')?.value,
+        valoracionAtencion: this.encuestaForm.get('valoracionAtencion')?.value,
+        valoracionPersonal: this.encuestaForm.get('valoracionPersonal')?.value,
+        caracteristicas: this.encuestaForm.get('caracteristicas')?.value as string[],
+      };
+  
+      console.log(nuevaEncuesta);
+  
+      this.database.crear("encuestas", nuevaEncuesta)
         .then(() => {
           const dataActualizada = {
             encuestaCompleta: "true",
@@ -116,7 +123,7 @@ export class EncuestaPage implements OnInit {
             idCliente: this.encuestaSeleccionada.idCliente,
             numeroMesa: this.encuestaSeleccionada.numeroMesa
           };
-
+  
           return this.database.actualizar("mesa-cliente", dataActualizada, this.encuestaSeleccionada.id);
         })
         .then(() => {
@@ -125,7 +132,7 @@ export class EncuestaPage implements OnInit {
             text: 'Encuesta enviada con éxito',
             icon: 'success',
             confirmButtonText: 'Aceptar',
-            heightAuto:false
+            heightAuto: false
           }).then(() => {
             this.router.navigate(['/qr-mesa']);
           });
@@ -137,8 +144,7 @@ export class EncuestaPage implements OnInit {
             text: 'Hubo un problema al enviar la encuesta. Por favor, inténtelo de nuevo.',
             icon: 'error',
             confirmButtonText: 'Aceptar',
-            heightAuto:false
-
+            heightAuto: false
           });
         });
     } else {
@@ -147,8 +153,7 @@ export class EncuestaPage implements OnInit {
         text: 'Por favor, complete todos los campos.',
         icon: 'warning',
         confirmButtonText: 'Aceptar',
-        heightAuto:false
- 
+        heightAuto: false
       });
     }
   }
