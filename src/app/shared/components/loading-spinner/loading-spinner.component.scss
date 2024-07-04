@@ -1,16 +1,21 @@
+/* Spinner Container */
 .spinner-container {
+  position: fixed; /* Fijo en la pantalla */
+  bottom: 20px; /* Separación desde abajo */
+  right: 20px; /* Separación desde la derecha */
+  z-index: 9999; /* Asegura que esté por encima de otros elementos */
+  display: flex; /* Centrar el contenido dentro del contenedor */
   align-items: center;
-  background-color: black;
-  border-radius: 20px;
-  bottom: 15px;
-  color: white;
-  display: flex;
-  padding: 5px 10px;
-  position: fixed;
-  right: 15px;
-  box-shadow: 0px 0px 5 px rgba(0, 0, 0, 0.2);
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.8); /* Fondo semi-transparente */
+  padding: 10px; /* Espaciado interno */
+  border-radius: 10px; /* Bordes redondeados */
+  color: white; /* Color del texto */
 }
 
-span {
-  margin-left: 5px;
+/* Ajustes del SVG Spinner */
+.spinner-container svg {
+  width: 30px;
+  height: 30px;
+  margin-left: 10px;
 }
