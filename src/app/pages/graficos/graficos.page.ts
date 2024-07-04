@@ -7,6 +7,7 @@ import { Chart, registerables } from 'chart.js';
   selector: 'app-graficos',
   templateUrl: './graficos.page.html',
   styleUrls: ['./graficos.page.scss'],
+  
 })
 export class GraficosPage implements AfterViewInit {
   listaEncuestas: any[] = [];
@@ -27,6 +28,7 @@ export class GraficosPage implements AfterViewInit {
     this.location.back();
   }
 
+  
   dibujarGraficoTorta() {
     const valoracionesAtencion = this.calcularPorcentajeCaracteristicas();
 
