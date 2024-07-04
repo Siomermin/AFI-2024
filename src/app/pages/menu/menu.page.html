@@ -49,14 +49,15 @@
     </div>
 
     <ion-card-content style="font-size: 18px;">
-      {{item.descripcion}}
+      {{item.descripcion}} <br>
       <!-- Input para seleccionar la cantidad -->
+       <span style="font-size: small;">Tiempo realización: <span style="font-weight: 800;font-size: small;">{{item.tiempo}} minutos</span></span>
     </ion-card-content>
     <div *ngIf="i === selectedCardIndex">
       <ion-input style="font-size: 14px;border: 2px solid #b2b1b1; padding: 4px; width: 150px; margin-left: 5px; border-radius: 15px;" type="number" label="&nbsp;&nbsp;Cantidad:"         (ionChange)="actualizarCantidad(i, $event)" ></ion-input>
     </div>
     <br><br>
-    <ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)="agregarPlatoAlPedido(item.nombre, item.precio, item.tiempo, i)" >
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)="agregarPlatoAlPedido('plato',item.nombre, item.precio, item.tiempo, i)" >
       <ion-fab-button size="small" color="success"  [disabled]="!cantidades[i] || cantidades[i] <= 0">
         <ion-icon name="add"></ion-icon>
       </ion-fab-button>
@@ -81,13 +82,15 @@
       </div>
 
       <ion-card-content  style="font-size: 18px;">
-        {{item.descripcion}}
+        {{item.descripcion}} <br>
+        <span style="font-size: small;">Tiempo realización: <span style="font-weight: 800;font-size: small;">{{item.tiempo}} minutos</span></span>
+
       </ion-card-content>
       <div *ngIf="i === selectedCardIndex">
         <ion-input style="font-size: 14px;border: 2px solid #b2b1b1; padding: 4px; width: 150px; margin-left: 5px; border-radius: 15px;" type="number" label="&nbsp;&nbsp;Cantidad:"         (ionChange)="actualizarCantidad(i, $event)" ></ion-input>
       </div>
       <br><br>
-      <ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)="agregarPlatoAlPedido(item.nombre, item.precio, item.tiempo, i)" >
+      <ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)="agregarPlatoAlPedido('plato',item.nombre, item.precio, item.tiempo, i)" >
         <ion-fab-button size="small" color="success"  [disabled]="!cantidades[i] || cantidades[i] <= 0">
           <ion-icon name="add"></ion-icon>
         </ion-fab-button>
@@ -114,13 +117,15 @@
 
     <ion-card-content style="font-size: 18px;">
       {{item.descripcion}}
+      <br><span style="font-size: small;">Tiempo realización: <span style="font-weight: 800;font-size: small;">{{item.tiempo}} minutos</span></span>
+
     </ion-card-content>
 
     <div *ngIf="i === selectedCardIndex">
       <ion-input style="font-size: 14px;border: 2px solid #b2b1b1; padding: 4px; width: 150px; margin-left: 5px; border-radius: 15px;" type="number" label="&nbsp;&nbsp;Cantidad:"         (ionChange)="actualizarCantidad(i, $event)" ></ion-input>
     </div>
     <br><br>
-    <ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)="agregarPlatoAlPedido(item.nombre, item.precio, item.tiempo, i)" >
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)="agregarPlatoAlPedido('plato',item.nombre, item.precio, item.tiempo, i)" >
       <ion-fab-button size="small" color="success"  [disabled]="!cantidades[i] || cantidades[i] <= 0">
         <ion-icon name="add"></ion-icon>
       </ion-fab-button>
@@ -147,12 +152,14 @@
 
     <ion-card-content style="font-size: 18px;">
       {{item.descripcion}}
+      <br><span style="font-size: small;">Tiempo realización: <span style="font-weight: 800;font-size: small;">{{item.tiempo}} minutos</span></span>
+
     </ion-card-content>
     <div *ngIf="i === selectedCardIndex">
       <ion-input style="font-size: 14px;border: 2px solid #b2b1b1; padding: 4px; width: 150px; margin-left: 5px; border-radius: 15px;" type="number" label="&nbsp;&nbsp;Cantidad:"         (ionChange)="actualizarCantidad(i, $event)" ></ion-input>
     </div>
     <br><br>
-    <ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)="agregarPlatoAlPedido(item.nombre, item.precio, item.tiempo, i)" >
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)="agregarPlatoAlPedido('bebida',item.nombre, item.precio, item.tiempo, i)" >
       <ion-fab-button size="small" color="success"  [disabled]="!cantidades[i] || cantidades[i] <= 0">
         <ion-icon name="add"></ion-icon>
       </ion-fab-button>
