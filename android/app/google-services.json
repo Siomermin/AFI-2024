@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "5296052553",
+    "project_id": "do-parcial-pps",
+    "storage_bucket": "do-parcial-pps.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:5296052553:android:8dfdb7e7149a1f1cb06298",
+        "android_client_info": {
+          "package_name": "com.afi.segundoparcial"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBKFCMQMA-RBK5Qnr2wIc1azOdDQzKBpEs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

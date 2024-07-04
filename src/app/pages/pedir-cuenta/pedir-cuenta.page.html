@@ -1,0 +1,76 @@
+<ion-header [translucent]="true">
+  <ion-toolbar class="ion-text-center">
+    <ion-title style="color: White">Solicitar Cuenta</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-text-center">
+  <ion-card *ngIf="pedidoActual && pedidoActual.items && pedidoActual.items.length > 0" class="ion-text-center transparent">
+    <ion-card-title class="larger-font">Cuenta</ion-card-title>
+    <div class="ion-padding medium-font">
+      <div *ngFor="let item of pedidoActual.items; let i = index" class="lista-items">
+        <div class="item-label">{{ item }}</div>
+        <div class="price-label">${{ pedidoActual.preciosUnitarios[i] }}</div>
+      </div>
+    </div>
+  </ion-card>
+
+  <ion-card class="transparent monto-card" *ngIf="pedidoActual">
+    <ion-row>
+      <ion-col size="12" class="monto-item">
+        <span class="monto-label">Productos:</span>
+        <span class="monto-valor">${{ pedidoActual.montoTotal }}</span>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="propina">
+      <ion-col size="12" class="monto-item">
+        <span class="monto-label">Propina:</span>
+        <span class="monto-valor">${{ propina }}</span>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="descuento !== null">
+      <ion-col size="12" class="monto-item">
+        <span class="monto-label">Descuento:</span>
+        <span class="monto-valor">-${{ descuentoNumero }}</span>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12" class="monto-item">
+        <span class="subtotal-label">Subtotal:</span>
+        <span class="subtotal-valor">${{ subtotal }}</span>
+      </ion-col>
+    </ion-row>
+  </ion-card>
+
+  <ion-card class="transparent">
+    <ion-card-title class="larger-font">Elige la Propina</ion-card-title>
+    <div style="text-align: center; justify-content: center; margin-top: 15px">
+      <ion-button (click)="scan()">
+        <img style="height: 90px" src="../../../assets/images/qr.png" alt="" />
+      </ion-button>
+      <br />
+    </div>
+    <br />
+  </ion-card>
+
+  <ion-card class="transparent">
+    <ion-card-subtitle class="medium-font" *ngIf="descuento===null">Puedes participar de un juego por un 10% de descuento</ion-card-subtitle>
+    <ion-card-subtitle class="medium-font" *ngIf="descuento===0">No lograste obtener el descuento</ion-card-subtitle>
+    <div style="text-align: center; justify-content: center; margin-top: 15px;">
+      <ion-button (click)="mostrarJuego = true" [disabled]="descuento !== null">Quiero jugar</ion-button>
+    </div>
+    <br />
+  </ion-card>
+
+  <div>
+    <app-memo-test *ngIf="mostrarJuego" (datosEnviados)="recibirDatos($event)"></app-memo-test>
+  </div>
+
+  <br />
+</ion-content>
+
+<ion-footer translucent *ngIf="!mostrarJuego">
+  <ion-toolbar>
+    <ion-button expand="full" color="success" (click)="realizarPago()">Realizar Pago</ion-button>
+  </ion-toolbar>
+</ion-footer>

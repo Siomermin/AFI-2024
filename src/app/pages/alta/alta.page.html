@@ -1,0 +1,89 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title class="ion-text-center">
+      <img routerLink="/auth/login" src="../../../assets/images/back.png" alt="" height="15px">   Formulario de Alta
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-text-center">
+  <br><br>
+  <div>
+    <img class="ion-text-center" src="../../../assets/images/user-icon.png" style="height: 80px;" alt="">
+    <br><br>
+    <ion-card>
+      <ion-card-content>
+        ¿Desea registrarse como Cliente Anónimo?<br>
+      </ion-card-content>
+      <ion-toggle [ngModel]="clienteAnonimo" (ionChange)="toggleAnonimo($event)">Anónimo</ion-toggle><br /><br />
+    </ion-card>
+
+    <ion-card>
+      <form [formGroup]="form" (ngSubmit)="enviarInformacion()">
+        <ion-item>
+          <ion-label position="stacked">Nombre</ion-label>
+          <ion-input formControlName="nombre"></ion-input>
+        </ion-item>
+        <div *ngIf="form.controls['nombre'].invalid && form.controls['nombre'].touched" class="error-message">
+          Nombre debe contener solo letras y espacios.
+        </div>
+
+        <ion-item *ngIf="!clienteAnonimo">
+          <ion-label position="stacked">Apellido</ion-label>
+          <ion-input formControlName="apellido"></ion-input>
+        </ion-item>
+        <div *ngIf="form.controls['apellido'].invalid && form.controls['apellido'].touched" class="error-message">
+          Apellido debe contener solo letras y espacios.
+        </div>
+
+        <ion-item *ngIf="!clienteAnonimo">
+          <ion-label position="stacked">DNI</ion-label>
+          <ion-input formControlName="dni"></ion-input>
+        </ion-item>
+        <div *ngIf="form.controls['dni'].invalid && form.controls['dni'].touched" class="error-message">
+          DNI debe contener hasta 10 caracteres numéricos.
+        </div>
+
+        <ion-item *ngIf="!clienteAnonimo">
+          <ion-label position="stacked">Email</ion-label>
+          <ion-input formControlName="email" type="email"></ion-input>
+        </ion-item>
+        <div *ngIf="form.controls['email'].invalid && form.controls['email'].touched" class="error-message">
+          Email no es válido.
+        </div>
+        <ion-item *ngIf="!clienteAnonimo">
+          <ion-label position="stacked">Clave</ion-label>
+          <ion-input formControlName="clave" type="password"></ion-input>
+        </ion-item>
+        <div *ngIf="form.controls['clave'].invalid && form.controls['clave'].touched" class="error-message">
+          Clave debe tener al menos 6 caracteres.
+        </div>
+
+        <ion-item *ngIf="!clienteAnonimo">
+          <ion-label position="stacked">Confirmar Clave</ion-label>
+          <ion-input formControlName="confirmarClave" type="password"></ion-input>
+        </ion-item>
+        <div *ngIf="form.hasError('passwordMismatch') && form.controls['confirmarClave'].touched" class="error-message">
+          Las claves no coinciden.
+        </div>
+
+        <ion-item>
+          <ion-label position="stacked">Foto de Perfil</ion-label>
+          <br>
+          <ion-button shape="round" (click)="tomarFoto()">
+            <img src="../../../assets/images/camera.png" style="height: 30px; padding:3px;" alt="">
+            &nbsp;Tomar foto
+          </ion-button>
+          <br>
+        </ion-item>
+        <br>
+        <ion-button color="success" shape="round" type="submit" [disabled]="form.invalid">Aceptar</ion-button>
+        <ion-button color="danger" shape="round" routerLink="/auth/login">Cancelar</ion-button>
+        <div *ngIf="mostrarSpinner" class="spinner-container">
+          <img src="../../../assets/images/burger-removebg-preview.png" height="70px" alt="">
+        </div>
+      </form>
+      <br><br>
+    </ion-card>
+  </div>
+</ion-content>

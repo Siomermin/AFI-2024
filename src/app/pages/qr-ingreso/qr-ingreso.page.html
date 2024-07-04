@@ -1,0 +1,18 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title class="ion-text-center">
+      QR Ingreso al local
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-text-center content-background">
+  <div class="container">
+    <ion-button class="custom-button" expand="full" (click)="agregarListaEspera()">
+      Agregarme a la lista de espera
+    </ion-button>
+    <ion-button class="custom-button" expand="full" (click)="redireccionar('graficos')">
+      Ver gráficos de encuestas
+    </ion-button>
+  </div>
+</ion-content>

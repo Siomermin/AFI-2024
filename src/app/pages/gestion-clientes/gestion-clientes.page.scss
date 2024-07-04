@@ -1,0 +1,10 @@
+
+
+.transparent {
+  --background: rgba(255, 255, 255, 0.5); /* Fondo semi-transparente */
+  color: #000; /* Color de texto negro para mejor contraste */
+}
+
+ion-content{
+    --background: url(../../../assets/images/back.jpeg);
+}

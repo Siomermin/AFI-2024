@@ -1,0 +1,43 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title class="ion-text-center">
+      QR Mesa
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-text-center content-background">
+  <div class="container">
+    <ion-button *ngIf="usuarioVinculado" expand="full" (click)="mostrarMesasLibres()" class="custom-button">
+      Ver disponibilidad de mesa
+    </ion-button>
+
+    <ion-button *ngIf="!usuarioVinculado" expand="full" (click)="vincularMesa()" class="custom-button">
+      Vincularme con una mesa
+    </ion-button>
+
+    <ion-button expand="full" (click)="pedirCuenta()" class="ion-text-center custom-button"  *ngIf="pedidoDelUsuario && pedidoDelUsuario.estado === 'entregado-confirmado' && usuarioVinculado">
+      Pedir cuenta
+    </ion-button>
+
+    <ion-button *ngIf="usuarioVinculado" expand="full" (click)="redireccionar('consulta-mozo')" class="custom-button">
+      Consultar al mozo
+    </ion-button>
+
+    <ion-button *ngIf="!pedidoDelUsuario && usuarioVinculado" expand="full" (click)="redireccionar('menu')" class="custom-button">
+      Ver menú
+    </ion-button>
+
+    <ion-button *ngIf="pedidoDelUsuario && usuarioVinculado" expand="full" (click)="mostrarPedido()" class="custom-button">
+      Ver estado del pedido
+    </ion-button>
+
+    <ion-button *ngIf="usuarioVinculado" expand="full" (click)="redireccionar('encuesta')" class="custom-button">
+      Acceder a encuestas
+    </ion-button>
+
+    <ion-button *ngIf="pedidoDelUsuario && pedidoDelUsuario.estado === 'entregado' && usuarioVinculado" expand="full" (click)="confirmarRecepcionPedido()" class="custom-button">
+      Confirmar Recepción
+    </ion-button>
+  </div>
+</ion-content>

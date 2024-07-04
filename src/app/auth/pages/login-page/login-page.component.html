@@ -13,7 +13,7 @@
 <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
   <ion-item>
     <ion-input labelPlacement="stacked" label="Correo electrónico" formControlName="email" type="text"></ion-input>
-    <ion-text color="danger" *ngIf="isValidField('email')">
+    <ion-text class="error" color="danger" *ngIf="isValidField('email')">
       {{ getErrorByField("email") }}</ion-text
     >
   </ion-item>
@@ -25,12 +25,14 @@
       formControlName="password"
       type="password"
     ></ion-input>
-    <ion-text color="danger" *ngIf="isValidField('password')">
+    <ion-text class="error" color="danger" *ngIf="isValidField('password')">
       {{ getErrorByField("password") }}
     </ion-text>
   </ion-item>
   <br>
-  <ion-button class="ion-padding" color="secondary" type="submit" expand="full" [disabled]="myForm.invalid">
+  <a [routerLink]="['/alta']" class="ion-text-center" style="font-size: medium;">No tenes cuenta? Registrate!</a>
+  <br>
+  <ion-button class="ion-padding login-button" type="submit" expand="full" [disabled]="myForm.invalid">
     <ion-icon name="log-in"></ion-icon>
   </ion-button>
 </form>
@@ -42,8 +44,8 @@
 <!-- Acceso rapido -->
 <ion-list>
   <h3 class="ion-margin">Acceso rápido</h3>
-  <ion-item *ngFor="let user of testUsers | slice : 0 : 3" (click)="selectCheckbox(user)" (click)="fastLogin(user.email, user.password)">
-    <ion-checkbox [checked]="checkboxSelected === user" justify="space-between">{{ user.profile }}</ion-checkbox>
+  <ion-item *ngFor="let user of testUsers" (click)="selectCheckbox(user)" (click)="fastLogin(user.email, user.password)">
+    <ion-checkbox [checked]="checkboxSelected === user" justify="space-between">{{ user.profile | titlecase }}</ion-checkbox>
   </ion-item>
 </ion-list>
   </div>

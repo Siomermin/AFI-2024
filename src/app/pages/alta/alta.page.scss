@@ -1,0 +1,21 @@
+ion-content{
+    --background: url(../../../assets/images/back.jpeg);
+}
+
+.form-container {
+    padding: 20px; /* Ajusta el padding según sea necesario */
+}
+
+
+.spinner-container img {
+    animation: spin 2s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }

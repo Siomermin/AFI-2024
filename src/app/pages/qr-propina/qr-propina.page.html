@@ -1,0 +1,39 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title class="ion-text-center">
+      QR Propina
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-text-center">
+  <br>
+  <ion-card class="transparent">
+    <ion-card-header>
+      <ion-card-title class="etiqueta-grande">Seleccione su nivel de satisfacción:</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-button expand="block" class="etiqueta-grande" (click)="seleccionarNivel(20)" [color]="nivelSatisfaccionSeleccionado === 20 ? 'success' : 'primary'">Excelente (20%)</ion-button>
+      <ion-button expand="block" class="etiqueta-grande" (click)="seleccionarNivel(15)" [color]="nivelSatisfaccionSeleccionado === 15 ? 'success' : 'primary'">Muy Bueno (15%)</ion-button>
+      <ion-button  expand="block" class="etiqueta-grande" (click)="seleccionarNivel(10)" [color]="nivelSatisfaccionSeleccionado === 10 ? 'success' : 'primary'">Bueno (10%)</ion-button>
+      <ion-button expand="block" class="etiqueta-grande" (click)="seleccionarNivel(5)" [color]="nivelSatisfaccionSeleccionado === 5 ? 'success' : 'primary'">Regular (5%)</ion-button>
+      <ion-button expand="block" class="etiqueta-grande" (click)="seleccionarNivel(0)" [color]="nivelSatisfaccionSeleccionado === 0 ? 'success' : 'primary'">Malo (0%)</ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card class="transparent">
+    <ion-card-content>
+      <div class="etiqueta-grande with-divider">Total de la Cuenta: <strong>{{ totalCuenta | currency }}</strong></div>
+      <div *ngIf="propinaCalculada !== null" class="etiqueta-grande">Propina: <strong>{{ propinaCalculada | currency }}</strong></div>
+      <!-- <div *ngIf="totalConPropinaCalculada !== null" class="etiqueta-grande">Total con Propina: <strong>{{ totalConPropinaCalculada | currency }}</strong></div> -->
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>
+
+<ion-footer [translucent]="true">
+  <ion-toolbar class="ion-text-center">
+    <ion-button expand="full" [disabled]="!totalConPropinaCalculada" (click)="enviarPropina()" class="boton-grande">Enviar Propina</ion-button>
+  </ion-toolbar>
+</ion-footer>

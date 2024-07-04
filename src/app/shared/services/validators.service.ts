@@ -17,7 +17,10 @@ export class ValidatorsService {
 
     const errors = form.controls[field].errors || {};
 
+    console.log(errors);
+
     for (const key of Object.keys(errors)) {
+
       switch (key) {
         case 'required':
           return 'Requerido';
@@ -27,6 +30,10 @@ export class ValidatorsService {
 
         case 'maxlength':
           return `Máximo ${errors['maxlength'].requiredLength} caracteres`;
+
+
+        case 'min':
+          return `Mínimo ${errors['min'].min}`;
 
         case 'pattern':
           return `Ingrese un email valido`;

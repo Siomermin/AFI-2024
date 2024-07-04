@@ -1,12 +1,37 @@
 * {
-  font-size: 27px;
+  font-size: 24px;
+}
+
+ion-input, .error {
+  font-size: 18px;
 }
 
 h1 {
-  font-size: 29px;
+  font-size: 26px;
 }
 
 a {
   text-decoration: none; /* Remove underline */
 }
 
+.login-button {
+  --background: #83663F; /* Default background color */
+  --color: #ffffff; /* Default text color */
+  --background-activated: #83663F; /* Background color when button is clicked */
+  --background-focused: #83663F; /* Background color when button is focused */
+  --background-hover: #83663F; /* Background color when button is hovered */
+  --border-color: #83663F; /* Border color */
+  --color-activated: #ffffff; /* Text color when button is clicked */
+  --color-focused: #ffffff; /* Text color when button is focused */
+  --color-hover: #ffffff; /* Text color when button is hovered */
+}
+
+
+ion-checkbox {
+  --checkbox-background-checked: #83663F;
+}
+
+ion-checkbox::part(container) {
+  border-radius: 6px;
+  border: 2px solid #83663F;
+}

@@ -1,0 +1,31 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+ion-title {
+  padding: 20px;
+}
+
+ion-content{
+    --background: #ccc;
+  }
+  
+  .form-container {
+    padding: 20px;
+  }
+  
+  .photo-container {
+    display: flex;
+    margin-bottom: 30px; 
+  }
+  
+  ion-button.photo-button {
+    margin: 30px 0 0;
+    width: 100%;
+  }
+  
+  img {
+    margin-right: 10px;
+  }
+  

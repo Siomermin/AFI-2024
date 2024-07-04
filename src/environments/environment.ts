@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   firebaseConfig: {
-    apiKey: "AIzaSyD89XCBcmuZAgqmTeu8cpfLoeffI2AK_Bo",
+  apiKey: "AIzaSyD89XCBcmuZAgqmTeu8cpfLoeffI2AK_Bo",
   authDomain: "do-parcial-pps.firebaseapp.com",
   projectId: "do-parcial-pps",
   storageBucket: "do-parcial-pps.appspot.com",
