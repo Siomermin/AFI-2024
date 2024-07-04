@@ -12,12 +12,19 @@
         <ion-card-title>Clientes pendientes de aprobación</ion-card-title>
         <br>
         <ion-card-subtitle>Acceso único para Dueño/Supervisor</ion-card-subtitle>
-        <ion-list inset="true" >
+
+        <ion-list inset="true">
           <ion-item *ngFor="let cliente of clientesPendientes">
-            <img src="{{cliente.urlFoto}}" alt=""><br>
-            <ion-label (click)="obtenerIdClienteSeleccionado(cliente.dni)">{{cliente.nombre}} {{cliente.apellido}}</ion-label>
-            <ion-button color="success" (click)="gestionarSolicitud(cliente, true)">Autorizar</ion-button>
-            <ion-button color="danger" (click)="gestionarSolicitud(cliente, false)">Rechazar</ion-button>
+            <ion-avatar slot="start">
+              <img src="{{cliente.urlFoto}}" alt="">
+            </ion-avatar>
+            <ion-label (click)="obtenerIdClienteSeleccionado(cliente.dni)">
+              <h2>{{cliente.nombre}} {{cliente.apellido}}</h2>
+            </ion-label>
+            <div class="buttons-container">
+              <ion-button color="success" (click)="gestionarSolicitud(cliente, true)">Autorizar</ion-button>
+              <ion-button color="danger" (click)="gestionarSolicitud(cliente, false)">Rechazar</ion-button>
+            </div>
           </ion-item>
         </ion-list>
 
