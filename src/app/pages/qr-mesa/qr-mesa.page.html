@@ -8,6 +8,16 @@
 
 <ion-content [fullscreen]="true" class="ion-text-center content-background">
   <div class="container">
+
+    <ion-card *ngIf="pedidoDelUsuario" class="ion-text-center" style="border-radius: 15px;">
+      <br>
+      <ion-card-title>
+        <img src="../../../assets/images/clock.png" style="height: 60px;"><br>
+        <span style="font-size: medium;">Su pedido tiene {{pedidoDelUsuario.tiempo}} minutos de realización</span><br>
+        <span style="font-weight: 800;">Tiempo restante: {{tiempoRestante}}</span>
+      </ion-card-title>
+      <br>
+    </ion-card>
     <ion-button *ngIf="usuarioVinculado" expand="full" (click)="mostrarMesasLibres()" class="custom-button">
       Ver disponibilidad de mesa
     </ion-button>

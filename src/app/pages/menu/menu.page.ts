@@ -33,6 +33,11 @@ export class MenuPage implements OnInit {
   postres:any[]=[];
   preciosUnitarios:any[]=[];
 
+  pedidoPlatos:any[]=[];
+  pedidoBebidas:any[]=[];
+
+  preciosUnitariosPlatos:any[]=[];
+  preciosUnitariosBebidas:any[]=[];
   ngOnInit() {
 
     this.afAuth.authState.subscribe(user => {
@@ -76,20 +81,31 @@ export class MenuPage implements OnInit {
     this.cantidades[index] = cantidad;
   }
 
-  agregarPlatoAlPedido(platoSeleccionado:string, precioPlato:string, tiempoPlato:string, index:number){
+  agregarPlatoAlPedido(tipo:string,platoSeleccionado:string, precioPlato:string, tiempoPlato:string, index:number){
     const cantidad = this.cantidades[index] || 0;
     console.log(cantidad);
     for(let i =0; i < cantidad! ; i++){
+      
       this.pedidoParcial.push(platoSeleccionado);
       this.montoTotal+= parseInt(precioPlato);
-      this.preciosUnitarios.push(precioPlato);
+      if(tipo== 'plato'){
+        this.pedidoPlatos.push(platoSeleccionado);
+        this.preciosUnitariosPlatos.push(precioPlato);
+      }else{
+        this.pedidoBebidas.push(platoSeleccionado);
 
-
+        this.preciosUnitariosBebidas.push(precioPlato);
+      }
     }
+
     console.log(this.preciosUnitarios, this.montoTotal)
     this.tiemposPlatos.push(parseInt(tiempoPlato));
     console.log(this.pedidoParcial);
     this.tiempoTotalPedido= Math.max(...this.tiemposPlatos);
+    console.log(this.pedidoPlatos);
+    console.log(this.pedidoBebidas);
+
+    console.log(this.pedidoParcial);
 
 
   }
@@ -97,7 +113,8 @@ export class MenuPage implements OnInit {
   finalizarPedido(){
     this.pedidoCompleto = this.pedidoParcial;
     this.verificarMayorTiempo();
-    const nuevoPedido= new Pedido(this.idClienteActual, this.pedidoCompleto, this.montoTotal, this.tiempoTotalPedido, "pendiente", this.preciosUnitarios, false );
+    const fecha= new Date().toISOString();
+    const nuevoPedido= new Pedido(this.idClienteActual, this.pedidoCompleto,  this.pedidoPlatos, this.pedidoBebidas, this.montoTotal, this.tiempoTotalPedido, "pendiente", this.preciosUnitarios, false, fecha);
     this.database.crear("pedidos", nuevoPedido.toJSON())
         .then((docRef) => {
           // Operación exitosa
