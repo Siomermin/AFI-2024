@@ -34,7 +34,7 @@ export class ListaEsperaPage implements OnInit {
       this.arrayShow = [];
       let result = next;
       result.forEach(cliente => {
-        if (this.arrayListaEspera.find((list) => list.email == cliente.email)) {
+        if (this.arrayListaEspera.find((list) => list.idCliente == cliente.uid)) {
           this.arrayShow.push(cliente);
         }
       });
@@ -58,12 +58,13 @@ export class ListaEsperaPage implements OnInit {
       result.forEach(cliente => {
         console.log(cliente);
         if (cliente.estado == "pendiente") {
-          if (cliente.email) {
-            this.arrayListaEspera.push(cliente);
-          }
-          else {
-            this.arrayShow.push({ urlFoto: '', nombre: 'Usuario', apellido: 'anónimo'});
-          }
+          this.arrayListaEspera.push(cliente);
+          // if (cliente.email) {
+          //   this.arrayListaEspera.push(cliente);
+          // }
+          // else {
+          //   this.arrayShow.push({ urlFoto: '', nombre: 'Usuario', apellido: 'anónimo'});
+          // }
         }
       });
     });

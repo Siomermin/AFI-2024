@@ -7,6 +7,12 @@
 </ion-header>
 
 <ion-content class="ion-text-center">
+  <ion-fab slot="fixed" vertical="top" horizontal="end" edge="true" >
+    <ion-fab-button color="primary" class="custom-fab-button" (click)="scan()">
+      <img src="../../../assets/images/qr.png" style="padding:10px;" alt=""> 
+  </ion-fab-button>
+  </ion-fab>
+
   <br><br>
   <div>
     <img class="ion-text-center" src="../../../assets/images/user-icon.png" style="height: 80px;" alt="">
@@ -79,6 +85,9 @@
         <br>
         <ion-button color="success" shape="round" type="submit" [disabled]="form.invalid">Aceptar</ion-button>
         <ion-button color="danger" shape="round" routerLink="/auth/login">Cancelar</ion-button>
+        <div *ngIf="mostrarSpinner" class="spinner-container">
+          <img src="../../../assets/images/burger-removebg-preview.png" height="70px" alt="">
+        </div>
       </form>
       <br><br>
     </ion-card>

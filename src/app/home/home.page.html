@@ -44,15 +44,6 @@
   </ion-card>
 
   <br /><br />
-
-  <ion-button expand="full" (click)="redireccionar('qr-mesa')">QR Mesa</ion-button>
-
-  <ion-button expand="full" (click)="mesa()">QR Mesa - prueba</ion-button>
-
-  <ion-button expand="full" (click)="redireccionar('qr-propina')">QR Propina</ion-button>
-
-  <ion-button expand="full" (click)="redireccionar('qr-ingreso')">QR Ingreso al local</ion-button>
-
   <ion-button
     expand="full"
     *ngIf="perfilUsuarioActual === 'dueño' || perfilUsuarioActual === 'supervisor'"

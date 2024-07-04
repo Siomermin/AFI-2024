@@ -7,9 +7,11 @@ export class Pedido {
     estado:string;
     preciosUnitarios:any[];
     confirmacionMozo: boolean;
+    itemPlatos:any[];
+    itemBebidas:any[];
+    fecha:any;
 
-
-    constructor(idCliente:string, items:any[], montoTotal:number, tiempo: any, estado: string, preciosUnitarios:any[], confirmacionMozo: boolean) {
+    constructor(idCliente:string, items:any[], itemPlatos:any[], itemBebidas:any[], montoTotal:number, tiempo: any, estado: string, preciosUnitarios:any[], confirmacionMozo: boolean, fecha:any) {
         this.idCliente = idCliente;
         this.items = items;
         this.montoTotal = montoTotal;
@@ -17,6 +19,9 @@ export class Pedido {
         this.estado = estado;
         this.preciosUnitarios = preciosUnitarios
         this.confirmacionMozo = confirmacionMozo;
+        this.itemBebidas= itemBebidas,
+        this.itemPlatos=itemPlatos
+        this.fecha=fecha;
     }
 
 
@@ -28,7 +33,10 @@ export class Pedido {
          tiempo: this.tiempo,
          estado: this.estado,
          preciosUnitarios: this.preciosUnitarios,
-         confirmacionMozo: this.confirmacionMozo
+         confirmacionMozo: this.confirmacionMozo,
+         platos: this.itemPlatos,
+         bebidas: this.itemBebidas,
+         fecha:this.fecha,
         };
     }
 

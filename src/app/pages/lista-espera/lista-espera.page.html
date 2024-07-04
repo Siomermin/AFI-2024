@@ -14,17 +14,20 @@
 
         <ion-list inset="true" >
           <ion-item *ngFor="let cliente of this.arrayShow">
-            <img src="{{cliente.urlFoto}}" alt=""><br>
+            <ion-avatar slot="start">
+              <img src="{{cliente.urlFoto}}" alt="">
+            </ion-avatar>
+
             <ion-label>{{cliente.nombre}} {{cliente.apellido}}</ion-label>
           </ion-item>
         </ion-list>
 
-        <div *ngIf="this.arrayShow.length==0">
+        <div *ngIf="this.arrayShow.length===0">
           <img src="../../../assets/images/check.png"  style="height: 100px;" alt="">
           <h3>No hay clientes en lista de espera</h3>
         </div>
       </ion-card>
-      
+
     </ion-content>
 
 </ion-content>

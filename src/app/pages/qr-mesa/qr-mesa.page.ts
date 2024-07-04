@@ -7,6 +7,7 @@ import { DatabaseService } from 'src/app/auth/services/database.service';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import Swal from 'sweetalert2'
 import { first } from 'rxjs';
+import { NotificationService } from 'src/app/shared/services/notification.service';
 @Component({
   selector: 'app-qr-mesa',
   templateUrl: './qr-mesa.page.html',
@@ -14,7 +15,7 @@ import { first } from 'rxjs';
 })
 export class QrMesaPage implements OnInit {
 
-  constructor(private router: Router, private database:DatabaseService, private afAuth:AngularFireAuth, private activatedRoute: ActivatedRoute) { }
+  constructor(private router: Router, private notificationService: NotificationService, private database:DatabaseService, private afAuth:AngularFireAuth, private activatedRoute: ActivatedRoute) { }
   pedidos:any[]=[];
   uidUsuarioActual:any;
   emailUsuarioActual:any;
@@ -32,6 +33,7 @@ export class QrMesaPage implements OnInit {
 
   mesaActualizar:any;
   uidMesaActualizar:any;
+tiempoRestante:string="";
   async ngOnInit() {
 
     this.afAuth.authState.subscribe(user => {
@@ -66,14 +68,40 @@ export class QrMesaPage implements OnInit {
         if (item.idCliente == this.uidUsuarioActual && item.estado != 'finalizado') {
           this.pedidoDelUsuario = item;
           console.log(this.pedidoDelUsuario);
+          this.actualizarTiempoRestante();
+          setInterval(() => {
+            this.actualizarTiempoRestante();
+          }, 1000); // Actualiza cada segundo
+      
           break;
         }
       }
     }, error => {
       console.log(error);
     });
+    
+   
+  }
 
-
+  actualizarTiempoRestante() {
+    const ahora = new Date().getTime();
+    const fechaPedido = new Date(this.pedidoDelUsuario.fecha).getTime();
+    const tiempoPedido = this.pedidoDelUsuario.tiempo * 60 * 1000; // convertir minutos a milisegundos
+  
+    const tiempoFinal = fechaPedido + tiempoPedido;
+    const tiempoRestanteMs = tiempoFinal - ahora;
+  
+    console.log("aca");
+    if (tiempoRestanteMs > 0) {
+      const horas = Math.floor((tiempoRestanteMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutos = Math.floor((tiempoRestanteMs % (1000 * 60 * 60)) / (1000 * 60));
+      const segundos = Math.floor((tiempoRestanteMs % (1000 * 60)) / 1000);
+  
+      this.tiempoRestante = `${minutos}:${segundos}s`;
+      console.log(this.tiempoRestante)
+    } else {
+      this.tiempoRestante = "Tiempo cumplido";
+    }
   }
 
   async vincularMesa(){
@@ -421,6 +449,15 @@ export class QrMesaPage implements OnInit {
           console.log(mesaCliente + this.uidMesaCliente)
 
           this.database.actualizar("mesa-cliente", mesaCliente, this.uidMesaCliente);
+
+          this.notificationService.sendNotificationToRole(
+            'Un cliente solicito la cuenta!',
+            'Lo esta esperando en su mesa...',
+            'Mozo'
+          ).subscribe(
+            response => console.log('Notificación a Mozo enviada con éxito', response),
+            error => console.error('Error al enviar notificación a Mozo', error)
+          );
 
           this.router.navigateByUrl("pedir-cuenta");
         }

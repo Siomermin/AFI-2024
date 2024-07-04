@@ -6,8 +6,8 @@
 
 <ion-content [fullscreen]="true" class="ion-text-center">
   <br>
-  <div *ngIf="encuestasIncompletasDelUsuario!=undefined && !mostrarFormEncuesta" class="ion-text-center">
-    <h2 >Encuestas Pendientes</h2>
+  <div *ngIf="encuestasIncompletasDelUsuario!==undefined && !mostrarFormEncuesta" class="ion-text-center">
+    <h2 style="color: #000;">Encuestas Pendientes</h2>
     <img src="../../../assets/images/encuesta.png" style="height: 100px;" alt="" >
     <ion-card  *ngFor="let item of encuestasIncompletasDelUsuario"style="background-color:  #ededed;;" >
       <ion-card-header>
@@ -20,7 +20,7 @@
   <div *ngIf="mostrarFormEncuesta" style="background-image: url('../../../assets/images/back.jpeg');">
     <form [formGroup]="encuestaForm" (ngSubmit)="onSubmit()">
       <ion-list>
-  
+
         <ion-card>
           <ion-item>
             <p position="stacked">Seleccione una valoración para los platos:</p>
@@ -30,7 +30,7 @@
             </ion-range>
           </ion-item>
         </ion-card>
-  
+
         <ion-card>
           <ion-item>
             <p position="stacked">Seleccione una valoración para la atención:</p>
@@ -58,7 +58,7 @@
             </ion-radio-group>
           </ion-item>
         </ion-card>
-  
+
         <ion-card>
           <ion-item>
             <p position="stacked">¿Con cuál/es de estas características se encuentra más conforme?</p>
@@ -87,26 +87,26 @@
             </div>
           </ion-item>
         </ion-card>
-  
+
         <ion-card>
           <ion-item>
             <p position="stacked">Déjanos una valoración personal:</p>
             <ion-input formControlName="valoracionPersonal" required></ion-input>
           </ion-item>
         </ion-card>
-  
+
       </ion-list>
       <br>
       <ion-button type="submit" expand="full" color="success" [disabled]="!encuestaForm.valid">Enviar</ion-button>
       <br><br>
     </form>
   </div>
- 
- 
-  <div *ngIf="!encuestasIncompletasDelUsuario || encuestasIncompletasDelUsuario.length==0">
+
+
+  <div *ngIf="!encuestasIncompletasDelUsuario || encuestasIncompletasDelUsuario.length===0">
     <ion-card>
 
-      <ion-card-content>
+      <ion-card-content style="color: #000; font-size: 18px;">
         Usted no tiene encuestas pendientes por completar
 
       </ion-card-content>
@@ -115,11 +115,12 @@
 
   <br><br>
   <div *ngIf="!mostrarFormEncuesta">
-    <h2>Gráficos</h2>
+    <h2 style="color: #000; ">Gráficos</h2>
     <img src="../../../assets/images/grafico.png" style="height: 100px;" alt="">
     <ion-card style="background-color: #ededed;">
       <ion-card-content>
-        <p>Accede a los gráficos y reseñas de los clientes que ya pasaron por nuestro local</p>
+        <p style="color: #000; font-size: 18px;">Accede a los gráficos y reseñas de los clientes que ya pasaron por nuestro local</p>
+        <br>
         <ion-button routerLink="/graficos" size="large">Ver Gráficos</ion-button>
       </ion-card-content>
     </ion-card>
