@@ -5,8 +5,8 @@
 </ion-header>
 
 <ion-content [fullscreen]="true" class="ion-text-center">
-  <div >
-  <div *ngIf="encuestasIncompletasDelUsuario!==undefined && !mostrarFormEncuesta" class="ion-text-center" style="background-image: url('../../../assets/images/back.jpeg');" >
+<div style="background-image: url('../../../assets/images/back.jpeg');" >
+  <div *ngIf="encuestasIncompletasDelUsuario!==undefined && !mostrarFormEncuesta" class="ion-text-center"  >
     <br>
     <h2 style="color: #000;">Encuestas Pendientes</h2>
     <img src="../../../assets/images/encuesta.png" style="height: 100px;" alt="" >
@@ -19,7 +19,7 @@
     <br>
   </div>
 
-  <div *ngIf="!encuestasIncompletasDelUsuario || encuestasIncompletasDelUsuario.length===0" style="background-image: url('../../../assets/images/back.jpeg');">
+  <div *ngIf="!encuestasIncompletasDelUsuario || encuestasIncompletasDelUsuario.length===0">
     <ion-card>
 
       <ion-card-content style="color: #000; font-size: 18px;">
@@ -29,9 +29,7 @@
     </ion-card>
   </div>
 
-  <div *ngIf="!mostrarFormEncuesta" style="background-image: url('../../../assets/images/back.jpeg');">
-    <br><br>
-
+  <div *ngIf="!mostrarFormEncuesta" >
     <h2 style="color: #000; ">Gráficos</h2>
     <img src="../../../assets/images/grafico.png" style="height: 100px;" alt="">
     <ion-card>
