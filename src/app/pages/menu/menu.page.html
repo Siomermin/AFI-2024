@@ -35,7 +35,7 @@
 
 
   <h2 style="color: #000; font-weight: 800;">Platos Principales</h2>
-<ion-card *ngFor="let item of principales; let i = index" (click)="mostrarInputCantidad(i)">
+<ion-card *ngFor="let item of principales; let i = index" (click)="mostrarInputCantidad(i)" class="custom-card-background">
   <div *ngIf="item.tipo === 'principal'">
     <ion-card-header>
       <ion-card-title>{{item.nombre}}</ion-card-title>
@@ -48,10 +48,10 @@
       </div>
     </div>
 
-    <ion-card-content style="font-size: 18px;">
-      {{item.descripcion}} <br>
+    <ion-card-content style="font-size: 18px; color:black">
+      {{item.descripcion}} 
       <!-- Input para seleccionar la cantidad -->
-       <span style="font-size: small;">Tiempo realización: <span style="font-weight: 800;font-size: small;">{{item.tiempo}} minutos</span></span>
+      <br><span style="font-size: small;"><img src="../../../assets/images/clock.png" style="height: 17px;" alt=""> <span style="font-weight: 800;font-size: medium;">&nbsp;{{item.tiempo}} minutos</span></span>
     </ion-card-content>
     <div *ngIf="i === selectedCardIndex">
       <ion-input style="font-size: 14px;border: 2px solid #b2b1b1; padding: 4px; width: 150px; margin-left: 5px; border-radius: 15px;" type="number" label="&nbsp;&nbsp;Cantidad:"         (ionChange)="actualizarCantidad(i, $event)" ></ion-input>
@@ -68,7 +68,7 @@
 
   <h2 style="color: #000; font-weight: 800;">Guarniciones</h2>
 
-  <ion-card *ngFor="let item of guarniciones ;let i = index"  (click)="mostrarInputCantidad(i)">
+  <ion-card *ngFor="let item of guarniciones ;let i = index"  (click)="mostrarInputCantidad(i)" class="custom-card-background">
     <div *ngIf="item.tipo === 'guarnicion'">
       <ion-card-header>
         <ion-card-title>{{item.nombre}}</ion-card-title>
@@ -81,9 +81,9 @@
         </div>
       </div>
 
-      <ion-card-content  style="font-size: 18px;">
-        {{item.descripcion}} <br>
-        <span style="font-size: small;">Tiempo realización: <span style="font-weight: 800;font-size: small;">{{item.tiempo}} minutos</span></span>
+      <ion-card-content  style="font-size: 18px; color:black">
+        {{item.descripcion}} 
+        <br><span style="font-size: small;"><img src="../../../assets/images/clock.png" style="height: 17px;" alt=""> <span style="font-weight: 800;font-size: medium;">&nbsp;{{item.tiempo}} minutos</span></span>
 
       </ion-card-content>
       <div *ngIf="i === selectedCardIndex">
@@ -100,7 +100,7 @@
 
   <h2 style="color: #000; font-weight: 800;">Postres</h2>
 
-  <ion-card *ngFor="let item of postres ;let i = index"  (click)="mostrarInputCantidad(i)" >
+  <ion-card *ngFor="let item of postres ;let i = index"  (click)="mostrarInputCantidad(i)" class="custom-card-background">
     <div *ngIf="item.tipo==='postre'">
     <ion-card-header>
       <ion-card-title>{{item.nombre}}</ion-card-title>
@@ -115,9 +115,9 @@
     </div>
 
 
-    <ion-card-content style="font-size: 18px;">
+    <ion-card-content style="font-size: 18px; color:black">
       {{item.descripcion}}
-      <br><span style="font-size: small;">Tiempo realización: <span style="font-weight: 800;font-size: small;">{{item.tiempo}} minutos</span></span>
+      <br><span style="font-size: small;"><img src="../../../assets/images/clock.png" style="height: 17px;" alt=""> <span style="font-weight: 800;font-size: medium;">&nbsp;{{item.tiempo}} minutos</span></span>
 
     </ion-card-content>
 
@@ -136,7 +136,7 @@
 
   <h2 style="color: #000; font-weight: 800;">Bebidas</h2>
 
-  <ion-card *ngFor="let item of bebidas ;let i = index "   (click)="mostrarInputCantidad(i)" >
+  <ion-card *ngFor="let item of bebidas ;let i = index "   (click)="mostrarInputCantidad(i)" class="custom-card-background" >
     <div  *ngIf="item.tipo==='bebida'">
     <ion-card-header>
       <ion-card-title>{{item.nombre}}</ion-card-title>
@@ -150,9 +150,9 @@
       </div>
     </div>
 
-    <ion-card-content style="font-size: 18px;">
+    <ion-card-content style="font-size: 18px; color:black">
       {{item.descripcion}}
-      <br><span style="font-size: small;">Tiempo realización: <span style="font-weight: 800;font-size: small;">{{item.tiempo}} minutos</span></span>
+      <br><span style="font-size: small;"><img src="../../../assets/images/clock.png" style="height: 17px;" alt=""> <span style="font-weight: 800;font-size: medium;">&nbsp;{{item.tiempo}} minutos</span></span>
 
     </ion-card-content>
     <div *ngIf="i === selectedCardIndex">

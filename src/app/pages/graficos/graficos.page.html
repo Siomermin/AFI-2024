@@ -6,9 +6,10 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="ion-text-center">
+  <div >
   <ion-card>
-    <ion-card-header>
+    <ion-card-header style="color:black; ">
       Valoración de Caracteristicas
     </ion-card-header>
     <ion-card-content>
@@ -17,7 +18,7 @@
   </ion-card>
 
   <ion-card>
-    <ion-card-header>
+    <ion-card-header style="color:black; ">
       Valoración de Platos
     </ion-card-header>
     <ion-card-content>
@@ -26,7 +27,7 @@
   </ion-card>
 
   <ion-card>
-    <ion-card-header>
+    <ion-card-header style="color:black; ">
       Valoración de Atencion
     </ion-card-header>
     <ion-card-content>
@@ -35,16 +36,16 @@
   </ion-card>
 
   <ion-card *ngIf="listaEncuestas.length>0">
-    <ion-card-header>
+    <ion-card-header style="color:black; ">
       Reseñas
     </ion-card-header>
     <ion-card-content  *ngFor="let item of listaEncuestas" >
-      <ion-list>
-        <ion-item>
+      <ion-list style="    background-color: rgb(177, 192, 186);">
+        <ion-item style="color:black; background-color: rgb(177, 192, 186);">
           {{item.valoracionPersonal}}
         </ion-item>
       </ion-list>
     </ion-card-content>
   </ion-card>
-
+</div>
 </ion-content>
