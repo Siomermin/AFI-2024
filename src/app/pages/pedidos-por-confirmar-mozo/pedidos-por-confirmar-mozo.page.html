@@ -1,17 +1,20 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title class="custom-title">Pedidos Pendientes del Mozo</ion-title>
+    <ion-title class="custom-title">Pedidos Pendientes</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="content-background">
+  <ion-text class="ion-text-center">
+    <h1 style="color: black; font-size: 30px; font-weight: 800;">Mozo</h1>
+  </ion-text>
   <ion-card *ngFor="let pedido of pedidos" class="transparent-card">
     <ion-card-header>
       <ion-card-title>Pedido</ion-card-title>
     </ion-card-header>
     <ion-card-content>
       <ion-label>
-        <p>Estado: <strong>{{ pedido.estado | titlecase }} {{ pedido.confirmacionMozo ? '- En la cocina' : '' }}</strong></p>
+        <p>Estado: <strong>{{ pedido.estado | titlecase }} {{ pedido.confirmacionMozo ? '- En la cocina/bar' : '' }}</strong></p>
         <p>Productos pedidos: <strong>{{ pedido.items | agruparProductos }}</strong></p>
         <p>Tiempo de espera: <strong>{{ pedido.tiempo }} minutos</strong></p>
       </ion-label>
