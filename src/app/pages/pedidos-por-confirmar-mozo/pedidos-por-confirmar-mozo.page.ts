@@ -43,6 +43,15 @@ export class PedidosPorConfirmarMozoPage implements OnInit {
         });
         // Actualizar la lista de pedidos después de confirmar
         this.cargarPedidosPorConfirmar();
+
+        this.notificationService.sendNotificationToRole(
+          'El mozo ha confirmado un nuevo pedido!',
+          'Un nuevo pedido requiere su realización...',
+          'Cocinero'
+        ).subscribe(
+          response => console.log('Notificación a Cocinero enviada con éxito', response),
+          error => console.error('Error al enviar notificación a Cocinero', error)
+        );
       })
       .catch(error => {
         Swal.fire({
@@ -66,17 +75,9 @@ export class PedidosPorConfirmarMozoPage implements OnInit {
           text: 'El pedido ha sido entregado correctamente.',
           confirmButtonText: 'OK'
         });
+
         // Actualizar la lista de pedidos después de confirmar
         this.cargarPedidosPorConfirmar();
-
-        this.notificationService.sendNotificationToRole(
-          'El mozo ha confirmado un nuevo pedido!',
-          'Un nuevo pedido requiere su realización...',
-          'Cocinero'
-        ).subscribe(
-          response => console.log('Notificación a Cocinero enviada con éxito', response),
-          error => console.error('Error al enviar notificación a Cocinero', error)
-        );
 
       })
       .catch(error => {

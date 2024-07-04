@@ -7,6 +7,7 @@ import { DatabaseService } from 'src/app/auth/services/database.service';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import Swal from 'sweetalert2'
 import { first } from 'rxjs';
+import { NotificationService } from 'src/app/shared/services/notification.service';
 @Component({
   selector: 'app-qr-mesa',
   templateUrl: './qr-mesa.page.html',
@@ -14,7 +15,7 @@ import { first } from 'rxjs';
 })
 export class QrMesaPage implements OnInit {
 
-  constructor(private router: Router, private database:DatabaseService, private afAuth:AngularFireAuth, private activatedRoute: ActivatedRoute) { }
+  constructor(private router: Router, private notificationService: NotificationService, private database:DatabaseService, private afAuth:AngularFireAuth, private activatedRoute: ActivatedRoute) { }
   pedidos:any[]=[];
   uidUsuarioActual:any;
   emailUsuarioActual:any;
@@ -421,6 +422,15 @@ export class QrMesaPage implements OnInit {
           console.log(mesaCliente + this.uidMesaCliente)
 
           this.database.actualizar("mesa-cliente", mesaCliente, this.uidMesaCliente);
+
+          this.notificationService.sendNotificationToRole(
+            'Un cliente solicito la cuenta!',
+            'Lo esta esperando en su mesa...',
+            'Mozo'
+          ).subscribe(
+            response => console.log('Notificación a Mozo enviada con éxito', response),
+            error => console.error('Error al enviar notificación a Mozo', error)
+          );
 
           this.router.navigateByUrl("pedir-cuenta");
         }
