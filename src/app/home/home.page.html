@@ -93,9 +93,24 @@
   </ion-button>
 
   <ion-button
+  expand="full"
+  (click)="redireccionar('pedidos-pendientes-barman')"
+  *ngIf="this.perfilUsuarioActual === 'bartender'"
+>
+  Pedidos Pendientes
+</ion-button>
+
+<ion-button
+expand="full"
+(click)="redireccionar('pedir-cuenta')"
+>
+Pedir cuenta
+</ion-button>
+
+  <ion-button
     expand="full"
     (click)="redireccionar('pedidos-pendientes')"
-    *ngIf="this.perfilUsuarioActual === 'cocinero' || this.perfilUsuarioActual === 'bartender'"
+    *ngIf="this.perfilUsuarioActual === 'cocinero'"
   >
     Pedidos Pendientes
   </ion-button>

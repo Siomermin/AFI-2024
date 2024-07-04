@@ -79,10 +79,16 @@ const routes: Routes = [
     loadChildren: () => import('./pages/lista-espera/lista-espera.module').then( m => m.ListaEsperaPageModule)
   },
   {
+    path: 'pedidos-pendientes-barman',
+    loadChildren: () => import('./pages/pedidos-pendientes-barman/pedidos-pendientes-barman.module').then( m => m.PedidosPendientesBarmanPageModule)
+  },
+  {
     path: '**',
     redirectTo: 'home'
   },
-  
+
+
+
 
 
 

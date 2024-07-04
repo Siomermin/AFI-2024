@@ -41,17 +41,39 @@ export class PedidosPorConfirmarMozoPage implements OnInit {
           text: 'El pedido ha sido confirmado correctamente.',
           confirmButtonText: 'OK'
         });
+
         // Actualizar la lista de pedidos después de confirmar
         this.cargarPedidosPorConfirmar();
 
-        this.notificationService.sendNotificationToRole(
-          'El mozo ha confirmado un nuevo pedido!',
-          'Un nuevo pedido requiere su realización...',
-          'Cocinero'
-        ).subscribe(
-          response => console.log('Notificación a Cocinero enviada con éxito', response),
-          error => console.error('Error al enviar notificación a Cocinero', error)
-        );
+        // Obtener el pedido confirmado
+        const pedidoConfirmado = this.pedidos?.find(pedido => pedido.id === idPedido);
+
+        console.log(pedidoConfirmado);
+
+        // Verificar si el pedido contiene platos y enviar notificación al cocinero
+        if (pedidoConfirmado.platos && pedidoConfirmado.platos.length > 0) {
+          this.notificationService.sendNotificationToRole(
+            'Nuevo pedido de cocina!',
+            'Hay nuevos platos para preparar.',
+            'Cocinero'
+          ).subscribe(
+            response => console.log('Notificación a Cocinero enviada con éxito', response),
+            error => console.error('Error al enviar notificación a Cocinero', error)
+          );
+        }
+
+        // Verificar si el pedido contiene bebidas y enviar notificación al bartender
+        if (pedidoConfirmado.bebidas && pedidoConfirmado.bebidas.length > 0) {
+          this.notificationService.sendNotificationToRole(
+            'Nuevo pedido de bar!',
+            'Se necesitan preparar nuevas bebidas.',
+            'Bartender'
+          ).subscribe(
+            response => console.log('Notificación a Bartender enviada con éxito', response),
+            error => console.error('Error al enviar notificación a Bartender', error)
+          );
+        }
+
       })
       .catch(error => {
         Swal.fire({

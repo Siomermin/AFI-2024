@@ -4,11 +4,11 @@ import Swal from 'sweetalert2';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 
 @Component({
-  selector: 'app-pedidos-pendientes',
-  templateUrl: './pedidos-pendientes.page.html',
-  styleUrls: ['./pedidos-pendientes.page.scss'],
+  selector: 'app-pedidos-pendientes-barman',
+  templateUrl: './pedidos-pendientes-barman.page.html',
+  styleUrls: ['./pedidos-pendientes-barman.page.scss'],
 })
-export class PedidosPendientesPage implements OnInit {
+export class PedidosPendientesBarmanPage implements OnInit {
   pedidos?: any[];
 
   constructor(
@@ -31,7 +31,7 @@ export class PedidosPendientesPage implements OnInit {
               const id = pedido.payload.doc.id;
               return { id, ...data };
             })
-            .filter((pedido) => pedido.platos && pedido.platos.length > 0); // Filtrar pedidos con al menos un plato
+            .filter((pedido) => pedido.bebidas && pedido.bebidas.length > 0); // Filtrar pedidos con al menos una bebida
           console.log(this.pedidos);
         }
       });
@@ -40,8 +40,7 @@ export class PedidosPendientesPage implements OnInit {
   async aceptarPedido(pedidoId: string) {
     const dataPedido = {
       estado: 'realizando',
-      confirmacionCocinero: true,  // Confirmación del cocinero
-      terminoCocinero: false,      // Inicialmente no ha terminado
+      confirmacionBartender: true  // Actualiza la confirmación del bartender
     };
 
     this.database.actualizar2('pedidos', dataPedido, pedidoId)
@@ -60,41 +59,39 @@ export class PedidosPendientesPage implements OnInit {
           icon: 'error',
           title: 'Error',
           text: 'Hubo un error al aceptar el pedido.',
-          confirmButtonText: 'OK',
-          heightAuto: false
-
+          confirmButtonText: 'OK'
         });
         console.error('Error al aceptar pedido:', error);
       });
   }
 
-  async terminarPedido(pedidoId: string) {
-    // Actualiza la variable terminoCocinero a true para indicar que el cocinero ha terminado
+  terminarPedido(pedidoId: string) {
+    // Actualiza la variable terminoBartender a true para indicar que el bartender ha terminado
     const dataPedido = {
-      terminoCocinero: true,
+      terminoBartender: true,
     };
 
     this.database.actualizar2('pedidos', dataPedido, pedidoId)
       .then(() => {
-
-        this.verificarTerminacionPedido(pedidoId); // Verifica si ambos han confirmado y terminado para actualizar el estado a 'listo'
+        this.actualizarEstadoGlobal(pedidoId); // Verifica si ambos han confirmado y terminado para actualizar el estado a 'listo'
       })
       .catch((error) => {
         Swal.fire({
           icon: 'error',
           title: 'Error',
-          text: 'Hubo un error al actualizar el estado del pedido por el cocinero.',
+          text: 'Hubo un error al actualizar el estado del pedido por el bartender.',
           confirmButtonText: 'OK',
           heightAuto: false
         });
-        console.error('Error al terminar pedido por el cocinero:', error);
+        console.error('Error al terminar pedido por el bartender:', error);
       });
   }
 
-  private verificarTerminacionPedido(pedidoId: string) {
-    // Obtener el pedido actual
+  actualizarEstadoGlobal(pedidoId: string) {
+    // Verifica si todos los involucrados (cocinero y bartender) han confirmado y terminado para cambiar el estado global
     this.database.obtenerDocumento('pedidos', pedidoId)
       .subscribe((pedido: any) => {
+        console.log(pedido);
         if (pedido) {
           const confirmacionCocinero = pedido.confirmacionCocinero || false;
           const confirmacionBartender = pedido.confirmacionBartender || false;
@@ -137,13 +134,12 @@ export class PedidosPendientesPage implements OnInit {
           } else {
             Swal.fire({
               icon: 'success',
-              title: 'Pedido terminado por el cocinero',
-              text: 'El cocinero ha terminado su parte del pedido.',
+              title: 'Pedido terminado por el bartender',
+              text: 'El bartender ha finalizado su pedido.',
               confirmButtonText: 'OK',
               heightAuto: false
             });
           }
-
         }
       });
   }

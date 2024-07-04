@@ -4,9 +4,9 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { PedidosPendientesPageRoutingModule } from './pedidos-pendientes-routing.module';
+import { PedidosPendientesBarmanPageRoutingModule } from './pedidos-pendientes-barman-routing.module';
 
-import { PedidosPendientesPage } from './pedidos-pendientes.page';
+import { PedidosPendientesBarmanPage } from './pedidos-pendientes-barman.page';
 import { PedidosPorConfirmarMozoPageModule } from '../pedidos-por-confirmar-mozo/pedidos-por-confirmar-mozo.module';
 
 @NgModule({
@@ -14,9 +14,9 @@ import { PedidosPorConfirmarMozoPageModule } from '../pedidos-por-confirmar-mozo
     CommonModule,
     FormsModule,
     IonicModule,
-    PedidosPendientesPageRoutingModule,
+    PedidosPendientesBarmanPageRoutingModule,
     PedidosPorConfirmarMozoPageModule
   ],
-  declarations: [PedidosPendientesPage]
+  declarations: [PedidosPendientesBarmanPage]
 })
-export class PedidosPendientesPageModule {}
+export class PedidosPendientesBarmanPageModule {}
