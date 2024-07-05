@@ -17,7 +17,7 @@
       <p *ngIf="pedido.terminoBartender">Estado: <strong>Listo</strong></p>
 
       <p>Productos: <strong>{{ pedido.bebidas | agruparProductos }}</strong></p>
-      <p>Tiempo de espera: <strong>{{ pedido.tiempo }} minutos</strong></p>
+      <p>Tiempo de espera: <strong>1 minuto</strong></p>
       <br *ngIf="pedido.estado === 'pendiente' || pedido.estado === 'realizando'">
       <ion-button expand="full" color="success" *ngIf="pedido.confirmacionBartender === false && pedido.terminoBartender === false" (click)="aceptarPedido(pedido.id)">Aceptar Pedido</ion-button>
       <ion-button expand="full" color="danger" *ngIf="pedido.confirmacionBartender && pedido.terminoBartender === false" (click)="terminarPedido(pedido.id)">Terminar Pedido</ion-button>
