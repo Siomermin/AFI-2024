@@ -9,6 +9,8 @@ export class Pedido {
   itemPlatos: any[];
   itemBebidas: any[];
   fecha: any;
+  preciosPlatos:any[];
+  preciosBebidas:any[];
   confirmacionCocinero: boolean;
   confirmacionBartender: boolean;
   terminoCocinero: boolean;
@@ -24,7 +26,9 @@ export class Pedido {
     estado: string,
     preciosUnitarios: any[],
     confirmacionMozo: boolean,
-    fecha: any
+    fecha: any,
+    preciosPlatos:any[],
+    preciosBebidas:any[]
   ) {
     this.idCliente = idCliente;
     this.items = items;
@@ -36,6 +40,8 @@ export class Pedido {
     this.itemBebidas = itemBebidas;
     this.itemPlatos = itemPlatos;
     this.fecha = fecha;
+    this.preciosPlatos = preciosPlatos;
+    this.preciosBebidas = preciosBebidas;
     this.confirmacionCocinero = false; // Inicialmente false
     this.confirmacionBartender = false; // Inicialmente false
     this.terminoCocinero = false; // Inicialmente false
@@ -54,6 +60,8 @@ export class Pedido {
       platos: this.itemPlatos,
       bebidas: this.itemBebidas,
       fecha: this.fecha,
+      preciosPlatos: this.preciosPlatos,
+      preciosBebidas: this.preciosBebidas,
       confirmacionCocinero: this.confirmacionCocinero,
       confirmacionBartender: this.confirmacionBartender,
       terminoCocinero: this.terminoCocinero,

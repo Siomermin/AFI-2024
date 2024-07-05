@@ -374,6 +374,10 @@ tiempoRestante:string="";
           montoTotal:this.pedidoDelUsuario.montoTotal,
           tiempo: this.pedidoDelUsuario.tiempo,
           preciosUnitarios: this.pedidoDelUsuario.preciosUnitarios,
+          confirmacionMozo:this.pedidoDelUsuario.confirmacionMozo,
+          platos: this.pedidoDelUsuario.platos,
+          bebidas: this.pedidoDelUsuario.bebidas,
+          fecha:this.pedidoDelUsuario.fecha
 
         }
         console.log(pedidoActualizado);

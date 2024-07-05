@@ -88,6 +88,7 @@ export class MenuPage implements OnInit {
       
       this.pedidoParcial.push(platoSeleccionado);
       this.montoTotal+= parseInt(precioPlato);
+      this.preciosUnitarios.push(precioPlato);
       if(tipo== 'plato'){
         this.pedidoPlatos.push(platoSeleccionado);
         this.preciosUnitariosPlatos.push(precioPlato);
@@ -114,7 +115,7 @@ export class MenuPage implements OnInit {
     this.pedidoCompleto = this.pedidoParcial;
     this.verificarMayorTiempo();
     const fecha= new Date().toISOString();
-    const nuevoPedido= new Pedido(this.idClienteActual, this.pedidoCompleto,  this.pedidoPlatos, this.pedidoBebidas, this.montoTotal, this.tiempoTotalPedido, "pendiente", this.preciosUnitarios, false, fecha);
+    const nuevoPedido= new Pedido(this.idClienteActual, this.pedidoCompleto,  this.pedidoPlatos, this.pedidoBebidas, this.montoTotal, this.tiempoTotalPedido, "pendiente", this.preciosUnitarios, false, fecha, this.preciosUnitariosBebidas, this.preciosUnitariosPlatos);
     this.database.crear("pedidos", nuevoPedido.toJSON())
         .then((docRef) => {
           // Operación exitosa
