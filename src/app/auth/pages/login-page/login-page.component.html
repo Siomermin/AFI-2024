@@ -7,8 +7,7 @@
 
     </ion-text>
 
-<!-- Loading Spinner -->
-<app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+
 
 <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
   <ion-item>
@@ -49,12 +48,14 @@
   </ion-item>
 </ion-list>
   </div>
+
+  <!-- Loading Spinner -->
+<app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
 </ion-content>
 <style scoped>
   .container {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 90vh;
   }
   </style>

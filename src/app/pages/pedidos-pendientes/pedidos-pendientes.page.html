@@ -1,21 +1,26 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title class="custom-title">Pedidos Pendientes (Cocina y Bar)</ion-title>
+    <ion-title class="custom-title">Pedidos Pendientes</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content  class="content-background">
+  <ion-text class="ion-text-center">
+    <h1 style="color: black; font-size: 30px; font-weight: 800;">Cocinero</h1>
+  </ion-text>
   <ion-card *ngFor="let pedido of pedidos" class="transparent-card">
     <ion-card-header>
       <ion-card-title>Pedido</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <p>Estado: <strong>{{ pedido.estado | titlecase }}</strong></p>
-      <p>Productos: <strong>{{ pedido.items | agruparProductos }}</strong></p>
+      <p *ngIf="pedido.terminoCocinero === false">Estado: <strong>{{ pedido.confirmacionCocinero ? 'Realizando' : 'Pendiente'  }}</strong></p>
+      <p *ngIf="pedido.terminoCocinero">Estado: <strong>Listo</strong></p>
+
+      <p>Productos: <strong>{{ pedido.platos | agruparProductos }}</strong></p>
       <p>Tiempo de espera: <strong>{{ pedido.tiempo }} minutos</strong></p>
       <br *ngIf="pedido.estado === 'pendiente' || pedido.estado === 'realizando'">
-      <ion-button expand="full" color="success" *ngIf="pedido.estado === 'pendiente'" (click)="aceptarPedido(pedido.id)">Aceptar Pedido</ion-button>
-      <ion-button expand="full" color="danger" *ngIf="pedido.estado === 'realizando'" (click)="terminarPedido(pedido.id)">Terminar Pedido</ion-button>
+      <ion-button expand="full" color="success" *ngIf="pedido.confirmacionCocinero === false && pedido.terminoCocinero === false" (click)="aceptarPedido(pedido.id)">Aceptar Pedido</ion-button>
+      <ion-button expand="full" color="danger" *ngIf="pedido.confirmacionCocinero && pedido.terminoCocinero === false" (click)="terminarPedido(pedido.id)">Terminar Pedido</ion-button>
     </ion-card-content>
   </ion-card>
 </ion-content>

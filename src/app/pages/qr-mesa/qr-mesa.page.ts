@@ -33,6 +33,7 @@ export class QrMesaPage implements OnInit {
 
   mesaActualizar:any;
   uidMesaActualizar:any;
+tiempoRestante:string="";
   async ngOnInit() {
 
     this.afAuth.authState.subscribe(user => {
@@ -67,14 +68,40 @@ export class QrMesaPage implements OnInit {
         if (item.idCliente == this.uidUsuarioActual && item.estado != 'finalizado') {
           this.pedidoDelUsuario = item;
           console.log(this.pedidoDelUsuario);
+          this.actualizarTiempoRestante();
+          setInterval(() => {
+            this.actualizarTiempoRestante();
+          }, 1000); // Actualiza cada segundo
+      
           break;
         }
       }
     }, error => {
       console.log(error);
     });
+    
+   
+  }
 
-
+  actualizarTiempoRestante() {
+    const ahora = new Date().getTime();
+    const fechaPedido = new Date(this.pedidoDelUsuario.fecha).getTime();
+    const tiempoPedido = this.pedidoDelUsuario.tiempo * 60 * 1000; // convertir minutos a milisegundos
+  
+    const tiempoFinal = fechaPedido + tiempoPedido;
+    const tiempoRestanteMs = tiempoFinal - ahora;
+  
+    console.log("aca");
+    if (tiempoRestanteMs > 0) {
+      const horas = Math.floor((tiempoRestanteMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutos = Math.floor((tiempoRestanteMs % (1000 * 60 * 60)) / (1000 * 60));
+      const segundos = Math.floor((tiempoRestanteMs % (1000 * 60)) / 1000);
+  
+      this.tiempoRestante = `${minutos}:${segundos}s`;
+      console.log(this.tiempoRestante)
+    } else {
+      this.tiempoRestante = "Tiempo cumplido";
+    }
   }
 
   async vincularMesa(){
@@ -347,6 +374,10 @@ export class QrMesaPage implements OnInit {
           montoTotal:this.pedidoDelUsuario.montoTotal,
           tiempo: this.pedidoDelUsuario.tiempo,
           preciosUnitarios: this.pedidoDelUsuario.preciosUnitarios,
+          confirmacionMozo:this.pedidoDelUsuario.confirmacionMozo,
+          platos: this.pedidoDelUsuario.platos,
+          bebidas: this.pedidoDelUsuario.bebidas,
+          fecha:this.pedidoDelUsuario.fecha
 
         }
         console.log(pedidoActualizado);

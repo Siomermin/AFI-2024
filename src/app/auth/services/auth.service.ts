@@ -35,13 +35,6 @@ export class AuthService {
       profile: 'supervisor',
       gender: 'femenino',
     },
-    // {
-    //   id: 3,
-    //   email: 'empleado@empleado.com',
-    //   password: '333333',
-    //   profile: 'empleado',
-    //   gender: 'masculino',
-    // },
     {
       id: 4,
       email: 'cliente@cliente.com',
@@ -68,6 +61,13 @@ export class AuthService {
       email: 'cocinero@cocinero.com',
       password: '777777',
       profile: 'cocinero',
+      gender: 'masculino',
+    },
+    {
+      id: 8,
+      email: 'bartender@bartender.com',
+      password: '888888',
+      profile: 'bartender',
       gender: 'masculino',
     },
   ];
@@ -278,17 +278,17 @@ export class AuthService {
         });
     }
 
-    const errorMessage = this.validatorsService.getFirebaseAuthErrorByCode(
-      error.code
-    );
-    Swal.fire({
-      title: 'Error',
-      text: errorMessage,
-      icon: 'error',
-      confirmButtonText: 'Aceptar',
-      confirmButtonColor: 'var(--ion-color-primary)',
-      heightAuto: false,
-    });
+    // const errorMessage = this.validatorsService.getFirebaseAuthErrorByCode(
+    //   error.code
+    // );
+    // Swal.fire({
+    //   title: 'Error',
+    //   text: errorMessage,
+    //   icon: 'error',
+    //   confirmButtonText: 'Aceptar',
+    //   confirmButtonColor: 'var(--ion-color-primary)',
+    //   heightAuto: false,
+    // });
     console.log(error.code);
     console.error(error.message);
   }

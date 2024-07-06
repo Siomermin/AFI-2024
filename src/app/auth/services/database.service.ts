@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from "@angular/fire/compat/firestore";
-import { first, map } from 'rxjs';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { first, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -36,11 +36,11 @@ export class DatabaseService {
       .pipe(
         map(actions => {
           if (actions.length === 0) {
-            return null; // No encontro usuario
+            return null; // No encontró usuario
           }
           const data = actions[0].payload.doc.data() as any;
           const id = actions[0].payload.doc.id;
-          return { id, ...data }; // Retorno el primer usuario encontrado
+          return { id, ...data }; // Retorna el primer usuario encontrado
         }),
         first()
       )
@@ -57,11 +57,11 @@ export class DatabaseService {
       .pipe(
         map(actions => {
           if (actions.length === 0) {
-            return null; // No encontro cliente
+            return null; // No encontró cliente
           }
           const data = actions[0].payload.doc.data() as any;
           const id = actions[0].payload.doc.id;
-          return { id, ...data }; // Retorno el primer cliente encontrado
+          return { id, ...data }; // Retorna el primer cliente encontrado
         }),
         first()
       )
@@ -71,7 +71,6 @@ export class DatabaseService {
         return null; // Return null in case of error
       });
   }
-
 
   obtenerPedidos(estado: string, confirmacionMozo: boolean) {
     try {
@@ -106,6 +105,22 @@ export class DatabaseService {
       console.error('Error fetching pedidos:', error);
       return null;
     }
+  }
+
+  obtenerDocumento(coleccion: string, documentoId: string) {
+    return this.firestore.collection(coleccion).doc(documentoId).snapshotChanges()
+      .pipe(
+        map(action => {
+          if (action.payload.exists) {
+            const data = action.payload.data() as any;
+            const id = action.payload.id;
+            return { id, ...data };
+          } else {
+            return null;
+          }
+        }),
+        first()
+      );
   }
 
   public actualizar(coleccion: string, data: any, id: string) {

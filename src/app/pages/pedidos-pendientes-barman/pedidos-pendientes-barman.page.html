@@ -1,0 +1,26 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title class="custom-title">Pedidos Pendientes</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content  class="content-background">
+  <ion-text class="ion-text-center">
+    <h1 style="color: black; font-size: 30px; font-weight: 800;">Bartender</h1>
+  </ion-text>
+  <ion-card *ngFor="let pedido of pedidos" class="transparent-card">
+    <ion-card-header>
+      <ion-card-title>Pedido</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p *ngIf="pedido.terminoBartender === false">Estado: <strong>{{ pedido.confirmacionBartender ? 'Realizando' : 'Pendiente'  }}</strong></p>
+      <p *ngIf="pedido.terminoBartender">Estado: <strong>Listo</strong></p>
+
+      <p>Productos: <strong>{{ pedido.bebidas | agruparProductos }}</strong></p>
+      <p>Tiempo de espera: <strong>1 minuto</strong></p>
+      <br *ngIf="pedido.estado === 'pendiente' || pedido.estado === 'realizando'">
+      <ion-button expand="full" color="success" *ngIf="pedido.confirmacionBartender === false && pedido.terminoBartender === false" (click)="aceptarPedido(pedido.id)">Aceptar Pedido</ion-button>
+      <ion-button expand="full" color="danger" *ngIf="pedido.confirmacionBartender && pedido.terminoBartender === false" (click)="terminarPedido(pedido.id)">Terminar Pedido</ion-button>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
