@@ -278,17 +278,17 @@ export class AuthService {
         });
     }
 
-    const errorMessage = this.validatorsService.getFirebaseAuthErrorByCode(
-      error.code
-    );
-    Swal.fire({
-      title: 'Error',
-      text: errorMessage,
-      icon: 'error',
-      confirmButtonText: 'Aceptar',
-      confirmButtonColor: 'var(--ion-color-primary)',
-      heightAuto: false,
-    });
+    // const errorMessage = this.validatorsService.getFirebaseAuthErrorByCode(
+    //   error.code
+    // );
+    // Swal.fire({
+    //   title: 'Error',
+    //   text: errorMessage,
+    //   icon: 'error',
+    //   confirmButtonText: 'Aceptar',
+    //   confirmButtonColor: 'var(--ion-color-primary)',
+    //   heightAuto: false,
+    // });
     console.log(error.code);
     console.error(error.message);
   }
