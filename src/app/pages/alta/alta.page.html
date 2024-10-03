@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-title class="ion-text-center">
-      <img routerLink="/auth/login" src="../../../assets/images/back.png" alt="" height="15px">   Formulario de Alta
+      <img routerLink="/auth/login" src="../../../assets/images/back.png" alt="" height="15px">   {{ "REGISTER.title" | translate }}
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -19,72 +19,72 @@
     <br><br>
     <ion-card>
       <ion-card-content>
-        ¿Desea registrarse como Cliente Anónimo?<br>
+        {{ "REGISTER.anon_text" | translate }}<br>
       </ion-card-content>
-      <ion-toggle [ngModel]="clienteAnonimo" (ionChange)="toggleAnonimo($event)">Anónimo</ion-toggle><br /><br />
+      <ion-toggle [ngModel]="clienteAnonimo" (ionChange)="toggleAnonimo($event)">{{ "REGISTER.anon_switch" | translate }}</ion-toggle><br /><br />
     </ion-card>
 
     <ion-card>
       <form [formGroup]="form" (ngSubmit)="enviarInformacion()">
         <ion-item>
-          <ion-label position="stacked">Nombre</ion-label>
+          <ion-label position="stacked">{{ "REGISTER.first_name" | translate }}</ion-label>
           <ion-input formControlName="nombre"></ion-input>
         </ion-item>
         <div *ngIf="form.controls['nombre'].invalid && form.controls['nombre'].touched" class="error-message">
-          Nombre debe contener solo letras y espacios.
+          {{ "VALIDATORS.usr_name_invalid" | translate }}
         </div>
 
         <ion-item *ngIf="!clienteAnonimo">
-          <ion-label position="stacked">Apellido</ion-label>
+          <ion-label position="stacked">{{ "REGISTER.last_name" | translate }}</ion-label>
           <ion-input formControlName="apellido"></ion-input>
         </ion-item>
         <div *ngIf="form.controls['apellido'].invalid && form.controls['apellido'].touched" class="error-message">
-          Apellido debe contener solo letras y espacios.
+          {{ "VALIDATORS.usr_lastname_invalid" | translate }}
         </div>
 
         <ion-item *ngIf="!clienteAnonimo">
-          <ion-label position="stacked">DNI</ion-label>
+          <ion-label position="stacked">{{ "REGISTER.DNI" | translate }}</ion-label>
           <ion-input formControlName="dni"></ion-input>
         </ion-item>
         <div *ngIf="form.controls['dni'].invalid && form.controls['dni'].touched" class="error-message">
-          DNI debe contener hasta 10 caracteres numéricos.
+          {{ "VALIDATORS.usr_dni_invalid" | translate }}
         </div>
 
         <ion-item *ngIf="!clienteAnonimo">
-          <ion-label position="stacked">Email</ion-label>
+          <ion-label position="stacked">{{ "REGISTER.mail" | translate }}</ion-label>
           <ion-input formControlName="email" type="email"></ion-input>
         </ion-item>
         <div *ngIf="form.controls['email'].invalid && form.controls['email'].touched" class="error-message">
-          Email no es válido.
+          {{ "VALIDATORS.usr_email_invalid" | translate }}
         </div>
         <ion-item *ngIf="!clienteAnonimo">
-          <ion-label position="stacked">Clave</ion-label>
+          <ion-label position="stacked">{{ "REGISTER.password" | translate }}</ion-label>
           <ion-input formControlName="clave" type="password"></ion-input>
         </ion-item>
         <div *ngIf="form.controls['clave'].invalid && form.controls['clave'].touched" class="error-message">
-          Clave debe tener al menos 6 caracteres.
+          {{ "VALIDATORS.usr_password_invalid" | translate }}
         </div>
 
         <ion-item *ngIf="!clienteAnonimo">
-          <ion-label position="stacked">Confirmar Clave</ion-label>
+          <ion-label position="stacked">{{ "REGISTER.check_password" | translate }}</ion-label>
           <ion-input formControlName="confirmarClave" type="password"></ion-input>
         </ion-item>
         <div *ngIf="form.hasError('passwordMismatch') && form.controls['confirmarClave'].touched" class="error-message">
-          Las claves no coinciden.
+          {{ "VALIDATORS.usr_check_password_invalid" | translate }}
         </div>
 
         <ion-item>
-          <ion-label position="stacked">Foto de Perfil</ion-label>
+          <ion-label position="stacked">{{ "REGISTER.profile_photo" | translate }}</ion-label>
           <br>
           <ion-button shape="round" (click)="tomarFoto()">
             <img src="../../../assets/images/camera.png" style="height: 30px; padding:3px;" alt="">
-            &nbsp;Tomar foto
+            &nbsp;{{ "REGISTER.photo_btn" | translate }}
           </ion-button>
           <br>
         </ion-item>
         <br>
-        <ion-button color="success" shape="round" type="submit" [disabled]="form.invalid">Aceptar</ion-button>
-        <ion-button color="danger" shape="round" routerLink="/auth/login">Cancelar</ion-button>
+        <ion-button color="success" shape="round" type="submit" [disabled]="form.invalid">{{ "REGISTER.submit_btn" | translate }}</ion-button>
+        <ion-button color="danger" shape="round" routerLink="/auth/login">{{ "REGISTER.cancel_btn" | translate }}</ion-button>
         <div *ngIf="mostrarSpinner" class="spinner-container">
           <img src="../../../assets/images/burger-removebg-preview.png" height="70px" alt="">
         </div>

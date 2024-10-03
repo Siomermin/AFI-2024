@@ -1,48 +1,48 @@
 
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      <ion-text>
+        <h1>{{ 'LOGIN.title' | translate }}</h1>
+      </ion-text>
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="openLanguagePopover($event)">
+        <ion-icon name="language" slot="icon-only" size="large">
+        </ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
 <ion-content class="ion-padding" >
   <div class="container">
 
-    <ion-text class="ion-text-center">
-      <h1>Iniciar sesión</h1>
-
-    </ion-text>
-
-
-
 <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
   <ion-item>
-    <ion-input labelPlacement="stacked" label="Correo electrónico" formControlName="email" type="text"></ion-input>
+    <ion-input labelPlacement="stacked" label="{{ 'LOGIN.mail' | translate }}" formControlName="email" type="text"></ion-input>
     <ion-text class="error" color="danger" *ngIf="isValidField('email')">
       {{ getErrorByField("email") }}</ion-text
     >
   </ion-item>
   <br>
   <ion-item>
-    <ion-input
-    labelPlacement="stacked"
-      label="Contraseña"
-      formControlName="password"
-      type="password"
-    ></ion-input>
+    <ion-input labelPlacement="stacked" label="{{ 'LOGIN.password' | translate }}" formControlName="password" type="password"></ion-input>
     <ion-text class="error" color="danger" *ngIf="isValidField('password')">
       {{ getErrorByField("password") }}
     </ion-text>
   </ion-item>
   <br>
-  <a [routerLink]="['/alta']" class="ion-text-center" style="font-size: medium;">No tenes cuenta? Registrate!</a>
+  <a [routerLink]="['/alta']" class="ion-text-center" style="font-size: medium;">{{ 'LOGIN.link_signin' | translate }}</a>
   <br>
   <ion-button class="ion-padding login-button" type="submit" expand="full" [disabled]="myForm.invalid">
     <ion-icon name="log-in"></ion-icon>
   </ion-button>
 </form>
 
-<!-- <ion-text color="primary">
-  <a routerLink="/auth/register"> No tenes cuenta? Registrate!</a>
-</ion-text> -->
-
 <!-- Acceso rapido -->
 <ion-list>
-  <h3 class="ion-margin">Acceso rápido</h3>
+  <h3 class="ion-margin">{{ 'LOGIN.access_users' | translate }}</h3>
   <ion-item *ngFor="let user of testUsers" (click)="selectCheckbox(user)" (click)="fastLogin(user.email, user.password)">
     <ion-checkbox [checked]="checkboxSelected === user" justify="space-between">{{ user.profile | titlecase }}</ion-checkbox>
   </ion-item>

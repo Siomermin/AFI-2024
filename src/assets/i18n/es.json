@@ -1,0 +1,55 @@
+{
+    "ALERT": {
+        "POS_CHANGED_HEADER": "Posicion y lenguaje cambiado!",
+        "POS_CHANGED_MSG": "Ahora usted está en {{ country }}, donde se habla en {{ language }}",
+        "GET_LOC_HEADER": "Usted fue localizado!",
+        "GET_LOC_MSG": "El idioma fue ajustado según su localización actual",
+        "spinner": "Cargando...",
+        "welcome": "Bienvenido!",
+        "success": "Éxito",
+        "new_user_registered": "Usuario registrado exitosamente!",
+        "anon_user_valid": "Cliente anónimo registrado con éxito.",
+        "anon_user_invalid": "Hubo un problema al registrar el cliente anónimo. Por favor, inténtelo de nuevo.",
+        "access_denied": "Acceso denegado",
+        "denied_access1": "Tu cuenta está pendiente de aprobación.",
+        "denied_access2": "Tu cuenta ha sido rechazada.",
+        "denied_access3": "Estado de cuenta desconocido."
+    },
+    "VALIDATORS": {
+        "usr_name_invalid": "Nombre debe contener solo letras y espacios.",
+        "usr_lastname_invalid": "Apellido debe contener solo letras y espacios.",
+        "usr_dni_invalid": "DNI debe contener hasta 10 caracteres numéricos.",
+        "usr_email_invalid": "Email no es válido.",
+        "usr_password_invalid": "Clave debe tener al menos 6 caracteres.",
+        "usr_check_password_invalid": "Las claves no coinciden.",
+        "required": "Requerido",
+        "min_length": "Mínimo {{ detail }} caracteres",
+        "max_length": "Máximo {{ detail }} caracteres",
+        "min": "Mínimo {{ detail }}",
+        "pattern": "Ingrese un email valido",
+        "usr_credential_invalid": "Las credenciales son incorrectas.",
+        "usr_email_repeated": "El correo electrónico ya está siendo utilizado por otro usuario."
+    },
+    "LOGIN": {
+        "title": "Iniciar sesión",
+        "mail": "Correo electrónico",
+        "password": "Contraseña",
+        "link_signin": "No tenes cuenta? Registrate!",
+        "access_users": "Acceso rápido"
+    },
+    "REGISTER": {
+        "title": "Formulario de Alta",
+        "anon_text": "¿Desea registrarse como Cliente Anónimo?",
+        "anon_switch": "Anónimo",
+        "first_name": "Nombre",
+        "last_name": "Apellido",
+        "DNI": "DNI",
+        "mail": "Email",
+        "password": "Clave",
+        "check_password": "Confirmar Clave",
+        "profile_photo": "Foto de Perfil",
+        "photo_btn": "Tomar foto",
+        "submit_btn": "Aceptar",
+        "cancel_btn": "Cancelar"
+    }
+}

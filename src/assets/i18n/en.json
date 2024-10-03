@@ -1,0 +1,55 @@
+{
+    "ALERT": {
+        "POS_CHANGED_HEADER": "Position and language changed!",
+        "POS_CHANGED_MSG": "Now you are in {{ country }}, where people speaks in {{ language }}",
+        "GET_LOC_HEADER": "You have been located!",
+        "GET_LOC_MSG": "The language has been adjusted to your actual location",
+        "spinner": "Loading...",
+        "welcome": "Welcome!",
+        "success": "Success",
+        "new_user_registered": "Succesfully registered user!",
+        "anon_user_valid": "Succesfully registered Anonymous client.",
+        "anon_user_invalid": "There was a problem registering the Anonymous client. Please try again.",
+        "access_denied": "Access denied",
+        "denied_access1": "Your account is pending approval.",
+        "denied_access2": "Your account has been rejected.",
+        "denied_access3": "Unknown account status."
+    },
+    "VALIDATORS": {
+        "usr_name_invalid": "First name must contain only letters and spaces.",
+        "usr_lastname_invalid": "Last name must contain only letters and spaces..",
+        "usr_dni_invalid": "DNI must contain at up to 10 numeric characters.",
+        "usr_email_invalid": "The Email provided is invalid.",
+        "usr_password_invalid": "Password must contain at least 6 characters.",
+        "usr_check_password_invalid": "Passwords do not match.",
+        "required": "Required",
+        "min_length": "Minumum {{ detail }} characters",
+        "max_length": "Maximum {{ detail }} characters",
+        "min": "Minimum {{ detail }}",
+        "pattern": "Enter a valid email",
+        "usr_credential_invalid": "The credentials are incorrect.",
+        "usr_email_repeated": "The email is already being used by another user."
+    },
+    "LOGIN": {
+        "title": "Login",
+        "mail": "Email",
+        "password": "Password",
+        "link_signin": "Don't have an account? Register!",
+        "access_users": "Quick access"
+    },
+    "REGISTER": {
+        "title": "User Registration",
+        "anon_text": "Would you like to register as an Anonymous Client?",
+        "anon_switch": "Anonymous",
+        "first_name": "First Name",
+        "last_name": "Last Name",
+        "DNI": "DNI",
+        "mail": "Email",
+        "password": "Password",
+        "check_password": "Confirm Password",
+        "profile_photo": "Profile Photo",
+        "photo_btn": "Take Photo",
+        "submit_btn": "Accept",
+        "cancel_btn": "Cancel"
+    }
+}

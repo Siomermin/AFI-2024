@@ -3,7 +3,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { ValidatorsService } from 'src/app/shared/services/validators.service';
 import { TestUser } from '../../interfaces/testUser.Interface';
-
+import { TranslateService } from '@ngx-translate/core';
+import { PopoverController } from '@ionic/angular';
+import { IdiomaPopoverPage } from 'src/app/pages/idioma-popover/idioma-popover.page';
 @Component({
   selector: 'app-login-page',
   templateUrl: './login-page.component.html',
@@ -13,7 +15,7 @@ export class LoginPageComponent implements OnInit {
   private fb = inject(FormBuilder);
   private validatorsService = inject(ValidatorsService);
   private authService = inject(AuthService);
-
+  private popoverCtrl = inject(PopoverController);
   checkboxSelected: any = null; // Variable para almacenar el checkbox seleccionado
 
   public testUsers: TestUser[] = [];
@@ -64,5 +66,13 @@ export class LoginPageComponent implements OnInit {
   onSubmit(): void {
     const { email, password } = this.myForm.value;
     this.login(email, password);
+  }
+
+  async openLanguagePopover(ev: any) {
+    const popover = await this.popoverCtrl.create({
+      component: IdiomaPopoverPage,
+      event: ev
+    });
+    await popover.present();
   }
 }

@@ -1,0 +1,25 @@
+{
+    "ALERT": {
+        "POS_CHANGED_HEADER": "Position und Sprache geändert!",
+        "POS_CHANGED_MSG": "Jetzt sind Sie in  {{ country }}, wo {{ language }} gesprochen wird",
+        "GET_LOC_HEADER": "Sie wurden gefunden!",
+        "GET_LOC_MSG": "Die Sprache wurde an Ihren aktuellen Standort angepasst"
+    },
+    "TAB_1": {
+        "TITLE": "Sprache ändern",
+        "TEXT": "Wenn Sie auf eine Flagge tippen, wird Ihr Standort in dieses Land geändert. Außerdem wird die App-Sprache geändert"
+    },
+    "TAB_2": {
+        "TITLE": "Information",
+        "HEADER": "Daten zu Ihrem Standort:",
+        "INFO": "Land: ",
+        "COORDS": "Kontaktdaten: ",
+        "HEADER_2": "Nützliche Informationen:",
+        "INFO_2": "Ein Land ist ein Territorium mit eigenen geografischen und kulturellen Merkmalen, das einen souveränen Staat oder eine politische Einheit innerhalb eines Staates darstellen kann oder nicht. Es wird auch als Synonym für den Staat verwendet, eine Reihe politischer Institutionen mit Territorium, Bevölkerung und Souveränität. Ein Staat ist eine Reihe von Institutionen, die die Macht haben, die Regeln festzulegen, die eine Gesellschaft regieren, und die interne und externe Souveränität über ein definiertes Territorium haben. Grenzen sind unsichtbare Linien, die das Territorium eines Landes abgrenzen und es von Nachbarländern trennen. Auf diese Weise wird der Raum abgegrenzt, in dem ein Land seine Souveränität ausübt.",
+        "BUTTON": "Finde mich!",
+        "DESCRIPTION_BTN": "Drücken Sie diese Taste, um Ihren aktuellen Standort zu verwenden <br> (Sprache wird automatisch eingestellt)"
+    },
+    "TAB_3": {
+        "TITLE": "Karte"
+    }
+}

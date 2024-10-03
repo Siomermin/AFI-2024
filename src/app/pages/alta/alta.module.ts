@@ -7,12 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { AltaPageRoutingModule } from './alta-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';  // Añade esta línea
 import { AltaPage } from './alta.page';
+import { TranslateModule } from '@ngx-translate/core';
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    AltaPageRoutingModule, ReactiveFormsModule
+    AltaPageRoutingModule,
+    ReactiveFormsModule,
+    TranslateModule
   ],
   declarations: [AltaPage]
 })

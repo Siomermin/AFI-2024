@@ -1,0 +1,25 @@
+{
+    "ALERT": {
+        "POS_CHANGED_HEADER": "Position et langue modifiées!",
+        "POS_CHANGED_MSG": "Maintenant tu es en {{ country }}, où l'on parle {{ language }}",
+        "GET_LOC_HEADER": "Tu as été localisé!",
+        "GET_LOC_MSG": "La langue a été adaptée à votre emplacement actuel"
+    },
+    "TAB_1": {
+        "TITLE": "Changer de langue",
+        "TEXT": "Appuyer sur un drapeau changera votre emplacement dans ce pays, la langue de l'application sera également modifiée"
+    },
+    "TAB_2": {
+        "TITLE": "Information",
+        "HEADER": "Données sur votre emplacement:",
+        "INFO": "Pays: ",
+        "COORDS": "Coordonnées: ",
+        "HEADER_2": "Informations utiles:",
+        "INFO_2": "Un pays est un territoire doté de caractéristiques géographiques et culturelles propres, qui peut ou non constituer un État souverain ou une entité politique au sein d'un État. Il est également utilisé comme synonyme de l’État, un ensemble d’institutions politiques dotées d’un territoire, d’une population et d’une souveraineté. Un État est un ensemble d'institutions qui ont le pouvoir d'établir les règles qui régissent une société, ayant une souveraineté interne et externe sur un territoire défini. Les frontières sont des lignes invisibles qui délimitent le territoire d’un pays et le séparent des pays voisins. De cette manière, l'espace dans lequel un pays exerce sa souveraineté est délimité.",
+        "BUTTON": "Localisez-moi !",
+        "DESCRIPTION_BTN": "Appuyez sur ce bouton pour utiliser votre position actuelle <br> (la langue sera réglée automatiquement)"
+    },
+    "TAB_3": {
+        "TITLE": "Carte"
+    }
+}

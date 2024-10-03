@@ -1,12 +1,20 @@
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ValidatorsService {
+
+  constructor(private translator: TranslateService) {}
+
   public firstNameAndLastnamePattern: string = '([a-zA-Z]+) ([a-zA-Z]+)';
   public emailPattern: string = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$';
+
+  public error = {
+    detail: ''
+  }
 
   public isValidField(form: FormGroup, field: string) {
     return form.controls[field].errors && form.controls[field].touched;
@@ -23,20 +31,19 @@ export class ValidatorsService {
 
       switch (key) {
         case 'required':
-          return 'Requerido';
-
+          //return 'Requerido';
+          return this.translator.instant('VALIDATORS.required');
         case 'minlength':
-          return `Mínimo ${errors['minlength'].requiredLength} caracteres`;
-
+          this.error.detail = errors['minlength'].requiredLength;
+          return this.translator.instant('VALIDATORS.min_length', this.error);
         case 'maxlength':
-          return `Máximo ${errors['maxlength'].requiredLength} caracteres`;
-
-
+          this.error.detail = errors['maxlength'].requiredLength
+          return this.translator.instant('VALIDATORS.max_length', this.error);
         case 'min':
-          return `Mínimo ${errors['min'].min}`;
-
+          this.error.detail = errors['min'].min;
+          return this.translator.instant('VALIDATORS.min', this.error);
         case 'pattern':
-          return `Ingrese un email valido`;
+          return this.translator.instant('VALIDATORS.pattern');
       }
     }
 
@@ -46,12 +53,11 @@ export class ValidatorsService {
   getFirebaseAuthErrorByCode(code: string): string {
     switch (code) {
       case 'auth/invalid-credential':
-        return 'Las credenciales son incorrectas.';
+        return this.translator.instant('VALIDATORS.usr_credential_invalid');
 
-        case 'auth/email-already-in-use':
-          return 'El correo electrónico ya está siendo utilizado por otro usuario.'
+      case 'auth/email-already-in-use':
+        return this.translator.instant('VALIDATORS.usr_email_repeated');
     }
-
     return '';
   }
 }

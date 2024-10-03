@@ -1,0 +1,16 @@
+<!--
+<ion-header [translucent]="true">
+    <ion-title>Idioma</ion-title>
+</ion-header>
+-->
+<ion-content>
+  <ion-list>
+    <ion-item button *ngFor="let lang of languages" (click)="select(lang.value)" detail="false">
+      <img [src]="lang.img" slot="start" height="30" width="50">
+      <ion-label text-wrap>
+        {{ lang.text }}
+      </ion-label>
+      <ion-icon color="light" slot="end" name="checkmark-sharp" *ngIf="lang.value == selected"></ion-icon>
+    </ion-item>
+  </ion-list>
+</ion-content>

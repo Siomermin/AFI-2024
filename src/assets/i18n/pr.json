@@ -1,0 +1,25 @@
+{
+    "ALERT": {
+        "POS_CHANGED_HEADER": "Posição e idioma alterados!",
+        "POS_CHANGED_MSG": "Agora você está no {{ country }}, onde se fala {{ language }}",
+        "GET_LOC_HEADER": "Você foi localizado!",
+        "GET_LOC_MSG": "O idioma foi ajustado de acordo com sua localização atual"
+    },
+    "TAB_1": {
+        "TITLE": "Alterar idioma",
+        "TEXT": "Pressionar uma bandeira mudará sua localização para esse país, o idioma do aplicativo também será alterado"
+    },
+    "TAB_2": {
+        "TITLE": "Informação",
+        "HEADER": "Dados sobre sua localização",
+        "INFO": "País: ",
+        "COORDS": "Coordenadas: ",
+        "HEADER_2": "Informação úteis:",
+        "INFO_2": "Um país é um território com características geográficas e culturais próprias, que pode ou não constituir um Estado soberano ou uma entidade política dentro de um Estado. Também é utilizado como sinônimo de Estado, conjunto de instituições políticas dotadas de território, população e soberania. Um Estado é um conjunto de instituições que têm autoridade para estabelecer as regras que regulam uma sociedade, tendo soberania interna e externa sobre um território definido. As fronteiras são linhas invisíveis que marcam o território de um país e o separam dos países vizinhos. Desta forma, delimita-se o espaço em que um país exerce a sua soberania.",
+        "BUTTON": "Localize-me!",
+        "DESCRIPTION_BTN": "Pressione este botão para usar <br> sua posição atual <br> (o idioma será definido automaticamente)"
+    },
+    "TAB_3": {
+        "TITLE": "Mapa"
+    }
+}

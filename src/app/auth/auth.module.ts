@@ -8,7 +8,7 @@ import { RouterModule } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
 
 import { LoginPageComponent } from './pages/login-page/login-page.component';
-
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [LoginPageComponent],
@@ -18,7 +18,8 @@ import { LoginPageComponent } from './pages/login-page/login-page.component';
     IonicModule,
     ReactiveFormsModule,
     RouterModule,
-    SharedModule
+    SharedModule,
+    TranslateModule
   ],
 })
 export class AuthModule {}

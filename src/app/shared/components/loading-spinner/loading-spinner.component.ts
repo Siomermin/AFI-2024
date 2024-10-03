@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-loading-spinner',
@@ -7,7 +8,11 @@ import { Component } from '@angular/core';
 })
 export class LoadingSpinnerComponent   {
 
-  constructor() { }
+  public text: string = '';
+
+  constructor(private translator: TranslateService) { 
+    this.text = this.translator.instant("ALERT.spinner"); 
+  }
 
 
 }

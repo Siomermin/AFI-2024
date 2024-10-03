@@ -6,6 +6,7 @@ import { ValidatorsService } from 'src/app/shared/services/validators.service';
 import Swal from 'sweetalert2';
 import { DatabaseService } from './database.service';
 import { NotificationService } from 'src/app/shared/services/notification.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root',
@@ -17,6 +18,7 @@ export class AuthService {
   private validatorsService = inject(ValidatorsService);
   private database = inject(DatabaseService);
   private notificationService = inject(NotificationService);
+  private translator = inject(TranslateService);
 
   public loggedUser?: any;
 
@@ -134,20 +136,20 @@ export class AuthService {
     switch (estado) {
       case 'pendiente':
         return this.showEstadoAlert(
-          'Acceso denegado',
-          'Tu cuenta está pendiente de aprobación.',
+          this.translator.instant("ALERT.access_denied"),
+          this.translator.instant("ALERT.denied_access1"),
           'warning'
         );
       case 'rechazado':
         return this.showEstadoAlert(
-          'Acceso denegado',
-          'Tu cuenta ha sido rechazada.',
+          this.translator.instant("ALERT.access_denied"),
+          this.translator.instant("ALERT.denied_access2"),
           'error'
         );
       default:
         return this.showEstadoAlert(
-          'Acceso denegado',
-          'Estado de cuenta desconocido.',
+          this.translator.instant("ALERT.access_denied"),
+          this.translator.instant("ALERT.denied_access3"),
           'error'
         );
     }
@@ -156,10 +158,10 @@ export class AuthService {
   showEstadoAlert(title: string, text: string, icon: 'warning' | 'error') {
     this.logout();
     return Swal.fire({
-      title,
-      text,
-      icon,
-      confirmButtonText: 'Aceptar',
+      title: title,
+      text: text,
+      icon: icon,
+      confirmButtonText: this.translator.instant("REGISTER.submit_btn"),
       confirmButtonColor: 'var(--ion-color-primary)',
       heightAuto: false,
     });
@@ -172,7 +174,7 @@ export class AuthService {
         .then((userCredential) => {
           this.handleSuccessfulAuth(
             userCredential,
-            'Usuario registrado exitosamente!'
+            this.translator.instant("ALERT.new_user_registered")
           );
 
           this.logout();
@@ -220,10 +222,10 @@ export class AuthService {
         );
 
         Swal.fire({
-          title: 'Éxito',
-          text: 'Cliente anónimo registrado con éxito.',
+          title: this.translator.instant("ALERT.success"),
+          text: this.translator.instant("ALERT.anon_user_valid"),
           icon: 'success',
-          confirmButtonText: 'Aceptar',
+          confirmButtonText: this.translator.instant("REGISTER.submit_btn"),
           confirmButtonColor: 'var(--ion-color-primary)',
           heightAuto: false,
         });
@@ -235,10 +237,10 @@ export class AuthService {
     } catch (error) {
       console.error('Error al registrar cliente anónimo:', error);
       Swal.fire({
-        title: 'Error',
-        text: 'Hubo un problema al registrar el cliente anónimo. Por favor, inténtelo de nuevo.',
+        title: 'ERROR',
+        text: this.translator.instant("ALERT.anon_user_invalid"),
         icon: 'error',
-        confirmButtonText: 'Aceptar',
+        confirmButtonText: this.translator.instant("REGISTER.submit_btn"),
         confirmButtonColor: 'var(--ion-color-primary)',
         heightAuto: false,
       });
@@ -255,10 +257,10 @@ export class AuthService {
     this.loggedUser = userCredential.user;
     this.observeUserState();
     Swal.fire({
-      title: 'Bienvenido!',
+      title: this.translator.instant("ALERT.welcome"),
       text: text,
       icon: 'success',
-      confirmButtonText: 'Aceptar',
+      confirmButtonText: this.translator.instant("REGISTER.submit_btn"),
       confirmButtonColor: 'var(--ion-color-primary)',
       heightAuto: false,
     });
@@ -277,20 +279,17 @@ export class AuthService {
           // Muestra un mensaje de error si el borrado falla
         });
     }
-
-    // const errorMessage = this.validatorsService.getFirebaseAuthErrorByCode(
-    //   error.code
-    // );
-    // Swal.fire({
-    //   title: 'Error',
-    //   text: errorMessage,
-    //   icon: 'error',
-    //   confirmButtonText: 'Aceptar',
-    //   confirmButtonColor: 'var(--ion-color-primary)',
-    //   heightAuto: false,
-    // });
+    
     console.log(error.code);
     console.error(error.message);
+    Swal.fire({
+      title: 'ERROR',
+      text: this.validatorsService.getFirebaseAuthErrorByCode(error.code),
+      icon: 'error',
+      confirmButtonText: this.translator.instant("REGISTER.submit_btn"),
+      confirmButtonColor: 'var(--ion-color-primary)',
+      heightAuto: false,
+    });
   }
 
   get isLoggedIn(): boolean {

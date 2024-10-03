@@ -85,7 +85,11 @@ const routes: Routes = [
   {
     path: '**',
     redirectTo: 'home'
+  },  {
+    path: 'idioma-popover',
+    loadChildren: () => import('./pages/idioma-popover/idioma-popover.module').then( m => m.IdiomaPopoverPageModule)
   },
+
 
 
 
