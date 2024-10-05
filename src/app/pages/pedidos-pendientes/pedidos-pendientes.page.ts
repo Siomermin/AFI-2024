@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DatabaseService } from 'src/app/auth/services/database.service';
 import Swal from 'sweetalert2';
 import { NotificationService } from 'src/app/shared/services/notification.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-pedidos-pendientes',
@@ -11,10 +12,8 @@ import { NotificationService } from 'src/app/shared/services/notification.servic
 export class PedidosPendientesPage implements OnInit {
   pedidos?: any[];
 
-  constructor(
-    private database: DatabaseService,
-    private notificationService: NotificationService
-  ) {}
+  constructor(private database: DatabaseService, private notificationService: NotificationService,
+  private translator: TranslateService) {}
 
   ngOnInit() {
     this.cargarPedidosPendientes();
@@ -48,8 +47,8 @@ export class PedidosPendientesPage implements OnInit {
       .then(() => {
         Swal.fire({
           icon: 'success',
-          title: 'Pedido aceptado',
-          text: 'El pedido ha sido aceptado correctamente.',
+          title: this.translator.instant("ALERT.order_accept"),
+          text: this.translator.instant("ALERT.accepted_text"),
           confirmButtonText: 'OK',
           heightAuto: false
         });
@@ -58,8 +57,8 @@ export class PedidosPendientesPage implements OnInit {
       .catch((error) => {
         Swal.fire({
           icon: 'error',
-          title: 'Error',
-          text: 'Hubo un error al aceptar el pedido.',
+          title: 'ERROR',
+          text: this.translator.instant("ALERT.order_error"),
           confirmButtonText: 'OK',
           heightAuto: false
 
@@ -82,8 +81,8 @@ export class PedidosPendientesPage implements OnInit {
       .catch((error) => {
         Swal.fire({
           icon: 'error',
-          title: 'Error',
-          text: 'Hubo un error al actualizar el estado del pedido por el cocinero.',
+          title: 'ERROR',
+          text: this.translator.instant("ALERT.update_error2"),
           confirmButtonText: 'OK',
           heightAuto: false
         });
@@ -108,8 +107,8 @@ export class PedidosPendientesPage implements OnInit {
               .then(() => {
                 Swal.fire({
                   icon: 'success',
-                  title: 'Pedido listo',
-                  text: 'El pedido está listo para ser entregado.',
+                  title: this.translator.instant("ALERT.order_ready"),
+                  text: this.translator.instant("ALERT.deliver_ready"),
                   confirmButtonText: 'OK',
                   heightAuto: false
                 });
@@ -128,7 +127,7 @@ export class PedidosPendientesPage implements OnInit {
                 Swal.fire({
                   icon: 'error',
                   title: 'Error',
-                  text: 'Hubo un error al marcar el pedido como listo.',
+                  text: this.translator.instant("ALERT.ready_error"),
                   confirmButtonText: 'OK',
                   heightAuto: false
                 });
@@ -137,8 +136,8 @@ export class PedidosPendientesPage implements OnInit {
           } else {
             Swal.fire({
               icon: 'success',
-              title: 'Pedido terminado por el cocinero',
-              text: 'El cocinero ha terminado su parte del pedido.',
+              title: this.translator.instant("ALERT.chef_finish"),
+              text: this.translator.instant("ALERT.chef_text"),
               confirmButtonText: 'OK',
               heightAuto: false
             });

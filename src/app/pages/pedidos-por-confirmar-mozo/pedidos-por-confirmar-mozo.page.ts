@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DatabaseService } from 'src/app/auth/services/database.service';
 import { NotificationService } from 'src/app/shared/services/notification.service';
+import { TranslateService } from '@ngx-translate/core';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -12,7 +13,8 @@ export class PedidosPorConfirmarMozoPage implements OnInit {
 
   pedidos?: any[];
 
-  constructor(private database: DatabaseService, private notificationService: NotificationService) { }
+  constructor(private database: DatabaseService, private notificationService: NotificationService,
+  private translator: TranslateService) { }
 
   ngOnInit() {
     this.cargarPedidosPorConfirmar();
@@ -37,8 +39,8 @@ export class PedidosPorConfirmarMozoPage implements OnInit {
         Swal.fire({
           heightAuto: false,
           icon: 'success',
-          title: 'Pedido confirmado',
-          text: 'El pedido ha sido confirmado correctamente.',
+          title: this.translator.instant("ALERT.new_order"),
+          text: this.translator.instant("ALERT.order_confirmed"),
           confirmButtonText: 'OK'
         });
 
@@ -79,8 +81,8 @@ export class PedidosPorConfirmarMozoPage implements OnInit {
         Swal.fire({
           heightAuto: false,
           icon: 'error',
-          title: 'Error',
-          text: 'Hubo un error al confirmar el pedido.',
+          title: 'ERROR',
+          text: this.translator.instant("ALERT.order_denied"),
           confirmButtonText: 'OK'
         });
         console.error('Error al confirmar pedido:', error);
@@ -93,8 +95,8 @@ export class PedidosPorConfirmarMozoPage implements OnInit {
         Swal.fire({
           heightAuto: false,
           icon: 'success',
-          title: 'Pedido entregado',
-          text: 'El pedido ha sido entregado correctamente.',
+          title: this.translator.instant("ALERT.deliver_order"),
+          text: this.translator.instant("ALERT.deliver_success"),
           confirmButtonText: 'OK'
         });
 
@@ -106,8 +108,8 @@ export class PedidosPorConfirmarMozoPage implements OnInit {
         Swal.fire({
           heightAuto: false,
           icon: 'error',
-          title: 'Error',
-          text: 'Hubo un error al entregar el pedido.',
+          title: 'ERROR',
+          text: this.translator.instant("ALERT.deliver_error"),
           confirmButtonText: 'OK'
         });
         console.error('Error al entregar pedido:', error);

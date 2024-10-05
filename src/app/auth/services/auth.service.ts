@@ -171,7 +171,16 @@ export class AuthService {
     return new Promise<void>((resolve, reject) => {
       this.afAuth
         .createUserWithEmailAndPassword(email, password)
-        .then((userCredential) => {
+        .then(async (userCredential) => {
+          const user = userCredential.user;
+
+          if(user) {
+            await this.database.actualizar2(
+              'clientes',
+              { uid: user.uid },
+              docId
+            );
+          }
           this.handleSuccessfulAuth(
             userCredential,
             this.translator.instant("ALERT.new_user_registered")

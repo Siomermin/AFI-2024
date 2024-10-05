@@ -32,20 +32,14 @@ export class ListaEsperaPage implements OnInit {
     );
 
     listaEsperaObservable.subscribe(next => {
-      
+      this.arrayListaEspera = [];
       let result = next;
+
       result.forEach(cliente => {
+
         if (cliente.estado == "pendiente") {
           console.log(cliente);
-
           this.arrayListaEspera.push(cliente);
-          
-          // if (cliente.email) {
-          //   this.arrayListaEspera.push(cliente);
-          // }
-          // else {
-          //   this.arrayShow.push({ urlFoto: '', nombre: 'Usuario', apellido: 'anónimo'});
-          // }
         }
       });
     });
@@ -59,14 +53,14 @@ export class ListaEsperaPage implements OnInit {
     );
 
     clientesObservable.subscribe(next => {
-      //this.arrayShow = [];
+      this.arrayShow = [];
       let result = next;
 
       result.forEach(cliente => {
         console.log(cliente);
         
         if (this.arrayListaEspera.find((list) => list.idCliente == cliente.uid)) {
-          console.log("COINCIDENCIA");//SOLO ENCUENTRA A UNO 
+          console.log("COINCIDENCIA"); 
           
           this.arrayShow.push(cliente);
         }
