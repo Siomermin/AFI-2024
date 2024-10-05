@@ -1,29 +1,19 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Observable,map } from 'rxjs';
 import { DatabaseService } from 'src/app/auth/services/database.service';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
+
 @Component({
   selector: 'app-encuesta',
   templateUrl: './encuesta.page.html',
   styleUrls: ['./encuesta.page.scss'],
 })
 export class EncuestaPage implements OnInit {
-
   encuestaForm: FormGroup;
-
-  constructor(private database: DatabaseService, private afAuth: AngularFireAuth, private router: Router,private fb: FormBuilder) // Añadido FormBuilder
-{    this.encuestaForm = this.fb.group({
-      valoracionPlatos: ['', [Validators.required]],
-      valoracionAtencion: ['', Validators.required],
-      caracteristicas: this.fb.array([], Validators.required),
-      valoracionPersonal: ['', [Validators.required]],
-    });
-  }
-
   listaMesaCliente: any[]=[];
   uidUsuarioActual:any;
   encuestasDelUsuario:any;
@@ -31,10 +21,18 @@ export class EncuestaPage implements OnInit {
   mostrarFormEncuesta:boolean=false;
   encuestaSeleccionada:any;
  
-  
+  constructor(private database: DatabaseService, private afAuth: AngularFireAuth, private router: Router, 
+  private fb: FormBuilder, private translator: TranslateService) {
+
+    this.encuestaForm = this.fb.group({
+      valoracionPlatos: ['', [Validators.required]],
+      valoracionAtencion: ['', Validators.required],
+      caracteristicas: this.fb.array([], Validators.required),
+      valoracionPersonal: ['', [Validators.required]],
+    });
+  }
 
   ngOnInit() {
-
     this.afAuth.authState.subscribe(user => {
       if (user) {
         this.uidUsuarioActual = user.uid;
@@ -66,7 +64,6 @@ export class EncuestaPage implements OnInit {
     });
   }
 
-
   onCheckboxChange(event: any, value: string) {
     const caracteristicas: FormArray = this.encuestaForm.get('caracteristicas') as FormArray;
 
@@ -97,10 +94,9 @@ export class EncuestaPage implements OnInit {
     return `${fecha} - ${hora}`;
   }
 
-  habilitarEncuesta(item:any){
-    this.mostrarFormEncuesta=true;
-    this.encuestaSeleccionada=item;
-
+  habilitarEncuesta(item: any) {
+    this.mostrarFormEncuesta = true;
+    this.encuestaSeleccionada = item;
   }
 
   onSubmit() {
@@ -114,49 +110,44 @@ export class EncuestaPage implements OnInit {
   
       console.log(nuevaEncuesta);
   
-      this.database.crear("encuestas", nuevaEncuesta)
-        .then(() => {
-          const dataActualizada = {
-            encuestaCompleta: "true",
-            estado: this.encuestaSeleccionada.estado,
-            fecha: this.encuestaSeleccionada.fecha,
-            idCliente: this.encuestaSeleccionada.idCliente,
-            numeroMesa: this.encuestaSeleccionada.numeroMesa
-          };
+      this.database.crear("encuestas", nuevaEncuesta).then(() => {
+        const dataActualizada = {
+          encuestaCompleta: "true",
+          estado: this.encuestaSeleccionada.estado,
+          fecha: this.encuestaSeleccionada.fecha,
+          idCliente: this.encuestaSeleccionada.idCliente,
+          numeroMesa: this.encuestaSeleccionada.numeroMesa
+        };
   
-          return this.database.actualizar("mesa-cliente", dataActualizada, this.encuestaSeleccionada.id);
-        })
-        .then(() => {
-          Swal.fire({
-            title: 'Éxito',
-            text: 'Encuesta enviada con éxito',
-            icon: 'success',
-            confirmButtonText: 'Aceptar',
-            heightAuto: false
-          }).then(() => {
-            this.router.navigate(['/qr-mesa']);
-          });
-        })
-        .catch(error => {
-          console.error("Error al procesar la encuesta:", error);
-          Swal.fire({
-            title: 'Error',
-            text: 'Hubo un problema al enviar la encuesta. Por favor, inténtelo de nuevo.',
-            icon: 'error',
-            confirmButtonText: 'Aceptar',
-            heightAuto: false
-          });
+        return this.database.actualizar("mesa-cliente", dataActualizada, this.encuestaSeleccionada.id);
+      }).then(() => {
+        Swal.fire({
+          title: this.translator.instant("ALERT.success"),
+          text: this.translator.instant("ALERT.survey_sent"),
+          icon: 'success',
+          confirmButtonText: this.translator.instant("REGISTER.submit_btn"),
+          heightAuto: false
+        }).then(() => {
+          this.router.navigate(['/qr-mesa']);
         });
+      }).catch(error => {
+        console.error("Error al procesar la encuesta:", error);
+        Swal.fire({
+          title: 'ERROR',
+          text: this.translator.instant("ALERT.survey_error"),
+          icon: 'error',
+          confirmButtonText: this.translator.instant("REGISTER.submit_btn"),
+          heightAuto: false
+        });
+      });
     } else {
       Swal.fire({
-        title: 'Formulario incompleto',
-        text: 'Por favor, complete todos los campos.',
+        title: this.translator.instant("ALERT.form_incomplete"),
+        text: this.translator.instant("ALERT.incomplete_text"),
         icon: 'warning',
-        confirmButtonText: 'Aceptar',
+        confirmButtonText: this.translator.instant("REGISTER.submit_btn"),
         heightAuto: false
       });
     }
   }
-
-
 }

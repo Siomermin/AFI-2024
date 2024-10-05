@@ -1,6 +1,6 @@
 
 import { Component, OnInit } from '@angular/core';
-import { Router, NavigationExtras, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { DatabaseService } from 'src/app/auth/services/database.service';
@@ -14,8 +14,6 @@ import { NotificationService } from 'src/app/shared/services/notification.servic
   styleUrls: ['./qr-mesa.page.scss'],
 })
 export class QrMesaPage implements OnInit {
-
-  constructor(private router: Router, private notificationService: NotificationService, private database:DatabaseService, private afAuth:AngularFireAuth, private activatedRoute: ActivatedRoute) { }
   pedidos:any[]=[];
   uidUsuarioActual:any;
   emailUsuarioActual:any;
@@ -33,9 +31,12 @@ export class QrMesaPage implements OnInit {
 
   mesaActualizar:any;
   uidMesaActualizar:any;
-tiempoRestante:string="";
-  async ngOnInit() {
+  tiempoRestante:string="";
 
+  constructor(private router: Router, private notificationService: NotificationService, private database:DatabaseService, 
+  private afAuth:AngularFireAuth, private activatedRoute: ActivatedRoute) { }
+  
+  async ngOnInit() {
     this.afAuth.authState.subscribe(user => {
       if (user) {
         this.uidUsuarioActual = user.uid;
@@ -69,18 +70,20 @@ tiempoRestante:string="";
           this.pedidoDelUsuario = item;
           console.log(this.pedidoDelUsuario);
           this.actualizarTiempoRestante();
-          setInterval(() => {
-            this.actualizarTiempoRestante();
-          }, 1000); // Actualiza cada segundo
-      
-          break;
+          if(item.estado != 'entregado-confirmado') {
+            setInterval(() => {
+              this.actualizarTiempoRestante();
+            }, 1000); // Actualiza cada segundo
+        
+            break;
+          } else {
+            this.tiempoRestante = "Tiempo cumplido";
+          }     
         }
       }
     }, error => {
       console.log(error);
     });
-    
-   
   }
 
   actualizarTiempoRestante() {
@@ -104,97 +107,86 @@ tiempoRestante:string="";
     }
   }
 
-  async vincularMesa(){
-
-
+  async vincularMesa() {
     await this.verificarUsuarioVinculado();
-      if(!this.usuarioVinculado){
-        await this.verificarMesaLibre()
-        if(this.mesaEscaneadaLibre){
-          if(this.clienteEnEspera){
-            const mesaActualizada = {
-              estado: "ocupada",
-              numeroMesa: this.mesaEscaneada
-            };
-            const listaEsperaActualizada = {
-              estado: "asignado",
-              idCliente: this.uidUsuarioActual,
-              email: this.emailUsuarioActual
-            };
-            const nuevaMesa = {
-              idCliente: this.uidUsuarioActual,
-              numeroMesa: this.mesaEscaneada,
-              estado: "vigente",
-              fecha: new Date().toISOString(),
-              encuestaCompleta: false,
+    if(!this.usuarioVinculado) {
+      await this.verificarMesaLibre()
 
-            };
+      if(this.mesaEscaneadaLibre) {
 
-            await this.database.crear("mesa-cliente", nuevaMesa);
+        if(this.clienteEnEspera) {
+          const mesaActualizada = {
+            estado: "ocupada",
+            numeroMesa: this.mesaEscaneada
+          };
+          const listaEsperaActualizada = {
+            estado: "asignado",
+            idCliente: this.uidUsuarioActual,
+            email: this.emailUsuarioActual
+          };
+          const nuevaMesa = {
+            idCliente: this.uidUsuarioActual,
+            numeroMesa: this.mesaEscaneada,
+            estado: "vigente",
+            fecha: new Date().toISOString(),
+            encuestaCompleta: false
+          };
 
-            await this.database.actualizar("lista-espera", listaEsperaActualizada, this.uidListaEspera);
+          await this.database.crear("mesa-cliente", nuevaMesa);
 
-            await this.database.actualizar("mesas", mesaActualizada, this.uidMesaLibre);
+          await this.database.actualizar("lista-espera", listaEsperaActualizada, this.uidListaEspera);
 
-            this.usuarioVinculado=true;
-            // Mostrar mensaje de éxito
-            Swal.fire({
-              title: 'Éxito',
-              text: 'Se le ha asignado la mesa: ' + this.mesaEscaneada,
-              icon: 'success',
-              confirmButtonText: 'Aceptar',
-              confirmButtonColor: 'var(--ion-color-primary)',
-              heightAuto: false
-            });
+          await this.database.actualizar("mesas", mesaActualizada, this.uidMesaLibre);
 
-
-          }else{
-            Swal.fire({
-              title: 'Error',
-              text: 'Antes de vincularse con una mesa debe ingresar a la lista de espera',
-              icon: 'error',
-              confirmButtonText: 'Aceptar',
-              confirmButtonColor: 'var(--ion-color-primary)',
-              heightAuto: false
-            });
-          }
-        }else{
+          this.usuarioVinculado=true;
+          // Mostrar mensaje de éxito
+          Swal.fire({
+            title: 'Éxito',
+            text: 'Se le ha asignado la mesa: ' + this.mesaEscaneada,
+            icon: 'success',
+            confirmButtonText: 'Aceptar',
+            confirmButtonColor: 'var(--ion-color-primary)',
+            heightAuto: false
+          });
+        } else {
           Swal.fire({
             title: 'Error',
-            text: 'La mesa escaneada se encuentra ocupada',
+            text: 'Antes de vincularse con una mesa debe ingresar a la lista de espera',
             icon: 'error',
             confirmButtonText: 'Aceptar',
             confirmButtonColor: 'var(--ion-color-primary)',
             heightAuto: false
           });
         }
-
-
-      }else{
+      } else {
         Swal.fire({
           title: 'Error',
-          text: 'Usted ya se encuentra vinculado a una mesa',
+          text: 'La mesa escaneada se encuentra ocupada',
           icon: 'error',
           confirmButtonText: 'Aceptar',
           confirmButtonColor: 'var(--ion-color-primary)',
           heightAuto: false
         });
       }
-
-
-
+    } else {
+      Swal.fire({
+        title: 'Error',
+        text: 'Usted ya se encuentra vinculado a una mesa',
+        icon: 'error',
+        confirmButtonText: 'Aceptar',
+        confirmButtonColor: 'var(--ion-color-primary)',
+        heightAuto: false
+      });
+    }
   }
-
 
   redireccionar(path:string){
     console.log(path);
     this.router.navigateByUrl(path);
-
   }
 
   mostrarPedido(){
-
-    if(this.pedidoDelUsuario){
+    if(this.pedidoDelUsuario) {
 
       Swal.fire({
         title: "Su pedido se encuentra:",
@@ -204,7 +196,7 @@ tiempoRestante:string="";
         confirmButtonColor: 'var(--ion-color-primary)',
         heightAuto: false
       });
-    }else{
+    } else {
       Swal.fire({
         title: 'Error',
         text: 'Usted aún no realizo el pedido',
@@ -214,7 +206,6 @@ tiempoRestante:string="";
         heightAuto: false
       });
     }
-
   }
 
   verificarMesaLibre(): Promise<void> {
@@ -234,10 +225,10 @@ tiempoRestante:string="";
 
         this.mesas.forEach(mesa =>{
           console.log(mesa.numeroMesa, this.mesaEscaneada, mesa.estado)
-          if(mesa.numeroMesa == this.mesaEscaneada && mesa.estado=="libre"){
+          if(mesa.numeroMesa == this.mesaEscaneada && mesa.estado == "libre"){
             this.mesaEscaneadaLibre=true;
             this.uidMesaLibre= mesa.id;
-          }else if(mesa.numeroMesa == this.mesaEscaneada && mesa.estado=="ocupada"){
+          }else if(mesa.numeroMesa == this.mesaEscaneada && mesa.estado == "ocupada"){
             this.mesaEscaneadaLibre=false;
           }
         })
@@ -249,8 +240,6 @@ tiempoRestante:string="";
       });
     });
   }
-
-
 
   async mostrarMesasLibres() {
     await this.verificarMesaLibre();
@@ -277,7 +266,9 @@ tiempoRestante:string="";
     // Construir el contenido HTML para el SweetAlert
     let contenidoHTML = '<ul style="text-align: left; padding-left: 20px;">';
     mesasLibres.forEach(mesa => {
-      contenidoHTML += `<li>Mesa número: ${mesa.numeroMesa}</li>`;
+      contenidoHTML += `<li>`;
+      contenidoHTML += `Mesa número: ${mesa.numeroMesa}`;
+      contenidoHTML += `</li>`;
     });
     contenidoHTML += '</ul>';
 
@@ -291,7 +282,6 @@ tiempoRestante:string="";
       heightAuto: false
     });
   }
-
 
   async verificarClienteEnEspera() {
     return new Promise((resolve, reject) => {
@@ -353,10 +343,10 @@ tiempoRestante:string="";
     });
   }
 
-  confirmarRecepcionPedido(){
+  confirmarRecepcionPedido() {
+    console.log(this.pedidoDelUsuario);
 
-    console.log(this.pedidoDelUsuario)
-    if(this.pedidoDelUsuario && this.pedidoDelUsuario.estado == "entregado"){
+    if(this.pedidoDelUsuario && this.pedidoDelUsuario.estado == "entregado") {
       Swal.fire({
         title: 'Tu pedido ya fue entregado',
         icon: 'success',
@@ -378,14 +368,12 @@ tiempoRestante:string="";
           platos: this.pedidoDelUsuario.platos,
           bebidas: this.pedidoDelUsuario.bebidas,
           fecha:this.pedidoDelUsuario.fecha
-
         }
         console.log(pedidoActualizado);
 
         this.database.actualizar("pedidos", pedidoActualizado, this.pedidoDelUsuario.id)
       });
-
-    }else{
+    } else {
       Swal.fire({
         title: 'Error',
         text: 'Usted aún no realizo el pedido',
@@ -395,7 +383,6 @@ tiempoRestante:string="";
         heightAuto: false
       });
     }
-
   }
 
   obtenerUidMesaParaActualizar(): Promise<void> {
@@ -428,43 +415,41 @@ tiempoRestante:string="";
 
 
   async pedirCuenta() {
-
     await this.verificarUsuarioVinculado();
-
     await this.obtenerUidMesaParaActualizar();
 
     console.log(this.mesaActualizar, this.uidMesaActualizar, this.uidMesaCliente);
-        if (this.uidMesaActualizar && this.uidMesaCliente) {
-          // Actualiza la mesa
-          const mesaActualizada = {
-            estado: "libre",
-            numeroMesa: this.mesaActualizar,
-          };
 
-          console.log(mesaActualizada + this.uidMesaActualizar)
-          this.database.actualizar("mesas", mesaActualizada, this.uidMesaActualizar);
+    if (this.uidMesaActualizar && this.uidMesaCliente) {
+      // Actualiza la mesa
+      const mesaActualizada = {
+        estado: "libre",
+        numeroMesa: this.mesaActualizar,
+      };
 
-          // Actualiza el estado de mesa-cliente
-          const mesaCliente = {
-            estado: "finalizado",
-            numeroMesa: this.mesaActualizar,
-            idCliente: this.uidUsuarioActual,
-          };
-          console.log(mesaCliente + this.uidMesaCliente)
+      console.log(mesaActualizada + this.uidMesaActualizar)
+      this.database.actualizar("mesas", mesaActualizada, this.uidMesaActualizar);
 
-          this.database.actualizar("mesa-cliente", mesaCliente, this.uidMesaCliente);
+      // Actualiza el estado de mesa-cliente
+      const mesaCliente = {
+        estado: "finalizado",
+        numeroMesa: this.mesaActualizar,
+        idCliente: this.uidUsuarioActual,
+      };
+      console.log(mesaCliente + this.uidMesaCliente)
 
-          this.notificationService.sendNotificationToRole(
-            'Un cliente solicito la cuenta!',
-            'Lo esta esperando en su mesa...',
-            'Mozo'
-          ).subscribe(
-            response => console.log('Notificación a Mozo enviada con éxito', response),
-            error => console.error('Error al enviar notificación a Mozo', error)
-          );
+      this.database.actualizar("mesa-cliente", mesaCliente, this.uidMesaCliente);
 
-          this.router.navigateByUrl("pedir-cuenta");
-        }
-      }
+      this.notificationService.sendNotificationToRole(
+        'Un cliente solicito la cuenta!',
+        'Lo esta esperando en su mesa...',
+        'Mozo'
+      ).subscribe(
+        response => console.log('Notificación a Mozo enviada con éxito', response),
+        error => console.error('Error al enviar notificación a Mozo', error)
+      );
 
+      this.router.navigateByUrl("pedir-cuenta");
+    }
   }
+}

@@ -35,7 +35,7 @@ const routes: Routes = [
     loadChildren: () => import('./pages/consulta-mozo/consulta-mozo.module').then( m => m.ConsultaMozoPageModule)
   },
   {
-    path: 'vincular-mesa',
+    path: 'vincular-mesa',//NO SE USA
     loadChildren: () => import('./pages/vincular-mesa/vincular-mesa.module').then( m => m.VincularMesaPageModule)
   },
   {
@@ -85,7 +85,8 @@ const routes: Routes = [
   {
     path: '**',
     redirectTo: 'home'
-  },  {
+  },
+  {
     path: 'idioma-popover',
     loadChildren: () => import('./pages/idioma-popover/idioma-popover.module').then( m => m.IdiomaPopoverPageModule)
   },

@@ -121,6 +121,12 @@ export class PedirCuentaPage implements OnInit {
     .catch((error) => console.log(error));
   }
 
+  async actualizarPedido() {
+    await this.database.actualizar2("pedidos", { estado: "finalizado" }, this.pedidoActual.id)
+    .then(() => console.log("Estado del pedido actualizado"))
+    .catch((error) => console.log(error));
+  }
+
   async requestPermissions(): Promise<boolean> {
     const { camera } = await BarcodeScanner.requestPermissions();
     return camera === 'granted' || camera === 'limited';
@@ -163,6 +169,7 @@ export class PedirCuentaPage implements OnInit {
   }
 
   realizarPago() {
+    this.actualizarPedido();
     this.actualizarLista();
     Swal.fire({
       position: 'center',

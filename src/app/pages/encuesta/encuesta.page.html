@@ -1,6 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title class="ion-text-center"><img routerLink="/qr-mesa" src="../../../assets/images/back.png" alt="" height="15px">  Encuesta</ion-title>
+    <ion-title class="ion-text-center"><img routerLink="/qr-mesa" src="../../../assets/images/back.png" alt="" height="15px">  {{ "SURVEY.title" | translate }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -8,35 +8,35 @@
 <div style="background-image: url('../../../assets/images/back.jpeg');" >
   <div *ngIf="encuestasIncompletasDelUsuario!==undefined && !mostrarFormEncuesta" class="ion-text-center"  >
     <br>
-    <h2 style="color: #000;">Encuestas Pendientes</h2>
+    <h2 style="color: #000;">{{ "SURVEY.pending" | translate }}</h2>
     <img src="../../../assets/images/encuesta.png" style="height: 100px;" alt="" >
     <ion-card  *ngFor="let item of encuestasIncompletasDelUsuario"style="background-color:  #ededed;;" >
       <ion-card-header>
-        <ion-card-title  (click)="habilitarEncuesta(item)"> Visita: <span style="font-size: small;">{{ formatTimestamp(item.fecha) }}</span>
+        <ion-card-title  (click)="habilitarEncuesta(item)"> {{ "SURVEY.date" | translate }} <span style="font-size: small;">{{ formatTimestamp(item.fecha) }}</span>
         </ion-card-title>
       </ion-card-header>
     </ion-card>
     <br>
   </div>
 
-  <div *ngIf="!encuestasIncompletasDelUsuario || encuestasIncompletasDelUsuario.length===0">
+  <div *ngIf="!encuestasIncompletasDelUsuario || encuestasIncompletasDelUsuario.length === 0">
     <ion-card>
 
       <ion-card-content style="color: #000; font-size: 18px;">
-        Usted no tiene encuestas pendientes por completar
+        {{ "SURVEY.no_pending" | translate }}
 
       </ion-card-content>
     </ion-card>
   </div>
 
   <div *ngIf="!mostrarFormEncuesta" >
-    <h2 style="color: #000; ">Gráficos</h2>
+    <h2 style="color: #000; ">{{ "SURVEY.graphs" | translate }}</h2>
     <img src="../../../assets/images/grafico.png" style="height: 100px;" alt="">
     <ion-card>
       <ion-card-content>
-        <p style="color: #000; font-size: 18px;">Accede a los gráficos y reseñas de los clientes que ya pasaron por nuestro local</p>
+        <p style="color: #000; font-size: 18px;">{{ "SURVEY.graphs_text" | translate }}</p>
         <br>
-        <ion-button routerLink="/graficos" size="large">Ver Gráficos</ion-button>
+        <ion-button routerLink="/graficos" size="large">{{ "SURVEY.graphs_btn" | translate }}</ion-button>
       </ion-card-content>
     </ion-card>
     <br>
@@ -51,7 +51,7 @@
 
       <ion-card class="custom-card-background">
         <ion-item>
-          <p position="stacked">Seleccione una valoración para los platos:</p>
+          <p position="stacked">{{ "SURVEY.rate_food" | translate }}</p>
           <ion-range min="1" max="5" step="1" formControlName="valoracionPlatos">
             <ion-label slot="start">1</ion-label>
             <ion-label slot="end">5</ion-label>
@@ -61,26 +61,26 @@
 
       <ion-card class="custom-card-background">
         <ion-item>
-          <p position="stacked">Seleccione una valoración para la atención:</p>
+          <p position="stacked">{{ "SURVEY.rate_service" | translate }}</p>
           <ion-radio-group formControlName="valoracionAtencion">
             <ion-item>
-              <ion-label>Muy mala</ion-label>
+              <ion-label>{{ "SURVEY.service1" | translate }}</ion-label>
               <ion-radio slot="start" value="Muy mala"></ion-radio>
             </ion-item>
             <ion-item>
-              <ion-label>Mala</ion-label>
+              <ion-label>{{ "SURVEY.service2" | translate }}</ion-label>
               <ion-radio slot="start" value="Mala"></ion-radio>
             </ion-item>
             <ion-item>
-              <ion-label>Buena</ion-label>
+              <ion-label>{{ "SURVEY.service3" | translate }}</ion-label>
               <ion-radio slot="start" value="Buena"></ion-radio>
             </ion-item>
             <ion-item>
-              <ion-label>Muy buena</ion-label>
+              <ion-label>{{ "SURVEY.service4" | translate }}</ion-label>
               <ion-radio slot="start" value="Muy buena"></ion-radio>
             </ion-item>
             <ion-item>
-              <ion-label>Excelente</ion-label>
+              <ion-label>{{ "SURVEY.service5" | translate }}</ion-label>
               <ion-radio slot="start" value="Excelente"></ion-radio>
             </ion-item>
           </ion-radio-group>
@@ -89,27 +89,27 @@
 
       <ion-card class="custom-card-background">
         <ion-item>
-          <p position="stacked">¿Con cuál/es de estas características se encuentra más conforme?</p>
+          <p position="stacked">{{ "SURVEY.choose_pros" | translate }}</p>
           <!-- No existe ion-checkbox-group en Ionic -->
           <div formArrayName="caracteristicas">
             <ion-item>
-              <ion-label>Ambientación</ion-label>
+              <ion-label>{{ "SURVEY.pro1" | translate }}</ion-label>
               <ion-checkbox slot="start" (ionChange)="onCheckboxChange($event, 'Ambientacion')" value="Ambientacion"></ion-checkbox>
             </ion-item>
             <ion-item>
-              <ion-label>Servicio</ion-label>
+              <ion-label>{{ "SURVEY.pro2" | translate }}</ion-label>
               <ion-checkbox slot="start" (ionChange)="onCheckboxChange($event, 'Servicio')" value="Servicio"></ion-checkbox>
             </ion-item>
             <ion-item>
-              <ion-label>Precios</ion-label>
+              <ion-label>{{ "SURVEY.pro3" | translate }}</ion-label>
               <ion-checkbox slot="start" (ionChange)="onCheckboxChange($event, 'Precios')" value="Precios"></ion-checkbox>
             </ion-item>
             <ion-item>
-              <ion-label>Platos</ion-label>
+              <ion-label>{{ "SURVEY.pro4" | translate }}</ion-label>
               <ion-checkbox slot="start" (ionChange)="onCheckboxChange($event, 'Platos')" value="Platos"></ion-checkbox>
             </ion-item>
             <ion-item>
-              <ion-label>Accesibilidad</ion-label>
+              <ion-label>{{ "SURVEY.pro5" | translate }}</ion-label>
               <ion-checkbox slot="start" (ionChange)="onCheckboxChange($event, 'Accesibilidad')" value="Accesibilidad"></ion-checkbox>
             </ion-item>
           </div>
@@ -118,14 +118,14 @@
 
       <ion-card class="custom-card-background">
         <ion-item>
-          <p position="stacked">Déjanos una valoración personal:</p>
+          <p position="stacked">{{ "SURVEY.opinion" | translate }}</p>
           <ion-input formControlName="valoracionPersonal" required></ion-input>
         </ion-item>
       </ion-card>
 
     </ion-list>
     <br>
-    <ion-button type="submit" expand="full" color="success" [disabled]="!encuestaForm.valid">Enviar</ion-button>
+    <ion-button type="submit" expand="full" color="success" [disabled]="!encuestaForm.valid">{{ "SURVEY.submit_btn" | translate }}</ion-button>
     <br>
   </form>
 </div>

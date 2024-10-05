@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-title class="ion-text-center"><img (click)="volver()" src="../../../assets/images/back.png" alt="" height="15px">
-      Gráficos de Encuestas
+      {{ "GRAPHS.title" | translate }}
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -10,7 +10,7 @@
   <div >
   <ion-card>
     <ion-card-header style="color:black; ">
-      Valoración de Caracteristicas
+      {{ "GRAPHS.attributes" | translate }}
     </ion-card-header>
     <ion-card-content>
       <canvas id="valoracionCaracteristicas"></canvas>
@@ -19,7 +19,7 @@
 
   <ion-card>
     <ion-card-header style="color:black; ">
-      Valoración de Platos
+      {{ "GRAPHS.dishes"}}
     </ion-card-header>
     <ion-card-content>
       <canvas id="valoracionPlatos"></canvas>
@@ -28,7 +28,7 @@
 
   <ion-card>
     <ion-card-header style="color:black; ">
-      Valoración de Atencion
+      {{ "GRAPHS.service" | translate }}
     </ion-card-header>
     <ion-card-content>
       <canvas id="valoracionAtencion"></canvas>
@@ -37,7 +37,7 @@
 
   <ion-card *ngIf="listaEncuestas.length>0">
     <ion-card-header style="color:black; ">
-      Reseñas
+      {{ "GRAPHS.reviews" | translate }}
     </ion-card-header>
     <ion-card-content  *ngFor="let item of listaEncuestas" >
       <ion-list style="    background-color: rgb(177, 192, 186);">

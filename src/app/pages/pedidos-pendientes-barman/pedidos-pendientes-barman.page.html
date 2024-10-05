@@ -14,9 +14,12 @@
     </ion-card-header>
     <ion-card-content>
       <p *ngIf="pedido.terminoBartender === false">
-        {{ "ORDERS.order_state" | translate }} <strong>
-          {{ pedido.confirmacionBartender ? 'ORDERS.state_making' : 'ORDERS.state_pending' | translate }}
-        </strong><!-- DIVIDIR CON ngIf -->
+        {{ "ORDERS.order_state" | translate }} <strong *ngIf="pedido.confirmacionBartender">
+          {{ 'ORDERS.state_making' | translate }}
+        </strong>
+        <strong *ngIf="!pedido.confirmacionBartender">
+          {{ 'ORDERS.state_pending' | translate}}
+        </strong>
       </p>
       <p *ngIf="pedido.terminoBartender">{{ "ORDERS.order_state" | translate }} <strong>{{ "ORDERS.state_ready" | translate }}</strong></p>
 

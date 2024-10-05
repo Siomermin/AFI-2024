@@ -40,9 +40,18 @@
         "deliver_ready": "El pedido está listo para ser entregado.",
         "ready_error": "Hubo un error al marcar el pedido como listo",
         "bar_finish": "Pedido terminado por el bartender",
-        "bar_text": "El bartender ha finalizado su pedido.",
+        "bar_text": "El bartender ha finalizado su parte del pedido.",
         "chef_finish": "Pedido terminado por el cocinero",
-        "chef_text": "El cocinero ha terminado su parte del pedido."
+        "chef_text": "El cocinero ha terminado su parte del pedido.",
+        "survey_sent": "Encuesta enviada con éxito",
+        "survey_error": "Hubo un problema al enviar la encuesta. Por favor, inténtelo de nuevo.",
+        "form_incomplete": "Formulario incompleto",
+        "incomplete_text": "Por favor, complete todos los campos.",
+        "order_created": "Pedido creado con éxito!",
+        "create_error": "Ocurrió un error al realizar el pedido",
+        "amount": "Total:",
+        "process_order": "Tu pedido:",
+        "back_btn": "Volver"
     },
     "VALIDATORS": {
         "usr_name_invalid": "Nombre debe contener solo letras y espacios.",
@@ -129,5 +138,47 @@
         "products_list": "Productos:",
         "accept_btn": "Aceptar Pedido",
         "finish_btn": "Finalizar Pedido"
+    },
+    "SURVEY": {
+        "title": "Encuesta",
+        "pending": "Encuestas Pendientes",
+        "date": "Visita:",
+        "no_pending": "Usted no tiene encuestas pendientes por completar",
+        "graphs": "Gráficos",
+        "graphs_text": "Accede a los gráficos y reseñas de los clientes que ya pasaron por nuestro local",
+        "graphs_btn": "Ver Gráficos",
+        "rate_food": "Seleccione una valoración para los platos:",
+        "rate_service": "Seleccione una valoración para la atención:",
+        "sevice1": "Muy mala",
+        "sevice2": "Mala",
+        "sevice3": "Buena",
+        "sevice4": "Muy buena",
+        "sevice5": "Excelente",
+        "choose_pros": "¿Con cuál/es de estas características se encuentra más conforme?",
+        "pro1": "Ambientación",
+        "pro2": "Servicio",
+        "pro3": "Precios",
+        "pro4": "Platos",
+        "pro5": "Accesibilidad",
+        "opinion": "Déjanos una valoración personal:",
+        "submit_btn": "Enviar"
+    },
+    "GRAPHS": {
+        "title": "Gráficos de Encuestas",
+        "attributes": "Valoración de Características",
+        "dishes": "Valoración de Platos",
+        "service": "Valoración de Atención",
+        "reviews": "Reseñas"
+    },
+    "MENU": {
+        "title": "Menú",
+        "amount": "Total",
+        "main": "Platos Principales",
+        "time": "minutos",
+        "side": "Guarniciones",
+        "dessert": "Postres",
+        "drinks": "Bebidas",
+        "finish_btn": "Finalizar Pedido",
+        "cancel_btn": "Cancelar"
     }
 }

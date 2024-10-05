@@ -28,7 +28,6 @@ export class GraficosPage implements AfterViewInit {
     this.location.back();
   }
 
-  
   dibujarGraficoTorta() {
     const valoracionesAtencion = this.calcularPorcentajeCaracteristicas();
 
@@ -115,7 +114,6 @@ export class GraficosPage implements AfterViewInit {
         }
     });
 }
-
 
 dibujarGraficoBarrasVertical() {
   // Recolecta las valoraciones de los platos
