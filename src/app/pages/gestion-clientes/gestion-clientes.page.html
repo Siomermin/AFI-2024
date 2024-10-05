@@ -1,6 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title class="ion-text-center"><img routerLink="/home" src="../../../assets/images/back.png" alt="" height="15px"> Gestión de Clientes</ion-title>
+    <ion-title class="ion-text-center"><img routerLink="/home" src="../../../assets/images/back.png" alt="" height="15px"> {{ "AUTH.title" | translate }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -9,9 +9,9 @@
       <br><br>
       <ion-card>
         <br>
-        <ion-card-title>Clientes pendientes de aprobación</ion-card-title>
+        <ion-card-title>{{ "AUTH.list_title" | translate }}</ion-card-title>
         <br>
-        <ion-card-subtitle>Acceso único para Dueño/Supervisor</ion-card-subtitle>
+        <ion-card-subtitle>{{ "AUTH.list_subtitle" | translate }}</ion-card-subtitle>
 
         <ion-list inset="true">
           <ion-item *ngFor="let cliente of clientesPendientes">
@@ -22,15 +22,15 @@
               <h2>{{cliente.nombre}} {{cliente.apellido}}</h2>
             </ion-label>
             <div class="buttons-container">
-              <ion-button color="success" (click)="gestionarSolicitud(cliente, true)">Autorizar</ion-button>
-              <ion-button color="danger" (click)="gestionarSolicitud(cliente, false)">Rechazar</ion-button>
+              <ion-button color="success" (click)="gestionarSolicitud(cliente, true)">{{ "AUTH.authorize_btn" | translate }}</ion-button>
+              <ion-button color="danger" (click)="gestionarSolicitud(cliente, false)">{{ "AUTH.reject_btn" | translate }}</ion-button>
             </div>
           </ion-item>
         </ion-list>
 
         <div  *ngIf="clientesPendientes.length===0">
           <img src="../../../assets/images/check.png"  style="height: 100px;" alt="">
-          <h3>No hay clientes pendientes de aprobación</h3>
+          <h3>{{ "AUTH.empty_list" | translate }}</h3>
 
 
 

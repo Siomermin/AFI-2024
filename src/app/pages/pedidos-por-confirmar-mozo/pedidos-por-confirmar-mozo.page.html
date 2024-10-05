@@ -1,26 +1,30 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title class="custom-title">Pedidos Pendientes</ion-title>
+    <ion-title class="custom-title">{{ "ORDERS.title" | translate }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="content-background">
   <ion-text class="ion-text-center">
-    <h1 style="color: black; font-size: 30px; font-weight: 800;">Mozo</h1>
+    <h1 style="color: black; font-size: 30px; font-weight: 800;">{{ "ORDERS.list_waiter" | translate }}</h1>
   </ion-text>
   <ion-card *ngFor="let pedido of pedidos" class="transparent-card">
     <ion-card-header>
-      <ion-card-title>Pedido</ion-card-title>
+      <ion-card-title>{{ "ORDERS.order" | translate }}</ion-card-title>
     </ion-card-header>
     <ion-card-content>
       <ion-label>
-        <p>Estado: <strong>{{ pedido.estado | titlecase }} {{ pedido.confirmacionMozo ? '- En la cocina/bar' : '' }}</strong></p>
-        <p>Productos pedidos: <strong>{{ pedido.items | agruparProductos }}</strong></p>
-        <p>Tiempo de espera: <strong>{{ pedido.tiempo }} minutos</strong></p>
+        <p>{{ "ORDERS.order_state" | translate }} <strong>{{ pedido.estado | titlecase }} - <strong *ngIf="pedido.confirmacionMozo">{{ 'ORDERS.state_preparing' | translate }}</strong></strong></p>
+        <p>{{ "ORDERS.products_ordered" | translate }} <strong>{{ pedido.items | agruparProductos }}</strong></p>
+        <p>{{ "ORDERS.preparation" | translate }} <strong>{{ pedido.tiempo }} {{ "ORDERS.minutes" | translate }}</strong></p>
       </ion-label>
       <br *ngIf="!pedido.confirmacionMozo || pedido.estado === 'listo'">
-      <ion-button *ngIf="!pedido.confirmacionMozo" expand="full" color="success" (click)="confirmarPedido(pedido.id)">Confirmar</ion-button>
-      <ion-button *ngIf="pedido.estado === 'listo'" expand="full" color="danger" (click)="entregarPedido(pedido.id)">Entregar</ion-button>
+      <ion-button *ngIf="!pedido.confirmacionMozo" expand="full" color="success" (click)="confirmarPedido(pedido.id)">
+        {{ "ORDERS.confirm_btn" | translate }}
+      </ion-button>
+      <ion-button *ngIf="pedido.estado === 'listo'" expand="full" color="danger" (click)="entregarPedido(pedido.id)">
+        {{ "ORDERS.deliver_btn" | translate }}
+      </ion-button>
     </ion-card-content>
   </ion-card>
 </ion-content>

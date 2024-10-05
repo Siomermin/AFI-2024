@@ -1,9 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { DatabaseService } from 'src/app/auth/services/database.service';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AuthService } from 'src/app/auth/services/auth.service';
-import { Router, ActivatedRoute, Data } from '@angular/router';
-import { Observable, map, switchMap, forkJoin } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 
 @Component({
@@ -34,8 +32,6 @@ export class ConsultaMozoPage implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private firestore: AngularFirestore,
-    private router: ActivatedRoute,
     private database: DatabaseService,
     private notificationSvc: NotificationService
   ) {}
@@ -111,41 +107,32 @@ export class ConsultaMozoPage implements OnInit {
           }))
         );
 
-        if(!this.perfilUsuarioActual){
+        if(!this.perfilUsuarioActual) {
           this.mostrarChat=true;
           this.perfilUsuarioActual= "Cliente";
           console.log(this.perfilUsuarioActual);
-        menuObservable.subscribe(data => {
-          this.consultas = data;
-          console.log(this.consultas);
-          console.log(this.usuarioLogeado.uid);
-          this.consultas.forEach(item => {
-            if (item.idCliente == this.usuarioLogeado.uid) {
-              this.consultasDelUsuario = item.consultas?.mensajes || [];  // Inicializa como un array si está indefinido
-              console.log(this.consultasDelUsuario);
-              this.idConsulta = item.id;
-              this.consultaActual= item;
-              console.log("Id de la consulta", item.id);
-              return;
-            }
-          });
-        }, error => {
-          console.log(error);
+          menuObservable.subscribe(data => {
+            this.consultas = data;
+            console.log(this.consultas);
+            console.log(this.usuarioLogeado.uid);
+            this.consultas.forEach(item => {
+              if (item.idCliente == this.usuarioLogeado.uid) {
+                this.consultasDelUsuario = item.consultas?.mensajes || [];  // Inicializa como un array si está indefinido
+                console.log(this.consultasDelUsuario);
+                this.idConsulta = item.id;
+                this.consultaActual= item;
+                console.log("Id de la consulta", item.id);
+                return;
+              }
+            });
+          }, error => {
+            console.log(error);
           });
         }
-
-
       }
     }, error => {
       console.log(error);
     });
-
-
-    //si no enconto el perfil del usuario significa que es cliente
-
-
-    //obtengo toda la lista de cosnsultas
-
   }
 
 

@@ -1,16 +1,15 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
-import { Barcode, BarcodeScanner, GoogleBarcodeScannerModuleInstallState } from '@capacitor-mlkit/barcode-scanning';
-import { AlertController, LoadingController} from '@ionic/angular';
+import { Barcode, BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
+import { AlertController } from '@ionic/angular';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { DatabaseService } from 'src/app/auth/services/database.service';
-import { Router } from '@angular/router';
 import { StorageService } from 'src/app/auth/services/storage.service';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { Cliente } from 'src/app/clases/cliente';
 import Swal from 'sweetalert2';
 import { Observable, map } from 'rxjs';
-import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-alta',
@@ -39,24 +38,17 @@ export class AltaPage implements OnInit {
   mostrarSpinner= false;
 
 
-  constructor(
-    private alertController: AlertController,
-    private database: DatabaseService,
-    private storage: StorageService,
-    private fb: FormBuilder,   private loadingController: LoadingController,
-    // Añadido FormBuilder
-  ) {
-    this.form = this.fb.group(
-      {
-        nombre: ['', [Validators.required, Validators.pattern(/^[a-zA-Z\s]*$/)]],
-        apellido: ['', [Validators.required, Validators.pattern(/^[a-zA-Z\s]*$/)]],
-        dni: ['', [Validators.required, Validators.pattern(/^\d{1,10}$/)]],
-        email: ['', [Validators.required, Validators.email]],
-        clave: ['', [Validators.required, Validators.minLength(6)]],
-        confirmarClave: ['', [Validators.required]]
-      },
-      { validators: this.passwordMatchValidator }
-    );
+  constructor(private alertController: AlertController, private database: DatabaseService, private storage: StorageService,
+  private fb: FormBuilder, private translator: TranslateService) {
+    this.form = this.fb.group({
+      nombre: ['', [Validators.required, Validators.pattern(/^[a-zA-Z\s]*$/)]],
+      apellido: ['', [Validators.required, Validators.pattern(/^[a-zA-Z\s]*$/)]],
+      dni: ['', [Validators.required, Validators.pattern(/^\d{1,10}$/)]],
+      email: ['', [Validators.required, Validators.email]],
+      clave: ['', [Validators.required, Validators.minLength(6)]],
+      confirmarClave: ['', [Validators.required]]
+    },
+    { validators: this.passwordMatchValidator });
   }
 
   passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
@@ -132,7 +124,6 @@ export class AltaPage implements OnInit {
     this.form.updateValueAndValidity(); // Actualizar validadores a nivel de formulario
   }
 
-
   async scan(): Promise<void> {
     const granted = await this.requestPermissions();
     if (!granted) {
@@ -154,8 +145,8 @@ export class AltaPage implements OnInit {
 
   async presentAlert(): Promise<void> {
     const alert = await this.alertController.create({
-      header: 'Permission denied',
-      message: 'Please grant camera permission to use the barcode scanner.',
+      header: this.translator.instant("ALERT.camera_denied_title"),
+      message: this.translator.instant("ALERT.camera_denied_text"),
       buttons: ['OK'],
     });
     await alert.present();
@@ -176,13 +167,13 @@ export class AltaPage implements OnInit {
       }
     } catch (error) {
       console.error('Error parsing QR data', error);
-      this.presentAlertError('Error parsing QR data');
+      this.presentAlertError(this.translator.instant("ALERT.error_scan"));
     }
   }
 
   async presentAlertError(message: string): Promise<void> {
     const alert = await this.alertController.create({
-      header: 'Error',
+      header: 'ERROR',
       message: message,
       buttons: ['OK'],
     });
@@ -196,6 +187,9 @@ export class AltaPage implements OnInit {
         allowEditing: false,
         resultType: CameraResultType.Base64,
         source: CameraSource.Prompt,
+        promptLabelHeader: this.translator.instant("ALERT.camera_header"),
+        promptLabelPhoto: this.translator.instant("ALERT.camera_option1"),
+        promptLabelPicture: this.translator.instant("ALERT.camera_option2"),
       });
 
       if (image) {
@@ -203,7 +197,7 @@ export class AltaPage implements OnInit {
       }
     } catch (error) {
       console.error('Error al tomar la foto:', error);
-      alert('Ocurrió un error al tomar la foto.');
+      this.presentAlertError(this.translator.instant("ALERT.error_take_photo"));
     }
   }
 
@@ -217,8 +211,9 @@ export class AltaPage implements OnInit {
 
       if (!urlDescarga) {
         Swal.fire({
-          html: '<br><label style="font-size:80%">Error: No se pudo obtener la URL de descarga de la imagen</label>',
-          confirmButtonText: 'Ok',
+          title: "ERROR",
+          text: this.translator.instant("ALERT.error_url_photo"),
+          confirmButtonText: 'OK',
           confirmButtonColor: 'var(--ion-color-primary)',
           heightAuto: false,
         });
@@ -247,10 +242,10 @@ export class AltaPage implements OnInit {
     if (!this.clienteAnonimo && this.verificarUsuarioExistente(this.form.value.dni)) {
       this.mostrarSpinner=true;
       Swal.fire({
-        title: 'Error',
-        text: 'Ya hay un usuario registrado con ese DNI',
+        title: 'ERROR',
+        text: this.translator.instant("ALERT.error_dni_repeated"),
         icon: 'error',
-        confirmButtonText: 'Entendido',
+        confirmButtonText: 'OK',
         confirmButtonColor: 'red',
         heightAuto: false,
       });
@@ -283,10 +278,10 @@ export class AltaPage implements OnInit {
           this.mostrarSpinner=false;
           console.error('Error al crear el usuario:', error);
           Swal.fire({
-            title: 'Error',
-            text: 'Hubo un problema al crear el usuario. Por favor, inténtelo de nuevo.',
+            title: 'ERROR',
+            text: this.translator.instant("ALERT.error_upload_usr"),
             icon: 'error',
-            confirmButtonText: 'Aceptar',
+            confirmButtonText: 'OK',
             confirmButtonColor: 'var(--ion-color-primary)',
             heightAuto: false,
           });
@@ -296,10 +291,10 @@ export class AltaPage implements OnInit {
 
         console.error('No se pudo guardar la imagen, abortando creación de usuario.');
         Swal.fire({
-          title: 'Error',
-          text: 'No se pudo guardar la imagen, abortando creación de usuario.',
+          title: 'ERROR',
+          text: this.translator.instant("ALERT.error_upload_photo"),
           icon: 'error',
-          confirmButtonText: 'Aceptar',
+          confirmButtonText: 'OK',
           confirmButtonColor: 'var(--ion-color-primary)',
           heightAuto: false,
         });

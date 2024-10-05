@@ -10,39 +10,19 @@ import { Observable, map } from 'rxjs';
 export class ListaEsperaPage implements OnInit {
 
   public arrayListaEspera : Array<any> = [];
-  public arrayClientes : Array<any> = [];
   public arrayShow : Array<any> = [];
 
   constructor(private database: DatabaseService) { }
 
   ngOnInit() {
-    this.cargarClientesEnEspera();
     this.cargarClientes();
   }
 
   cargarClientes() {
-    const clientesObservable : Observable<any[]> = this.database.obtenerTodos('clientes')!.pipe(
-      map(actions => actions.map(a => {
-        const data = a.payload.doc.data() as any;
-        const id = a.payload.doc.id;
-        return { id, ...data };
-      }))
-    );
+    
+    //this.arrayListaEspera = [];
+    //this.arrayShow = [];
 
-    clientesObservable.subscribe(next => {
-      this.arrayClientes = [];
-      this.arrayShow = [];
-      let result = next;
-      result.forEach(cliente => {
-        if (this.arrayListaEspera.find((list) => list.idCliente == cliente.uid)) {
-          this.arrayShow.push(cliente);
-        }
-      });
-    });
-    //this.arrayClientes.push({ urlFoto: '', nombre: 'Usuario', apellido: 'anónimo'});
-  }
-
-  cargarClientesEnEspera() {
     const listaEsperaObservable : Observable<any[]> = this.database.obtenerTodos('lista-espera')!.pipe(
       map(actions => actions.map(a => {
         const data = a.payload.doc.data() as any;
@@ -52,19 +32,43 @@ export class ListaEsperaPage implements OnInit {
     );
 
     listaEsperaObservable.subscribe(next => {
-      this.arrayListaEspera = [];
-      this.arrayShow = [];
+      
       let result = next;
       result.forEach(cliente => {
-        console.log(cliente);
         if (cliente.estado == "pendiente") {
+          console.log(cliente);
+
           this.arrayListaEspera.push(cliente);
+          
           // if (cliente.email) {
           //   this.arrayListaEspera.push(cliente);
           // }
           // else {
           //   this.arrayShow.push({ urlFoto: '', nombre: 'Usuario', apellido: 'anónimo'});
           // }
+        }
+      });
+    });
+
+    const clientesObservable : Observable<any[]> = this.database.obtenerTodos('clientes')!.pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as any;
+        const id = a.payload.doc.id;
+        return { id, ...data };
+      }))
+    );
+
+    clientesObservable.subscribe(next => {
+      //this.arrayShow = [];
+      let result = next;
+
+      result.forEach(cliente => {
+        console.log(cliente);
+        
+        if (this.arrayListaEspera.find((list) => list.idCliente == cliente.uid)) {
+          console.log("COINCIDENCIA");//SOLO ENCUENTRA A UNO 
+          
+          this.arrayShow.push(cliente);
         }
       });
     });

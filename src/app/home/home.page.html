@@ -8,21 +8,19 @@
 
         <ion-text class="text-center" style="margin-left: 5px">
           <h1 style="font-size: medium">
-            Perfil: {{ perfilUsuarioActual | titlecase }}
+            Perfil: {{ perfilUsuarioActual | titlecase }} <!-- Analizar que hacer con esto, si se queda y lo traduzco o si se va -->
           </h1>
         </ion-text>
       </div>
 
-      <ion-button
-        (click)="logout()"
-        style="border-radius: 20%; margin-right: 5px"
-        color="danger"
-      >
-        <img
-          style="height: 20px"
-          src="../../assets/images/cerrar-sesion.png"
-          alt="Cerrar sesión"
-        />
+      <ion-buttons slot="end">
+        <ion-button (click)="openLanguagePopover($event)">
+          <ion-icon name="language" slot="icon-only" size="large">
+          </ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-button (click)="logout()" style="border-radius: 20%; margin-right: 5px" color="danger">
+        <img style="height: 20px" src="../../assets/images/cerrar-sesion.png" alt="Cerrar sesión"/>
       </ion-button>
     </div>
   </ion-toolbar>
@@ -31,7 +29,7 @@
 <ion-content [fullscreen]="true" class="content-background">
   <br /><br />
   <ion-card style="margin-left: 10px; margin-right: 10px" class="ion-text-center transparent">
-    <ion-card-title>Bienvenido/a!</ion-card-title>
+    <ion-card-title>{{ "HOME.welcome" | translate }}</ion-card-title>
 
     <br />
     <div style="text-align: center; justify-content: center; margin-top: 15px">
@@ -39,7 +37,7 @@
         <img style="height: 200px" src="../../../assets/images/qr.png" alt="Imagen de QR" />
       </ion-button>
     </div>
-    <ion-card-subtitle>Escanea el QR</ion-card-subtitle>
+    <ion-card-subtitle>{{ "HOME.scan_text" | translate }}</ion-card-subtitle>
     <br /><br />
   </ion-card>
 
@@ -49,7 +47,7 @@
     *ngIf="perfilUsuarioActual === 'dueño' || perfilUsuarioActual === 'supervisor'"
     (click)="redireccionar('gestion-clientes')"
   >
-    Autorizar Cliente
+    {{ "HOME.aut_client" | translate }}
   </ion-button>
 <!--
   <ion-button
@@ -73,7 +71,7 @@
     (click)="redireccionar('lista-espera')"
     *ngIf="this.perfilUsuarioActual === 'metre'"
   >
-    Mirar Lista de Espera
+    {{ "HOME.check_queue" | translate }}
   </ion-button>
 
   <ion-button
@@ -81,7 +79,7 @@
     (click)="redireccionar('consulta-mozo')"
     *ngIf="this.perfilUsuarioActual === 'mozo'"
   >
-    Chats con Clientes
+    {{ "HOME.chat_clients" | translate }}
   </ion-button>
 
   <ion-button
@@ -89,7 +87,7 @@
     (click)="redireccionar('pedidos-por-confirmar-mozo')"
     *ngIf="this.perfilUsuarioActual === 'mozo'"
   >
-    Pedidos Pendientes
+    {{ "HOME.pending_orders" | translate }}
   </ion-button>
 
   <ion-button
@@ -97,7 +95,7 @@
   (click)="redireccionar('pedidos-pendientes-barman')"
   *ngIf="this.perfilUsuarioActual === 'bartender'"
   >
-    Pedidos Pendientes
+    {{ "HOME.pending_orders" | translate }}
   </ion-button>
 
   <ion-button
@@ -105,6 +103,6 @@
     (click)="redireccionar('pedidos-pendientes')"
     *ngIf="this.perfilUsuarioActual === 'cocinero'"
   >
-    Pedidos Pendientes
+    {{ "HOME.pending_orders" | translate }}
   </ion-button>
 </ion-content>

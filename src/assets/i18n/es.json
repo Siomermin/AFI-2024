@@ -13,7 +13,18 @@
         "access_denied": "Acceso denegado",
         "denied_access1": "Tu cuenta está pendiente de aprobación.",
         "denied_access2": "Tu cuenta ha sido rechazada.",
-        "denied_access3": "Estado de cuenta desconocido."
+        "denied_access3": "Estado de cuenta desconocido.",
+        "camera_denied_title": "Permiso denegado",
+        "camera_denied_text": "Por favor otorge permiso a la cámara para utilizar el scáner",
+        "error_scan": "Error al analizar datos del QR",
+        "error_take_photo": "Ocurrió un error al tomar la foto.",
+        "error_url_photo": "No se pudo obtener la URL de descarga de la imagen",
+        "error_upload_photo": "No se pudo guardar la imagen, abortando creación de usuario.",
+        "error_dni_repeated": "Ya hay un usuario registrado con ese DNI",
+        "error_upload_usr": "Hubo un problema al crear el usuario. Por favor, inténtelo de nuevo.",
+        "camera_header": "Seleccione una opción",
+        "camera_option1": "Elegir desde la galería",
+        "camera_option2": "Tomar una foto"
     },
     "VALIDATORS": {
         "usr_name_invalid": "Nombre debe contener solo letras y espacios.",
@@ -51,5 +62,54 @@
         "photo_btn": "Tomar foto",
         "submit_btn": "Aceptar",
         "cancel_btn": "Cancelar"
+    },
+    "HOME": {
+        "welcome": "Bienvenido/a!",
+        "scan_text": "Escanea el QR",
+        "aut_client": "Autorizar Cliente",
+        "check_queue": "Mirar Lista de Espera",
+        "chat_clients": "Chats con Clientes",
+        "pending_orders": "Pedidos Pendientes"
+    },
+    "AUTH": {
+        "title": "Gestión de Clientes",
+        "list_title": "Clientes pendientes de aprobación",
+        "list_subtitle": "Acceso único para Dueño/Supervisor",
+        "authorize_btn": "Autorizar",
+        "reject_btn": "Rechazar",
+        "empty_list": "No hay clientes pendientes de aprobación"
+    },
+    "WAITING": {
+        "title": "Lista de Espera",
+        "list_title": "Clientes pendientes",
+        "empty_list": "No hay clientes en lista de espera"
+    },
+    "CHAT": {
+        "title": "Consulta Mozo",
+        "table_list": "Mesas con clientes:",
+        "table_number": "Numero de Mesa",
+        "chat_btn": "Ver Chat",
+        "textbox": "Escribe tu mensaje"
+    },
+    "ORDERS": {
+        "title": "Pedidos Pendientes",
+        "order": "Pedido",
+        "list_waiter": "Mozo",
+        "list_kitchen": "Cocinero",
+        "list_bar": "Bartender",
+        "order_state": "Estado:",
+        "state_ready": "Listo",
+        "state_preparing": "En la cocina/bar",
+        "state_making": "Realizando",
+        "state_pending": "Pendiente",
+        "products_ordered": "Productos pedidos:",
+        "preparation": "Tiempo de espera:",
+        "minutes": "minutos",
+        "one_minute": "1 minuto",
+        "confirm_btn": "Confirmar",
+        "deliver_btn": "Entregar",
+        "products_list": "Productos:",
+        "accept_btn": "Aceptar Pedido",
+        "finish_btn": "Finalizar Pedido"
     }
 }

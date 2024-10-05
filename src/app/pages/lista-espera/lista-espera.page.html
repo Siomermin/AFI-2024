@@ -1,6 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title class="ion-text-center"><img routerLink="/home" src="../../../assets/images/back.png" alt="" height="15px"> Lista de Espera</ion-title>
+    <ion-title class="ion-text-center"><img routerLink="/home" src="../../../assets/images/back.png" alt="" height="15px"> {{ "WAITING.title" | translate }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -10,7 +10,7 @@
       <br><br>
       <ion-card>
         <br>
-        <ion-card-title>Clientes pendientes</ion-card-title>
+        <ion-card-title>{{ "WAITING.list_title" | translate }}</ion-card-title>
 
         <ion-list inset="true" >
           <ion-item *ngFor="let cliente of this.arrayShow">
@@ -24,7 +24,7 @@
 
         <div *ngIf="this.arrayShow.length===0">
           <img src="../../../assets/images/check.png"  style="height: 100px;" alt="">
-          <h3>No hay clientes en lista de espera</h3>
+          <h3>{{ "WAITING.empty_list" | translate }}</h3>
         </div>
       </ion-card>
 

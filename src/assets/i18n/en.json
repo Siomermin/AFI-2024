@@ -13,7 +13,18 @@
         "access_denied": "Access denied",
         "denied_access1": "Your account is pending approval.",
         "denied_access2": "Your account has been rejected.",
-        "denied_access3": "Unknown account status."
+        "denied_access3": "Unknown account status.",
+        "camera_denied_title": "Permission denied",
+        "camera_denied_text": "Please grant camera permission to use the barcode scanner.",
+        "error_scan": "Error parsing QR data",
+        "error_take_photo": "An error occurred while taking the photo.",
+        "error_url_photo": "Could not get image download URL",
+        "error_upload_photo": "Could not save image, aborting user creation.",
+        "error_dni_repeated": "There is already a registered user with that DNI",
+        "error_upload_usr": "There was a problem creating the user. Please try again.",
+        "camera_header": "Select an option",
+        "camera_option1": "Chose from Photos",
+        "camera_option2": "Take a Picture"
     },
     "VALIDATORS": {
         "usr_name_invalid": "First name must contain only letters and spaces.",
@@ -51,5 +62,54 @@
         "photo_btn": "Take Photo",
         "submit_btn": "Accept",
         "cancel_btn": "Cancel"
+    },
+    "HOME": {
+        "welcome": "Welcome!",
+        "scan_text": "Scan the QR",
+        "aut_client": "Authorize Client",
+        "check_queue": "View Waiting List",
+        "chat_clients": "Chats with Clients",
+        "pending_orders": "Pending orders"
+    },
+    "AUTH": {
+        "title": "Client Management",
+        "list_title": "Clients pending approval",
+        "list_subtitle": "Single access for Owner/Supervisor",
+        "authorize_btn": "Authorize",
+        "reject_btn": "Reject",
+        "empty_list": "There are no clients pending approval"
+    },
+    "WAITING": {
+        "title": "Waiting list",
+        "list_title": "Pending clients",
+        "empty_list": "There are no clients on the waiting list"
+    },
+    "CHAT": {
+        "title": "Consult Waiter",
+        "table_list": "Tables with clients:",
+        "table_number": "Table number",
+        "chat_btn": "View Chat",
+        "textbox": "Write your message"
+    },
+    "ORDERS": {
+        "title": "Pending Orders",
+        "order": "Order",
+        "list_waiter": "Waiter",
+        "list_kitchen": "Chef",
+        "list_bar": "Bartender",
+        "order_state": "State:",
+        "state_ready": "Ready",
+        "state_preparing": "In the kitchen/bar",
+        "state_making": "Preparing",
+        "state_pending": "Pending",
+        "products_ordered": "Ordered products:",
+        "preparation": "Waiting time:",
+        "minutes": "minutes",
+        "one_minute": "1 minute",
+        "confirm_btn": "Confirm",
+        "deliver_btn": "Deliver",
+        "products_list": "Products:",
+        "accept_btn": "Accept Order",
+        "finish_btn": "Finalize Order"
     }
 }

@@ -5,7 +5,9 @@ import { DatabaseService } from '../auth/services/database.service';
 import { Barcode, BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
 import { AlertController, Platform } from '@ionic/angular';
 import { FcmService } from '../shared/services/fcm.service';
-
+import { TranslateService } from '@ngx-translate/core';
+import { PopoverController } from '@ionic/angular';
+import { IdiomaPopoverPage } from '../pages/idioma-popover/idioma-popover.page';
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -21,13 +23,8 @@ export class HomePage implements OnInit  {
   public loggedUser: any;
   private _perfilUsuarioActual: string = '';
 
-  constructor(
-    private router: Router,
-    private database: DatabaseService,
-    private alertController: AlertController,
-    private platform: Platform,
-    private fcm: FcmService
-  ) {
+  constructor(private router: Router, private database: DatabaseService, private alertController: AlertController,
+  private platform: Platform, private fcm: FcmService, private translator: TranslateService, private popoverCtrl: PopoverController) {
     this.platform.ready().then(() => {
       this.loggedUser = this.authService.loggedUser;
       console.log(this.loggedUser.email);
@@ -89,8 +86,8 @@ export class HomePage implements OnInit  {
 
   async presentAlert(): Promise<void> {
     const alert = await this.alertController.create({
-      header: 'Permission denied',
-      message: 'Please grant camera permission to use the barcode scanner.',
+      header: this.translator.instant("ALERT.camera_denied_title"),
+      message: this.translator.instant("ALERT.camera_denied_text"),
       buttons: ['OK'],
     });
     await alert.present();
@@ -134,4 +131,11 @@ export class HomePage implements OnInit  {
     this.router.navigate(['qr-mesa'], navigationExtras);
   }
   
+  async openLanguagePopover(ev: any) {
+    const popover = await this.popoverCtrl.create({
+      component: IdiomaPopoverPage,
+      event: ev
+    });
+    await popover.present();
+  }
 }

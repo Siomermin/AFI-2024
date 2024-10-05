@@ -1,17 +1,17 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title class="ion-text-center"> Consulta Mozo</ion-title>
+    <ion-title class="ion-text-center"> {{ "CHAT.title" | translate }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content *ngIf="perfilUsuarioActual &&  perfilUsuarioActual.toLowerCase() ==='mozo'" class="chat-background">
+<ion-content *ngIf="perfilUsuarioActual && perfilUsuarioActual.toLowerCase() === 'mozo'" class="chat-background">
 
   <div *ngIf="!mostrarChat && mesasVigentes">
-    <h1 class="ion-text-center">Mesas con clientes:</h1><br>
+    <h1 class="ion-text-center">{{ "CHAT.table_list" | translate }}</h1><br>
     <ion-card *ngFor="let item of mesasVigentes" class="ion-text-center">
       <br>
-      <ion-card-title>Numero de Mesa: {{item.numeroMesa}}</ion-card-title>
-      <ion-button style="margin-top: 9px;" color="secondary"  (click)="vincularChatConConsultaDelUsuario(item)" >Ver Chat</ion-button>
+      <ion-card-title>{{ "CHAT.table_number" | translate }} {{item.numeroMesa}}</ion-card-title>
+      <ion-button style="margin-top: 9px;" color="secondary"  (click)="vincularChatConConsultaDelUsuario(item)" >{{ "CHAT.chat_btn" | translate }}</ion-button>
       <br><br>
     </ion-card>
   </div>
@@ -34,9 +34,9 @@
   </div>
 </ion-content>
 
-<ion-content *ngIf="perfilUsuarioActual.toLowerCase() ==='cliente'" class="chat-background"  >
+<ion-content *ngIf="perfilUsuarioActual.toLowerCase() === 'cliente'" class="chat-background"  >
   <br>
-  <div class="message-list" #contenedorDeMensajes *ngIf="consultasDelUsuario!== 'undefined' || consultasDelUsuario.length>0" >
+  <div class="message-list" #contenedorDeMensajes *ngIf="consultasDelUsuario !== 'undefined' || consultasDelUsuario.length > 0" >
     <div *ngFor="let mensaje of consultasDelUsuario" class="msj">
       <div class="contenedor-mensaje"
            [ngClass]="{
@@ -58,7 +58,7 @@
 <ion-footer style="height: 10vh;" *ngIf="mostrarChat">
   <ion-toolbar>
     <ion-item lines="none">
-      <ion-input style="width: 65vw; margin-top: 10px;" fill="solid" [(ngModel)]="nuevoMensaje" placeholder=" Escribe tu mensaje "></ion-input>
+      <ion-input style="width: 65vw; margin-top: 10px;" fill="solid" [(ngModel)]="nuevoMensaje" placeholder="{{ 'CHAT.textbox' | translate }}"></ion-input>
       <ion-button color="light" (click)="enviarMensaje()" slot="end" color="secondary">
         <img  src="../../../assets/images/send.png" height="35px" alt="">
       </ion-button>
