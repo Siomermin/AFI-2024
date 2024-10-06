@@ -2,10 +2,12 @@
   <div id="container" class="ion-text-center ion-text-uppercase">
     <br><br><br>
     
-    <h2>Juega para obtener<br>un 10% de descuento!</h2><br>
+    <h2 [innerHTML]="'GAME.title' | translate"></h2><br>
     
     <ion-card style="border: 2px solid red;">
-    <ion-text color="danger" class="text-center"><h2>Tiempo : {{segundos}}</h2></ion-text>
+    <ion-text color="danger" class="text-center">
+      <h2>{{ "GAME.time" | translate }} : {{segundos}}</h2>
+    </ion-text>
 
     </ion-card>
 

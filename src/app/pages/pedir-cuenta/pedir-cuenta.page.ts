@@ -6,6 +6,7 @@ import { Barcode, BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
 import { AlertController } from '@ionic/angular';
 import { Observable, map } from 'rxjs';
 import Swal from 'sweetalert2';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-pedir-cuenta',
@@ -29,13 +30,8 @@ export class PedirCuentaPage implements OnInit {
   usuarioEnLista: any = null;
   subtotal: number = 0;
 
-  constructor(
-    private afAuth: AngularFireAuth,
-    private database: DatabaseService,
-    private router: Router,
-    private alertController: AlertController,
-    private activatedRouter: ActivatedRoute
-  ) { }
+  constructor(private afAuth: AngularFireAuth, private database: DatabaseService, private router: Router,
+  private alertController: AlertController, private activatedRouter: ActivatedRoute, private translator: TranslateService) { }
 
   ngOnInit() {
     this.afAuth.authState.subscribe(user => {
@@ -134,8 +130,8 @@ export class PedirCuentaPage implements OnInit {
 
   async presentAlert(): Promise<void> {
     const alert = await this.alertController.create({
-      header: 'Permission denied',
-      message: 'Please grant camera permission to use the barcode scanner.',
+      header: this.translator.instant("ALERT.camera_denied_title"),
+      message: this.translator.instant("ALERT.camera_denied_text"),
       buttons: ['OK'],
     });
     await alert.present();
@@ -174,7 +170,7 @@ export class PedirCuentaPage implements OnInit {
     Swal.fire({
       position: 'center',
       icon: 'success',
-      title: '¡Se ha realizado el pago!',
+      title: this.translator.instant("ALERT.pay_success"),
       heightAuto: false,
       showConfirmButton: false,
       timer: 1500

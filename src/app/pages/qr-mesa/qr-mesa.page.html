@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title class="ion-text-center">
-      QR Mesa
+      {{ "TABLE.title" | translate }}
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -13,41 +13,41 @@
       <br>
       <ion-card-title>
         <img src="../../../assets/images/clock.png" style="height: 60px;"><br>
-        <span style="font-size: medium;">Su pedido tiene {{pedidoDelUsuario.tiempo}} minutos de realización</span><br>
-        <span style="font-weight: 800;">Tiempo restante: {{tiempoRestante}}</span>
+        <span style="font-size: medium;">{{ "TABLE.order_time" | translate }} {{pedidoDelUsuario.tiempo}} {{ "TABLE.order_minutes" | translate }}</span><br>
+        <span style="font-weight: 800;">{{ "TABLE.time_left" | translate }}: {{tiempoRestante}}</span>
       </ion-card-title>
       <br>
     </ion-card>
     <ion-button *ngIf="usuarioVinculado" expand="full" (click)="mostrarMesasLibres()" class="custom-button">
-      Ver disponibilidad de mesa
+      {{ "TABLE.free_tables" | translate }}
     </ion-button>
 
     <ion-button *ngIf="!usuarioVinculado" expand="full" (click)="vincularMesa()" class="custom-button">
-      Vincularme con una mesa
+      {{ "TABLE.link_table" | translate }}
     </ion-button>
 
     <ion-button expand="full" (click)="pedirCuenta()" class="ion-text-center custom-button"  *ngIf="pedidoDelUsuario && pedidoDelUsuario.estado === 'entregado-confirmado' && usuarioVinculado">
-      Pedir cuenta
+      {{ "TABLE.request_bill" | translate }}
     </ion-button>
 
     <ion-button *ngIf="usuarioVinculado" expand="full" (click)="redireccionar('consulta-mozo')" class="custom-button">
-      Consultar al mozo
+      {{ "TABLE.ask_waiter" | translate }}
     </ion-button>
 
     <ion-button *ngIf="!pedidoDelUsuario && usuarioVinculado" expand="full" (click)="redireccionar('menu')" class="custom-button">
-      Ver menú
+      {{ "TABLE.view_menu" | translate }}
     </ion-button>
 
     <ion-button *ngIf="pedidoDelUsuario && usuarioVinculado" expand="full" (click)="mostrarPedido()" class="custom-button">
-      Ver estado del pedido
+      {{ "TABLE.view_state" | translate }}
     </ion-button>
 
     <ion-button *ngIf="usuarioVinculado" expand="full" (click)="redireccionar('encuesta')" class="custom-button">
-      Acceder a encuestas
+      {{ "TABLE.view_surveys" | translate }}
     </ion-button>
 
     <ion-button *ngIf="pedidoDelUsuario && pedidoDelUsuario.estado === 'entregado' && usuarioVinculado" expand="full" (click)="confirmarRecepcionPedido()" class="custom-button">
-      Confirmar Recepción
+      {{ "TABLE.confirm_order" | translate }}
     </ion-button>
   </div>
 </ion-content>

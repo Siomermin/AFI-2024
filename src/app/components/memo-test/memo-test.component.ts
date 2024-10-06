@@ -1,9 +1,10 @@
 import { Component, OnInit, ViewChildren, Output, EventEmitter} from '@angular/core';
 import Swal from 'sweetalert2';
-import { Router, ActivatedRoute, NavigationExtras} from '@angular/router';
+import { Router } from '@angular/router';
 import { DatabaseService } from 'src/app/auth/services/database.service';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { QueryList, ElementRef } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-memo-test',
@@ -11,11 +12,8 @@ import { QueryList, ElementRef } from '@angular/core';
   styleUrls: ['./memo-test.component.scss'],
 })
 export class MemoTestComponent implements OnInit {
-
   @ViewChildren('imagenElemento') imagenElementos!: QueryList<ElementRef>;
   @Output() datosEnviados = new EventEmitter<number>();
-
-  constructor(private router: ActivatedRoute, public route: Router, public database: DatabaseService, private afAuth: AngularFireAuth) {}
 
   public dificultad: string = "";
   public arrayImagenes: string[] = [];
@@ -38,6 +36,9 @@ export class MemoTestComponent implements OnInit {
   descuento = 0;
   colSize: string = "";
   colHeight: string = "";
+
+  constructor(public route: Router, public database: DatabaseService, private afAuth: AngularFireAuth,
+  private translator: TranslateService) {}
 
   ngOnInit() {
     this.seleccionarImagenesAleatorias();
@@ -82,9 +83,11 @@ export class MemoTestComponent implements OnInit {
       this.elementosImg.push(elemento.nativeElement as HTMLImageElement);
     });
 
+    let mensaje = this.translator.instant("ALERT.begin_game");
+
     Swal.fire({
-      html: '<br><label style="font-size:80%">Estás listo para comenzar?</label>',
-      confirmButtonText: "Siii",
+      html: `<br><label style="font-size:80%">${mensaje}</label>`,
+      confirmButtonText: this.translator.instant("ALERT.yes_btn"),
       confirmButtonColor: 'var(--ion-color-primary)',
       heightAuto: false
     }).then((result) => {
@@ -172,11 +175,11 @@ export class MemoTestComponent implements OnInit {
       this.descuento = 10;
     }
     
-    let mensaje = this.gano ? "Has ganado el juego! Y obtuviste un 10% de descuento" : "Se acabó el tiempo!";
+    let mensaje = this.gano ? this.translator.instant("ALERT.game_won") : this.translator.instant("ALERT.game_lost");
     
     Swal.fire({
       html: `<br><label style="font-size:80%">${mensaje}</label><br>`,
-      confirmButtonText: "Entendido!",
+      confirmButtonText: this.translator.instant("ALERT.alright_btn"),
       confirmButtonColor: 'var(--ion-color-primary)',
       heightAuto: false
     }).then((result) => {
@@ -192,7 +195,5 @@ export class MemoTestComponent implements OnInit {
       rows.push(array.slice(i, i + 6));
     }
     return rows;
-  }
-
- 
+  } 
 }

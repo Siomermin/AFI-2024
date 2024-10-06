@@ -1,4 +1,3 @@
-
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
@@ -8,6 +7,8 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import Swal from 'sweetalert2'
 import { first } from 'rxjs';
 import { NotificationService } from 'src/app/shared/services/notification.service';
+import { TranslateService } from '@ngx-translate/core';
+
 @Component({
   selector: 'app-qr-mesa',
   templateUrl: './qr-mesa.page.html',
@@ -34,7 +35,7 @@ export class QrMesaPage implements OnInit {
   tiempoRestante:string="";
 
   constructor(private router: Router, private notificationService: NotificationService, private database:DatabaseService, 
-  private afAuth:AngularFireAuth, private activatedRoute: ActivatedRoute) { }
+  private afAuth:AngularFireAuth, private activatedRoute: ActivatedRoute, private translator: TranslateService) { }
   
   async ngOnInit() {
     this.afAuth.authState.subscribe(user => {
@@ -141,39 +142,39 @@ export class QrMesaPage implements OnInit {
           this.usuarioVinculado=true;
           // Mostrar mensaje de éxito
           Swal.fire({
-            title: 'Éxito',
-            text: 'Se le ha asignado la mesa: ' + this.mesaEscaneada,
+            title: this.translator.instant("ALERT.success"),
+            text: this.translator.instant("ALERT.table_granted") + this.mesaEscaneada,
             icon: 'success',
-            confirmButtonText: 'Aceptar',
+            confirmButtonText: this.translator.instant("ALERT.accept_btn"),
             confirmButtonColor: 'var(--ion-color-primary)',
             heightAuto: false
           });
         } else {
           Swal.fire({
-            title: 'Error',
-            text: 'Antes de vincularse con una mesa debe ingresar a la lista de espera',
+            title: 'ERROR',
+            text: this.translator.instant("ALERT.link_error"),
             icon: 'error',
-            confirmButtonText: 'Aceptar',
+            confirmButtonText: this.translator.instant("ALERT.accept_btn"),
             confirmButtonColor: 'var(--ion-color-primary)',
             heightAuto: false
           });
         }
       } else {
         Swal.fire({
-          title: 'Error',
-          text: 'La mesa escaneada se encuentra ocupada',
+          title: 'ERROR',
+          text: this.translator.instant("ALERT.table_error"),
           icon: 'error',
-          confirmButtonText: 'Aceptar',
+          confirmButtonText: this.translator.instant("ALERT.accept_btn"),
           confirmButtonColor: 'var(--ion-color-primary)',
           heightAuto: false
         });
       }
     } else {
       Swal.fire({
-        title: 'Error',
-        text: 'Usted ya se encuentra vinculado a una mesa',
+        title: 'ERROR',
+        text: this.translator.instant("ALERT.assigned_error"),
         icon: 'error',
-        confirmButtonText: 'Aceptar',
+        confirmButtonText: this.translator.instant("ALERT.accept_btn"),
         confirmButtonColor: 'var(--ion-color-primary)',
         heightAuto: false
       });
@@ -189,19 +190,19 @@ export class QrMesaPage implements OnInit {
     if(this.pedidoDelUsuario) {
 
       Swal.fire({
-        title: "Su pedido se encuentra:",
+        title: this.translator.instant("ALERT.order_state"),
         html: `<div style="font-weight: bold; font-size: 1.2em;">${this.pedidoDelUsuario.estado}</div>`,
         icon: "success",
-        confirmButtonText: "Aceptar",
+        confirmButtonText: this.translator.instant("ALERT.accept_btn"),
         confirmButtonColor: 'var(--ion-color-primary)',
         heightAuto: false
       });
     } else {
       Swal.fire({
-        title: 'Error',
-        text: 'Usted aún no realizo el pedido',
+        title: 'ERROR',
+        text: this.translator.instant("ALERT.order_incomplete"),
         icon: 'error',
-        confirmButtonText: 'Aceptar',
+        confirmButtonText: this.translator.instant("ALERT.accept_btn"),
         confirmButtonColor: 'var(--ion-color-primary)',
         heightAuto: false
       });
@@ -250,10 +251,10 @@ export class QrMesaPage implements OnInit {
     if (mesasLibres.length === 0) {
       // Si no hay mesas libres, mostrar mensaje de que no hay mesas disponibles
       Swal.fire({
-        title: "No hay mesas disponibles",
-        text: "Lo sentimos, en este momento no hay mesas libres para asignar.",
+        title: this.translator.instant("ALERT.tables_occupied"),
+        text: this.translator.instant("ALERT.occupied_text"),
         icon: "warning",
-        confirmButtonText: "Aceptar",
+        confirmButtonText: this.translator.instant("ALERT.accept_btn"),
         confirmButtonColor: 'var(--ion-color-primary)',
         heightAuto: false
       });
@@ -267,17 +268,17 @@ export class QrMesaPage implements OnInit {
     let contenidoHTML = '<ul style="text-align: left; padding-left: 20px;">';
     mesasLibres.forEach(mesa => {
       contenidoHTML += `<li>`;
-      contenidoHTML += `Mesa número: ${mesa.numeroMesa}`;
+      contenidoHTML += `${this.translator.instant("ALERT.table_number")}: ${mesa.numeroMesa}`;
       contenidoHTML += `</li>`;
     });
     contenidoHTML += '</ul>';
 
     // Mostrar el SweetAlert con las mesas libres
     Swal.fire({
-      title: "Mesas Libres",
+      title: this.translator.instant("ALERT.free_tables"),
       html: contenidoHTML,
       icon: "info",
-      confirmButtonText: "Aceptar",
+      confirmButtonText: this.translator.instant("ALERT.accept_btn"),
       confirmButtonColor: 'var(--ion-color-primary)',
       heightAuto: false
     });
@@ -348,11 +349,11 @@ export class QrMesaPage implements OnInit {
 
     if(this.pedidoDelUsuario && this.pedidoDelUsuario.estado == "entregado") {
       Swal.fire({
-        title: 'Tu pedido ya fue entregado',
+        title: this.translator.instant("ALERT.order_delivered"),
         icon: 'success',
-        confirmButtonText: 'Confirmo Recepción',
+        confirmButtonText: this.translator.instant("ALERT.confirm_order"),
         confirmButtonColor: "#52BE80",
-        cancelButtonText: 'No recibí nada',
+        cancelButtonText: this.translator.instant("ALERT.deny_order"),
         cancelButtonColor: "#E73E30",
         showCancelButton: true,
         heightAuto: false
@@ -375,10 +376,10 @@ export class QrMesaPage implements OnInit {
       });
     } else {
       Swal.fire({
-        title: 'Error',
-        text: 'Usted aún no realizo el pedido',
+        title: 'ERROR',
+        text: this.translator.instant("ALERT.order_incomplete"),
         icon: 'error',
-        confirmButtonText: 'Aceptar',
+        confirmButtonText: this.translator.instant("ALERT.accept_btn"),
         confirmButtonColor: 'var(--ion-color-primary)',
         heightAuto: false
       });

@@ -51,7 +51,32 @@
         "create_error": "Ocurrió un error al realizar el pedido",
         "amount": "Total:",
         "process_order": "Tu pedido:",
-        "back_btn": "Volver"
+        "back_btn": "Volver",
+        "pay_success": "¡Se ha realizado el pago!",
+        "begin_game": "¿Estás listo para comenzar?",
+        "yes_btn": "Si!",
+        "game_won": "Has ganado el juego! Y obtuviste un 10% de descuento",
+        "game_lost": "Se acabó el tiempo!",
+        "alright_btn": "Entendido!",
+        "added_list": "Usted fue añadido a la Lista de Espera. Pronto se le asignará una mesa",
+        "accept_btn": "Aceptar",
+        "already_list": "Usted ya se encuentra en la Lista de Espera",
+        "already_text": "Por favor aguarde a ser asignado a una mesa.",
+        "table_assigned": "Ya tiene una mesa asignada, debe escanear el QR de la misma.",
+        "session_error": "No se pudo verificar la sesión actual",
+        "table_granted": "Se le ha asignado la mesa: ",
+        "link_error": "Antes de vincularse con una mesa debe ingresar a la lista de espera",
+        "table_error": "La mesa escaneada se encuentra ocupada",
+        "assigned_error": "Usted ya se encuentra vinculado a una mesa",
+        "order_state": "Su pedido se encuentra:",
+        "order_incomplete": "Usted aún no realizo el pedido",
+        "tables_occupied": "No hay mesas disponibles",
+        "occupied_text": "Lo sentimos, en este momento no hay mesas libres para asignar.",
+        "table_number": "Mesa número",
+        "free_tables": "Mesas Libres",
+        "order_delivered": "Tu pedido ya fue entregado",
+        "confirm_order": "Confirmo Recepción",
+        "deny_order": "No recibí nada"
     },
     "VALIDATORS": {
         "usr_name_invalid": "Nombre debe contener solo letras y espacios.",
@@ -180,5 +205,53 @@
         "drinks": "Bebidas",
         "finish_btn": "Finalizar Pedido",
         "cancel_btn": "Cancelar"
+    },
+    "BILL": {
+        "title": "Solicitar Cuenta",
+        "subtitle": "Cuenta",
+        "products": "Productos:",
+        "tip": "Propina:",
+        "discharge": "Descuento:",
+        "total": "Total a Pagar:",
+        "tip_options": "Elige la Propina",
+        "game_title": "Puedes participar de un juego por un 10% de descuento",
+        "game_failed": "No lograste obtener el descuento",
+        "play_btn": "Quiero jugar",
+        "pay_bill": "Realizar Pago"
+    },
+    "GAME": {
+        "title": "Juega para obtener <br> un 10% de descuento!",
+        "time": "Tiempo"
+    },
+    "ENTRANCE": {
+        "title": "QR Ingreso al local",
+        "waiting_btn": "Agregarme a la lista de espera",
+        "graphs_btn": "Ver gráficos de encuestas"
+    },
+    "TABLE": {
+        "title": "QR Mesa",
+        "order_time": "Su pedido tiene",
+        "order_minutes": "minutos de realización",
+        "time_left": "Tiempo restante",
+        "free_tables": "Ver disponibilidad de mesa",
+        "link_table": "Vincularme con una mesa",
+        "request_bill": "Pedir cuenta",
+        "ask_waiter": "Consultar al mozo",
+        "view_menu": "Ver menú",
+        "view_state": "Ver estado del pedido",
+        "view_surveys": "Acceder a encuestas",
+        "confirm_order": "Confirmar Recepción"
+    },
+    "TIP": {
+        "title": "QR Propina",
+        "select_tip": "Seleccione su nivel de satisfacción:",
+        "tip5": "Excelente",
+        "tip4": "Muy Bueno",
+        "tip3": "Bueno",
+        "tip2": "Regular",
+        "tip1": "Malo",
+        "total_bill": "Total de la Cuenta",
+        "tip": "Propina",
+        "send_tip": "Enviar Propina"
     }
 }

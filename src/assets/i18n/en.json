@@ -51,7 +51,32 @@
         "create_error": "An error occurred while creating the order",
         "amount": "Total:",
         "process_order": "Your order:",
-        "back_btn": "Return"
+        "back_btn": "Return",
+        "pay_success": "The payment has been made!",
+        "begin_game": "Are you ready to begin?",
+        "yes_btn": "Yes!",
+        "game_won": "You have won the game! And you got a 10% discount",
+        "game_lost": "Time is up!",
+        "alright_btn": "Alright!",
+        "added_list": "You have been added to the Waiting List. You will be assigned a table soon.",
+        "accept_btn": "Accept",
+        "already_list": "You are already on the Waiting List",
+        "already_text": "Please wait to be assigned to a table.",
+        "table_assigned": "You already have a table assigned, you must scan its QR.",
+        "session_error": "Failed to verify current session",
+        "table_granted": "You have been assigned the table: ",
+        "link_error": "Before linking to a table you must enter the waiting list",
+        "table_error": "The scanned table is occupied",
+        "assigned_error": "You are already linked to a table",
+        "order_state": "Your order is:",
+        "order_incomplete": "You have not placed the order yet",
+        "tables_occupied": "There are no tables available",
+        "occupied_text": "Sorry, there are no free tables to assign at this time.",
+        "table_number": "Table number",
+        "free_tables": "Free tables",
+        "order_delivered": "Your order has been delivered",
+        "confirm_order": "I confirm reception",
+        "deny_order": "I didn't receive anything"
     },
     "VALIDATORS": {
         "usr_name_invalid": "First name must contain only letters and spaces.",
@@ -180,5 +205,53 @@
         "drinks": "Beverages",
         "finish_btn": "Finalize Order",
         "cancel_btn": "Cancel"
+    },
+    "BILL": {
+        "title": "Request Bill",
+        "subtitle": "Bill",
+        "products": "Products:",
+        "tip": "Tip:",
+        "discharge": "Discount:",
+        "total": "Total to Pay:",
+        "tip_options": "Choose the Tip",
+        "game_title": "You can participate in a game for a 10% discount",
+        "game_failed": "You couldn't get the discount",
+        "play_btn": "I want to play",
+        "pay_bill": "Make Payment"
+    },
+    "GAME": {
+        "title": "Play to get <br> 10% discount!",
+        "time": "Time"
+    },
+    "ENTRANCE": {
+        "title": "QR Entrance to the establishment",
+        "waiting_btn": "Add me to the waiting list",
+        "graphs_btn": "View survey charts"
+    },
+    "TABLE": {
+        "title": "QR Table",
+        "order_time": "Your order has",
+        "order_minutes": "minutes to complete",
+        "time_left": "Remaining time",
+        "free_tables": "Check table availability",
+        "link_table": "Link me to a table",
+        "request_bill": "Request bill",
+        "ask_waiter": "Ask the waiter",
+        "view_menu": "View menu",
+        "view_state": "View order status",
+        "view_surveys": "Access surveys",
+        "confirm_order": "Confirm Reception"
+    },
+    "TIP": {
+        "title": "QR Tip",
+        "select_tip": "Select your level of satisfaction:",
+        "tip5": "Excellent",
+        "tip4": "Very Good",
+        "tip3": "Good",
+        "tip2": "Regular",
+        "tip1": "Bad",
+        "total_bill": "Account Total",
+        "tip": "Tip",
+        "send_tip": "Send Tip"
     }
 }

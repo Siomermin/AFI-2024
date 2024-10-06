@@ -5,7 +5,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Observable, map } from 'rxjs';
 import Swal from 'sweetalert2';
 import { NotificationService } from 'src/app/shared/services/notification.service';
-
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-qr-ingreso',
@@ -19,7 +19,8 @@ export class QrIngresoPage implements OnInit {
   private arrayListaEspera : Array<any> = [];
   private docEnLista : any = null;
 
-  constructor(private router: Router, private database: DatabaseService, private auth: AngularFireAuth, private notificationService: NotificationService) { }
+  constructor(private router: Router, private database: DatabaseService, private auth: AngularFireAuth, 
+  private notificationService: NotificationService, private translator: TranslateService) { }
 
   ngOnInit() {
     this.auth.authState.subscribe(user => {
@@ -50,7 +51,6 @@ export class QrIngresoPage implements OnInit {
         }
       }
     });
-
   }
 
   async agregarListaEspera() {
@@ -68,30 +68,30 @@ export class QrIngresoPage implements OnInit {
             await this.database.actualizar("lista-espera", listaEsperaActualizada, this.docEnLista.id);
             this.enviarNotificacion();
             Swal.fire({
-              title: 'Éxito',
-              text: 'Usted fue añadido a la Lista de Espera. Pronto se le asignará una mesa',
+              title: this.translator.instant("ALERT.success"),
+              text: this.translator.instant("ALERT.added_list"),
               icon: 'success',
-              confirmButtonText: 'Aceptar',
+              confirmButtonText: this.translator.instant("ALERT.accept_btn"),
               confirmButtonColor: 'var(--ion-color-primary)',
               heightAuto: false
             });
             break;
           case 'pendiente':
             Swal.fire({
-              title: 'Usted ya se encuentra en la Lista de Espera',
-              text: 'Por favor aguarde a ser asignado a una mesa.',
+              title: this.translator.instant("ALERT.already_list"),
+              text: this.translator.instant("ALERT.already_text"),
               icon: 'info',
-              confirmButtonText: 'Aceptar',
+              confirmButtonText: this.translator.instant("ALERT.accept_btn"),
               confirmButtonColor: 'var(--ion-color-primary)',
               heightAuto: false
             });
             break;
           case 'asignado':
             Swal.fire({
-              title: 'Error',
-              text: 'Ya tiene una mesa asignada, debe escanear el QR de la misma.',
+              title: 'ERROR',
+              text: this.translator.instant("ALERT.table_assigned"),
               icon: 'error',
-              confirmButtonText: 'Aceptar',
+              confirmButtonText: this.translator.instant("ALERT.accept_btn"),
               confirmButtonColor: 'var(--ion-color-primary)',
               heightAuto: false
             });
@@ -108,20 +108,20 @@ export class QrIngresoPage implements OnInit {
         await this.database.crear("lista-espera", ingresoListaEspera);
         this.enviarNotificacion();
         Swal.fire({
-          title: 'Éxito',
-          text: 'Usted fue añadido a la Lista de Espera. Pronto se le asignará una mesa',
+          title: this.translator.instant("ALERT.success"),
+          text: this.translator.instant("ALERT.added_list"),
           icon: 'success',
-          confirmButtonText: 'Aceptar',
+          confirmButtonText: this.translator.instant("ALERT.accept_btn"),
           confirmButtonColor: 'var(--ion-color-primary)',
           heightAuto: false
         });
       }
     } else {
       Swal.fire({
-        title: 'Error',
-        text: `No se pudo verificar la sesión actual`,
+        title: 'ERROR',
+        text: this.translator.instant("ALERT.session_error"),
         icon: 'error',
-        confirmButtonText: 'Aceptar',
+        confirmButtonText: this.translator.instant("ALERT.accept_btn"),
         confirmButtonColor: 'var(--ion-color-primary)',
         heightAuto: false
       });
@@ -142,5 +142,4 @@ export class QrIngresoPage implements OnInit {
   redireccionar(path : string) {
     this.router.navigateByUrl(path);
   }
-
 }

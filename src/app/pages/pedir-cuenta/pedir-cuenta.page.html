@@ -1,12 +1,12 @@
 <ion-header [translucent]="true">
   <ion-toolbar class="ion-text-center">
-    <ion-title style="color: White">Solicitar Cuenta</ion-title>
+    <ion-title style="color: White">{{ "BILL.title" | translate }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true" class="ion-text-center">
   <ion-card *ngIf="pedidoActual && pedidoActual.items && pedidoActual.items.length > 0" class="ion-text-center transparent">
-    <ion-card-title class="larger-font">Cuenta</ion-card-title>
+    <ion-card-title class="larger-font">{{ "BILL.subtitle" | translate }}</ion-card-title>
     <div class="ion-padding medium-font">
       <div *ngFor="let item of pedidoActual.items; let i = index" class="lista-items">
         <div class="item-label">{{ item }}</div>
@@ -18,32 +18,32 @@
   <ion-card class="transparent monto-card" *ngIf="pedidoActual">
     <ion-row>
       <ion-col size="12" class="monto-item">
-        <span class="monto-label">Productos:</span>
+        <span class="monto-label">{{ "BILL.products" | translate }}</span>
         <span class="monto-valor">${{ pedidoActual.montoTotal }}</span>
       </ion-col>
     </ion-row>
     <ion-row *ngIf="propina">
       <ion-col size="12" class="monto-item">
-        <span class="monto-label">Propina:</span>
+        <span class="monto-label">{{ "BILL.tip" | translate }}</span>
         <span class="monto-valor">${{ propina }}</span>
       </ion-col>
     </ion-row>
     <ion-row *ngIf="descuento !== null">
       <ion-col size="12" class="monto-item">
-        <span class="monto-label">Descuento:</span>
+        <span class="monto-label">{{ "BILL.discharge" | translate }}</span>
         <span class="monto-valor">-${{ descuentoNumero }}</span>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col size="12" class="monto-item">
-        <span class="subtotal-label">Total a Pagar:</span>
+        <span class="subtotal-label">{{ "BILL.total" | translate }}</span>
         <span class="subtotal-valor">${{ subtotal }}</span>
       </ion-col>
     </ion-row>
   </ion-card>
 
   <ion-card class="transparent">
-    <ion-card-title class="larger-font">Elige la Propina</ion-card-title>
+    <ion-card-title class="larger-font">{{ "BILL.tip_options" | translate }}</ion-card-title>
     <div style="text-align: center; justify-content: center; margin-top: 15px">
       <ion-button (click)="scan()">
         <img style="height: 90px" src="../../../assets/images/qr.png" alt="" />
@@ -54,10 +54,10 @@
   </ion-card>
 
   <ion-card class="transparent">
-    <ion-card-subtitle class="medium-font" *ngIf="descuento===null">Puedes participar de un juego por un 10% de descuento</ion-card-subtitle>
-    <ion-card-subtitle class="medium-font" *ngIf="descuento===0">No lograste obtener el descuento</ion-card-subtitle>
+    <ion-card-subtitle class="medium-font" *ngIf="descuento === null">{{ "BILL.game_title" | translate }}</ion-card-subtitle>
+    <ion-card-subtitle class="medium-font" *ngIf="descuento === 0">{{ "BILL.game_failed" | translate }}</ion-card-subtitle>
     <div style="text-align: center; justify-content: center; margin-top: 15px;">
-      <ion-button (click)="mostrarJuego = true" [disabled]="descuento !== null">Quiero jugar</ion-button>
+      <ion-button (click)="mostrarJuego = true" [disabled]="descuento !== null">{{ "BILL.play_btn" | translate }}</ion-button>
     </div>
     <br />
   </ion-card>
@@ -71,6 +71,6 @@
 
 <ion-footer translucent *ngIf="!mostrarJuego">
   <ion-toolbar>
-    <ion-button expand="full" color="success" (click)="realizarPago()">Realizar Pago</ion-button>
+    <ion-button expand="full" color="success" (click)="realizarPago()">{{ "BILL.pay_bill" | translate }}</ion-button>
   </ion-toolbar>
 </ion-footer>
