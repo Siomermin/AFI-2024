@@ -16,7 +16,17 @@
   align-items: flex-start;
   gap: 5px;
 }
-
+.login-button {
+  --background: #83663F; /* Default background color */
+  --color: #ffffff; /* Default text color */
+  --background-activated: #83663F; /* Background color when button is clicked */
+  --background-focused: #83663F; /* Background color when button is focused */
+  --background-hover: #83663F; /* Background color when button is hovered */
+  --border-color: #83663F; /* Border color */
+  --color-activated: #ffffff; /* Text color when button is clicked */
+  --color-focused: #ffffff; /* Text color when button is focused */
+  --color-hover: #ffffff; /* Text color when button is hovered */
+}
 
 ion-button {
   font-size: 1.2rem; /* Ajusta el tamaño de fuente como prefieras */

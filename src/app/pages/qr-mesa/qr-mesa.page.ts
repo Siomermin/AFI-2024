@@ -8,7 +8,8 @@ import Swal from 'sweetalert2'
 import { first } from 'rxjs';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { TranslateService } from '@ngx-translate/core';
-
+import { PopoverController } from '@ionic/angular';
+import { IdiomaPopoverPage } from '../idioma-popover/idioma-popover.page';
 @Component({
   selector: 'app-qr-mesa',
   templateUrl: './qr-mesa.page.html',
@@ -35,7 +36,7 @@ export class QrMesaPage implements OnInit {
   tiempoRestante:string="";
 
   constructor(private router: Router, private notificationService: NotificationService, private database:DatabaseService, 
-  private afAuth:AngularFireAuth, private activatedRoute: ActivatedRoute, private translator: TranslateService) { }
+  private afAuth:AngularFireAuth, private activatedRoute: ActivatedRoute, private translator: TranslateService, private popoverCtrl: PopoverController) { }
   
   async ngOnInit() {
     this.afAuth.authState.subscribe(user => {
@@ -71,20 +72,24 @@ export class QrMesaPage implements OnInit {
           this.pedidoDelUsuario = item;
           console.log(this.pedidoDelUsuario);
           this.actualizarTiempoRestante();
-          if(item.estado != 'entregado-confirmado') {
-            setInterval(() => {
-              this.actualizarTiempoRestante();
-            }, 1000); // Actualiza cada segundo
-        
-            break;
-          } else {
-            this.tiempoRestante = "Tiempo cumplido";
-          }     
+          setInterval(() => {
+            this.actualizarTiempoRestante();
+          }, 1000); // Actualiza cada segundo
+      
+          break;  
         }
       }
     }, error => {
       console.log(error);
     });
+  }
+
+  async openLanguagePopover(ev: any) {
+    const popover = await this.popoverCtrl.create({
+      component: IdiomaPopoverPage,
+      event: ev
+    });
+    await popover.present();
   }
 
   actualizarTiempoRestante() {

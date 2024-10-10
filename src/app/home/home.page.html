@@ -8,13 +8,13 @@
 
         <ion-text class="text-center" style="margin-left: 5px">
           <h1 style="font-size: medium">
-            Perfil: {{ perfilUsuarioActual | titlecase }} <!-- Analizar que hacer con esto, si se queda y lo traduzco o si se va -->
+            {{ "HOME.profile" | translate}}: {{ perfilUsuarioActual | titlecase }} <!-- Analizar que hacer con esto, si se queda y lo traduzco o si se va -->
           </h1>
         </ion-text>
       </div>
 
       <ion-buttons slot="end">
-        <ion-button (click)="openLanguagePopover($event)">
+        <ion-button (click)="openLanguagePopover($event)" fill="solid" class="login-button">
           <ion-icon name="language" slot="icon-only" size="large">
           </ion-icon>
         </ion-button>

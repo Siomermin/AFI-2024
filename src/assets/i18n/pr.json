@@ -117,6 +117,7 @@
     },
     "HOME": {
         "welcome": "Bem-vindo!",
+        "profile": "Perfil",
         "scan_text": "Escaneie o QR",
         "aut_client": "Autorizar Cliente",
         "check_queue": "Verificar lista de espera",
@@ -174,11 +175,11 @@
         "graphs_btn": "Ver Gráficos",
         "rate_food": "Selecione uma classificação para os pratos:",
         "rate_service": "Selecione uma classificação para o serviço:",
-        "sevice1": "Muito ruim",
-        "sevice2": "Ruim",
-        "sevice3": "Bom",
-        "sevice4": "Muito bom",
-        "sevice5": "Excelente",
+        "service1": "Muito ruim",
+        "service2": "Ruim",
+        "service3": "Bom",
+        "service4": "Muito bom",
+        "service5": "Excelente",
         "choose_pros": "Com quais destes recursos você está mais satisfeito?",
         "pro1": "Atmosfera",
         "pro2": "Serviço",
@@ -190,9 +191,9 @@
     },
     "GRAPHS": {
         "title": "Gráficos de pesquisa",
-        "attributes": "Classificação de recursos",
+        "attributes": "Classificação de Características",
         "dishes": "Classificação dos Pratos",
-        "service": "Classificação de atenção",
+        "service": "Classificação de Atenção",
         "reviews": "Comentários"
     },
     "MENU": {

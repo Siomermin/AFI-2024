@@ -58,9 +58,9 @@
 <ion-footer style="height: 10vh;" *ngIf="mostrarChat">
   <ion-toolbar>
     <ion-item lines="none">
-      <ion-input style="width: 65vw; margin-top: 10px;" fill="solid" [(ngModel)]="nuevoMensaje" placeholder="{{ 'CHAT.textbox' | translate }}"></ion-input>
-      <ion-button color="light" (click)="enviarMensaje()" slot="end" color="secondary">
-        <img  src="../../../assets/images/send.png" height="35px" alt="">
+      <ion-input style="width: 75vw; margin-top: 10px;" fill="solid" [(ngModel)]="nuevoMensaje" placeholder="{{ 'CHAT.textbox' | translate }}"></ion-input>
+      <ion-button style="margin-left: 10px; margin-top: 10px;" color="light" (click)="enviarMensaje()" color="secondary">
+        <img src="../../../assets/images/send.png" height="35px" alt="">
       </ion-button>
     </ion-item>
   </ion-toolbar>

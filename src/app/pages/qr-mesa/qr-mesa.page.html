@@ -3,6 +3,12 @@
     <ion-title class="ion-text-center">
       {{ "TABLE.title" | translate }}
     </ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="solid" class="login-button" (click)="openLanguagePopover($event)">
+        <ion-icon name="language" slot="icon-only" size="large">
+        </ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 

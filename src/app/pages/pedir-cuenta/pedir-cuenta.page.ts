@@ -174,6 +174,6 @@ export class PedirCuentaPage implements OnInit {
       heightAuto: false,
       showConfirmButton: false,
       timer: 1500
-    });
+    }).then(() => this.router.navigateByUrl('home'));
   }
 }
