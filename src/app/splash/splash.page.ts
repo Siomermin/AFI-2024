@@ -36,6 +36,6 @@ export class SplashPage implements OnInit {
 
     setTimeout(() => {
       this.router.navigateByUrl('auth/login');
-    }, 400);//ESTABA EN 4000
+    }, 4000);
   }
 }
